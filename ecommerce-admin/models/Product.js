@@ -4,7 +4,7 @@ import {model, Schema, models} from 'mongoose'
 const ProductSchema = new Schema({
     name: {
         type: String,
-        required: [true, 'Please add a name'],
+        required: [true, 'Please add a name with more than 1 character'],
         unique: true,
         maxlength: [50, 'Name can not be more than 50 characters']
     },
