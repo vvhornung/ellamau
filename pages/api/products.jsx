@@ -6,10 +6,10 @@ export default async function handler(req, res) {
     const { method } = req;
 
     if(method == 'POST'){
-        const { name, description, price } = req.body;
+        const { name, description, price, images } = req.body;
         try {
             await connectDB();
-            const product = await Product.create({ name, description, price });
+            const product = await Product.create({ name, description, price, images });
             res.status(201).json({ success: true, data: product });
         } catch (error) {
             res.status(400).json({ success: false });
@@ -33,10 +33,10 @@ export default async function handler(req, res) {
             res.status(400).json({ success: false });
         }
     } else if (method == 'PUT'){
-        const { name, description, price } = req.body;
+        const { name, description, price, images } = req.body;
         try {
             await connectDB();
-            const product = await Product.findByIdAndUpdate(req.query.id, { name, description, price }, {
+            const product = await Product.findByIdAndUpdate(req.query.id, { name, description, price, images }, {
                 new: true,
                 runValidators: true
             });

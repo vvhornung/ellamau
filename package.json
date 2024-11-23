@@ -10,14 +10,20 @@
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.7.4",
+    "@aws-sdk/client-s3": "^3.698.0",
     "add": "^2.0.6",
     "axios": "^1.7.7",
+    "mime-types": "^2.1.35",
     "mongodb": "^6.10.0",
     "mongoose": "^8.8.2",
+    "multiparty": "^4.2.3",
     "next": "15.0.3",
     "next-auth": "^4.24.10",
     "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106"
+    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react-sortablejs": "^6.1.4",
+    "react-spinners": "^0.14.1",
+    "sortablejs": "^1.15.3"
   },
   "devDependencies": {
     "eslint": "^8",
