@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -8,22 +8,35 @@ import { ReactSortable } from "react-sortablejs";
 function ProductForm({
   _id,
   name: initialName,
+
   description: initialDescription,
   price: initialPrice,
   images: initialImages,
 }) {
   const [name, setName] = useState(initialName || "");
+  const [category, setCategory] = useState("");
   const [description, setDescription] = useState(initialDescription || "");
   const [price, setPrice] = useState(initialPrice || "");
   const [goToProducts, setGoToProducts] = useState(false);
   const [images, setImages] = useState(initialImages || []);
   const [isUploading, setIsUploading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  
+
   const router = useRouter();
+
+  useEffect(() => {
+    axios.get("/api/categories").then((res) => {
+      const categories = res.data;
+      setCategories(categories);
+    });
+  }, []);
+
 
   function saveProduct(ev) {
     ev.preventDefault();
 
-    const data = { name, description, price, images };
+    const data = { name, category, description, price, images };
 
     if (_id) {
       axios.put(`/api/products?id=${_id}`, data).then((res) => {
@@ -73,6 +86,18 @@ function ProductForm({
         value={name}
         onChange={(ev) => setName(ev.target.value)}
       />
+
+      <label htmlFor="">Categories</label>
+      <select value={category} onChange={ev => setCategory(ev.value)} name="" id="">
+        <option value="">No Category</option>
+        {
+          categories?.length > 0 && categories.map((category) => (
+            <option key={category._id} value={category._id}>{category.name}</option>
+          ))
+
+        }
+
+      </select>
 
       <label htmlFor="">Images</label>
 

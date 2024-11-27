@@ -11,6 +11,7 @@ export default async function handler(req, res) {
     try {
       const product = await Product.create({
         name,
+        category,
         description,
         price,
         images,
@@ -32,11 +33,11 @@ export default async function handler(req, res) {
       res.status(400).json({ success: false, error: error.message });
     }
   } else if (method === "PUT") {
-    const { name, description, price, images } = req.body;
+    const { name, category, description, price, images } = req.body;
     try {
       const product = await Product.findByIdAndUpdate(
         req.query.id,
-        { name, description, price, images },
+        { name, category, description, price, images },
         {
           new: true,
           runValidators: true,
