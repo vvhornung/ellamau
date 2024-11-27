@@ -47,7 +47,29 @@ export default async function handler(req, res) {
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
-  } else {
+  } else if (method === "DELETE") {
+    const { id } = req.query;
+
+
+    try {
+      if (!id) {
+        return res
+          .status(400)
+          .json({ error: "Category ID is required for deletion." });
+      }
+
+      const deletedCategory = await Category.findByIdAndDelete(id);
+
+      if (!deletedCategory) {
+        return res.status(404).json({ error: "Category not found." });
+      }
+
+      res.status(200).json(deletedCategory);
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  } 
+  else {
     res.setHeader("Allow", ["GET", "POST", "PUT"]);
     res.status(405).json({ error: `Method ${method} not allowed` });
   }

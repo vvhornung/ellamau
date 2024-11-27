@@ -1,8 +1,9 @@
 import Layout from "@/components/Layout";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { withSwal } from "react-sweetalert2";
 
-function Categories() {
+function Categories({swal}) {
   const [name, setName] = useState("");
   const [categories, setCategories] = useState([]);
   const [parentCategory, setParentCategory] = useState("");
@@ -58,6 +59,30 @@ function Categories() {
     setEditingCategory(category);
     setName(category.name);
     setParentCategory(category.parentCategory?._id || "");
+  }
+
+  async function deleteCategory(category) {
+    swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, keep it",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const {_id} = category;
+        await axios.delete(`/api/categories?id=${_id}`)
+        .then((res) => {
+          console.log("Category deleted:", res.data);
+          fetchCategories();
+          setEditingCategory(null);
+        })
+        .catch((err) => {
+          console.error("Error deleting category:", err);
+        });
+      }
+    })
   }
 
   return (
@@ -130,7 +155,7 @@ function Categories() {
                     </svg>
                     Edit
                   </a>
-                  <a className="btn-red">
+                  <a className="btn-red" onClick={() => deleteCategory(category)}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -161,4 +186,6 @@ function Categories() {
   );
 }
 
-export default Categories;
+
+
+export default withSwal(({ swal }, ref) => <Categories swal={swal} />);
