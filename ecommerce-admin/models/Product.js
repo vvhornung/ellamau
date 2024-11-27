@@ -1,4 +1,4 @@
-import {model, Schema, models} from 'mongoose'
+import mongoose, {model, Schema, models} from 'mongoose'
 
 
 const ProductSchema = new Schema({
@@ -9,9 +9,8 @@ const ProductSchema = new Schema({
         maxlength: [50, 'Name can not be more than 50 characters']
     },
     category: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'Category',
-        required: true
     },
     description: {
         type: String,

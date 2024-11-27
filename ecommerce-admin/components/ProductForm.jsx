@@ -8,13 +8,13 @@ import { ReactSortable } from "react-sortablejs";
 function ProductForm({
   _id,
   name: initialName,
-
+  category: initialCategory,
   description: initialDescription,
   price: initialPrice,
   images: initialImages,
 }) {
   const [name, setName] = useState(initialName || "");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(initialCategory || "");
   const [description, setDescription] = useState(initialDescription || "");
   const [price, setPrice] = useState(initialPrice || "");
   const [goToProducts, setGoToProducts] = useState(false);
@@ -37,6 +37,7 @@ function ProductForm({
     ev.preventDefault();
 
     const data = { name, category, description, price, images };
+    console.log(data);
 
     if (_id) {
       axios.put(`/api/products?id=${_id}`, data).then((res) => {
@@ -88,7 +89,7 @@ function ProductForm({
       />
 
       <label htmlFor="">Categories</label>
-      <select value={category} onChange={ev => setCategory(ev.value)} name="" id="">
+      <select value={category} onChange={ev => setCategory(ev.target.value)} name="" id="">
         <option value="">No Category</option>
         {
           categories?.length > 0 && categories.map((category) => (

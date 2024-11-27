@@ -7,7 +7,8 @@ export default async function handler(req, res) {
   const { method } = req;
 
   if (method === "POST") {
-    const { name, description, price, images } = req.body;
+    const { name,category, description, price, images } = req.body;
+    console.log(category);
     try {
       const product = await Product.create({
         name,
