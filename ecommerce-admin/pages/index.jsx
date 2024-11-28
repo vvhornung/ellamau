@@ -10,7 +10,7 @@ export default function Home() {
         <h2>
           Hello, <b>{session?.user?.name}</b>
         </h2>
-        <div className="flex bg-gray-300 gap-1 text-black rounded-lg overflow-hidden items-center ">
+        <div className="flex  gap-1 text-white tracking-wider font-semibold rounded-lg overflow-hidden items-center ">
           <Image
             src={session?.user?.image}
             alt="Next.js logo"

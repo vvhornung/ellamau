@@ -2,8 +2,13 @@ import multiparty from 'multiparty';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import mime from 'mime-types';
 import fs from 'fs';
+import { isAdminRequest } from '../middleware/isAdmin';
 
 export default async function handler(req, res) {
+
+    await isAdminRequest(req, res);
+
+
     const form = new multiparty.Form();
     const {fields, files} = await new Promise((resolve, reject) => {
         form.parse(req, (err, fields, files) => {
