@@ -10,6 +10,7 @@ const CategorySchema = new Schema({
     parentCategory: {
         type: Schema.Types.ObjectId,
         ref: "Category",
+        default: null,
         
     },
     properties: [

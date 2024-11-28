@@ -25,17 +25,12 @@ function EditProductPage() {
 
   return (
     <Layout>
-      <h1>Edit Product</h1>
-      <button onClick={() => router.push("/products")}>Go to Products</button>
-      
-      {
-        product && (
-          
-          <ProductForm {...product}/>
-        )
-      }
+      <div className="flex gap-2 items-center">
+        <h1 className="m-0">Edit Product - </h1>
+        <button className="text-primary" onClick={() => router.push("/products")}>Go to Products</button>
+      </div>
 
-      
+      {product && <ProductForm {...product} />}
     </Layout>
   );
 }

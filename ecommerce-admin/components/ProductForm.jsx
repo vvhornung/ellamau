@@ -92,6 +92,7 @@ function ProductForm({
 
   // Since some categories have parents the properties from the parent should be inherited by the child category. This will be recursive until the parent category is null
   function getProperties(category) {
+    console.log(JSON.stringify(category));
     if (category?.properties?.length > 0) {
       categoryProperties.push(...category.properties);
     }
@@ -137,7 +138,7 @@ function ProductForm({
       {
         categoryProperties.length > 0 && (
           <div className="space-y-2">
-            <label htmlFor="">Properties</label>
+            <p className="font-semibold text-lg " htmlFor="">Properties</p>
             {
               categoryProperties.map((property, index) => (
                 <div key={index}>

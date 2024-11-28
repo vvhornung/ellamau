@@ -24,7 +24,7 @@ function Categories({ swal }) {
     e.preventDefault();
     const payload = {
       name,
-      parentCategory,
+      parentCategory: parentCategory || null,
       properties: properties.map((property) => ({
         name: property.name,
         values: property.value.split(",").map((v) => v.trim()),

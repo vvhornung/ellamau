@@ -51,7 +51,7 @@ async function handleCreateCategory(req, res) {
 
   const category = await Category.create({
     name,
-    parentCategory: parentCategory || undefined,
+    parentCategory: parentCategory || null,
     properties,
   });
 
@@ -67,7 +67,7 @@ async function handleUpdateCategory(req, res) {
 
   const updatedCategory = await Category.findByIdAndUpdate(
     id,
-    { name, parentCategory, properties },
+    { name, parentCategory: parentCategory || null, properties },
     { new: true } // Return the updated document
   );
 
