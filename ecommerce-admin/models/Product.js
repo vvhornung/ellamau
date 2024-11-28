@@ -22,6 +22,12 @@ const ProductSchema = new Schema({
         required: [true, 'Please add a price'],
     },
     images: [String],
+    // the properties will be a big object where each key is the property name and the value is the property value
+    properties: {
+        type: Object,
+        default: {}
+    }
+
 
 })
 

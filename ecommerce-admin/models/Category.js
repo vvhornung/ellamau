@@ -12,6 +12,16 @@ const CategorySchema = new Schema({
         ref: "Category",
         
     },
+    properties: [
+        {
+            name: {
+                type: String,
+            },
+            values: {
+                type: [String],
+            },
+        },
+    ],
 })
 
 export const Category = models.Category || model("Category", CategorySchema);

@@ -1,24 +1,30 @@
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-function Nav() {
+
+function Nav({show}) {
 
     const inactiveLink = "flex gap-1 p-1 text-white";
-    const activeLink =  "flex gap-1 p-1 text-black bg-white  rounded-l-sm";
+    const activeLink =  "flex gap-1 p-1 text-white bg-zinc-950  rounded-l-sm";
     const inactiveIcon = "w-6 h-6 stroke-white";
-    const activeIcon = inactiveIcon + "stroke-black text-primary";
+    const activeIcon = inactiveIcon.replace('stroke-white', 'stroke-yellow-400  ') + " text-primary";
     const router = useRouter();
     const { pathname } = router;
+    
+    async function logout() {
+      await router.push("/");
+      await signOut();
+    }
 
     return (
       <aside
         className={
-          "left-0 top-0 text-gray-500 py-4 pl-4 fixed w-full  h-full md:static md:w-auto transition-all"
+          (show ? "left-0" : "-left-full") +
+          " top-0 text-gray-500 p-4 fixed w-full bg-black h-full md:static md:w-auto transition-all"
         }
       >
-        <div className="mb-4 mr-4">
-   
-        </div>
+        <div className="mb-4 mr-4"></div>
         <nav className="flex flex-col gap-2">
           <Link
             href={"/"}
@@ -110,6 +116,30 @@ function Nav() {
             </svg>
             Orders
           </Link>
+
+          <Link
+            href="/admins"
+            className={pathname.includes("/admins") ? activeLink : inactiveLink}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className={
+                pathname.includes("/admins") ? activeIcon : inactiveIcon
+              }
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16 7c0-2.5-2-4.5-4.5-4.5S7 4.5 7 7c0 1.5.75 2.75 1.87 3.5C7.75 11.75 7 13 7 14.5v3c0 2.5 2 4.5 4.5 4.5S16 20 16 17.5v-3c0-1.5-.75-2.75-1.87-3.5C15.25 9.75 16 8.5 16 7zm-2.5 0c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2z"
+              />
+            </svg>
+            Admins
+          </Link>
+
           <Link
             href={"/settings"}
             className={
@@ -139,7 +169,8 @@ function Nav() {
             </svg>
             Settings
           </Link>
-          <button  className={inactiveLink}>
+
+          <button onClick={logout} className={inactiveLink}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

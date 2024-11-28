@@ -1,76 +1,100 @@
+import { isAdminRequest } from "@/pages/middleware/isAdmin";
 import { Category } from "@/models/Category";
 import connectDB from "@/lib/mongoose";
+import mongoose from "mongoose";
 
 export default async function handler(req, res) {
-  await connectDB();
+  try {
+    // Verify admin privileges
+    await isAdminRequest(req, res);
 
-  const { method } = req;
-
-  if (method === "POST") {
-    const { name, parentCategory } = req.body;
-
-    try {
-      const category = await Category.create({ name, parentCategory });
-      res.status(201).json(category);
-    } catch (err) {
-      res.status(400).json({ error: err.message });
+    // Connect to the database only if it's not already connected
+    if (mongoose.connection.readyState !== 1) {
+      await connectDB();
     }
-  } else if (method === "PUT") {
-    const { id, name, parentCategory } = req.body;
-    console.log(req.body)
 
-    try {
-      if (!id) {
-        return res
-          .status(400)
-          .json({ error: "Category ID is required for updates." });
-      }
+    const { method } = req;
 
-      const updatedCategory = await Category.findByIdAndUpdate(
-        id,
-        { name, parentCategory },
-        { new: true } // Return the updated document
-      );
-
-      if (!updatedCategory) {
-        return res.status(404).json({ error: "Category not found." });
-      }
-
-      res.status(200).json(updatedCategory);
-    } catch (err) {
-      res.status(400).json({ error: err.message });
+    switch (method) {
+      case "POST":
+        await handleCreateCategory(req, res);
+        break;
+      case "PUT":
+        await handleUpdateCategory(req, res);
+        break;
+      case "GET":
+        await handleGetCategories(req, res);
+        break;
+      case "DELETE":
+        await handleDeleteCategory(req, res);
+        break;
+      default:
+        res.setHeader("Allow", ["GET", "POST", "PUT", "DELETE"]);
+        res.status(405).json({ error: `Method ${method} not allowed` });
     }
-  } else if (method === "GET") {
-    try {
-      const categories = await Category.find().populate("parentCategory");
-      res.status(200).json(categories);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
+  } catch (error) {
+    console.error("API Error:", error.message);
+    if (!res.headersSent) {
+      res.status(500).json({ error: error.message });
     }
-  } else if (method === "DELETE") {
-    const { id } = req.query;
-
-
-    try {
-      if (!id) {
-        return res
-          .status(400)
-          .json({ error: "Category ID is required for deletion." });
-      }
-
-      const deletedCategory = await Category.findByIdAndDelete(id);
-
-      if (!deletedCategory) {
-        return res.status(404).json({ error: "Category not found." });
-      }
-
-      res.status(200).json(deletedCategory);
-    } catch (err) {
-      res.status(400).json({ error: err.message });
-    }
-  } 
-  else {
-    res.setHeader("Allow", ["GET", "POST", "PUT"]);
-    res.status(405).json({ error: `Method ${method} not allowed` });
   }
+}
+
+// CRUD Operations
+
+async function handleCreateCategory(req, res) {
+  const { name, parentCategory, properties } = req.body;
+
+  if (!name) {
+    throw new Error("Category name is required");
+  }
+
+  const category = await Category.create({
+    name,
+    parentCategory: parentCategory || undefined,
+    properties,
+  });
+
+  res.status(201).json(category);
+}
+
+async function handleUpdateCategory(req, res) {
+  const { id, name, parentCategory, properties } = req.body;
+
+  if (!id) {
+    throw new Error("Category ID is required for updates");
+  }
+
+  const updatedCategory = await Category.findByIdAndUpdate(
+    id,
+    { name, parentCategory, properties },
+    { new: true } // Return the updated document
+  );
+
+  if (!updatedCategory) {
+    throw new Error("Category not found");
+  }
+
+  res.status(200).json(updatedCategory);
+}
+
+async function handleGetCategories(req, res) {
+  const categories = await Category.find().populate("parentCategory");
+  res.status(200).json(categories);
+}
+
+async function handleDeleteCategory(req, res) {
+  const { id } = req.query;
+
+  if (!id) {
+    throw new Error("Category ID is required for deletion");
+  }
+
+  const deletedCategory = await Category.findByIdAndDelete(id);
+
+  if (!deletedCategory) {
+    throw new Error("Category not found");
+  }
+
+  res.status(200).json(deletedCategory);
 }
