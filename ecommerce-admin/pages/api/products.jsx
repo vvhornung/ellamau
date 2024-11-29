@@ -17,7 +17,12 @@ export default async function handler(req, res) {
 
     switch (method) {
       case "POST":
-        await handleCreateProduct(req, res);
+        if (req.body.products) {
+          // Handle bulk creation if products array is provided
+          await handleBulkCreateProducts(req, res);
+        } else {
+          await handleCreateProduct(req, res);
+        }
         break;
       case "PUT":
         await handleUpdateProduct(req, res);
@@ -42,17 +47,31 @@ export default async function handler(req, res) {
 
 // CRUD Operations
 
+// Single product creation
 async function handleCreateProduct(req, res) {
-  const { name, category, description, price, images, properties } = req.body;
+  const {
+    name,
+    reference,
+    category,
+    description,
+    details,
+    price,
+    images,
+    properties,
+  } = req.body;
 
   if (!name || !price || !category) {
-    throw new Error("Name, price, and category are required fields.");
+    return res
+      .status(400)
+      .json({ error: "Name, reference, price, and category are required." });
   }
 
   const product = await Product.create({
     name,
+    reference,
     category,
     description,
+    details,
     price,
     images,
     properties,
@@ -61,33 +80,76 @@ async function handleCreateProduct(req, res) {
   res.status(201).json({ success: true, data: product });
 }
 
+// Bulk product creation
+async function handleBulkCreateProducts(req, res) {
+  const { products } = req.body;
+
+  if (!Array.isArray(products) || products.length === 0) {
+    return res
+      .status(400)
+      .json({ error: "Products array is required and cannot be empty." });
+  }
+
+  try {
+    const result = await Product.insertMany(products); // Ignore errors for individual products
+    res
+      .status(201)
+      .json({ success: true, message: `${result.length} products added.` });
+  } catch (error) {
+    console.error("Bulk upload error:", error);
+    res.status(500).json({ error: "An error occurred during bulk upload." });
+  }
+}
+
+// Product update
 async function handleUpdateProduct(req, res) {
-  const { id, name, category, description, price, images, properties } =
-    req.body;
+  const {
+    id,
+    name,
+    reference,
+    category,
+    description,
+    details,
+    price,
+    images,
+    properties,
+  } = req.body;
 
   if (!id) {
-    throw new Error("Product ID is required for updates.");
+    return res
+      .status(400)
+      .json({ error: "Product ID is required for updates." });
   }
 
   const updatedProduct = await Product.findByIdAndUpdate(
     id,
-    { name, category, description, price, images, properties },
+    {
+      name,
+      reference,
+      category,
+      description,
+      details,
+      price,
+      images,
+      properties,
+    },
     { new: true, runValidators: true } // Return the updated document and validate inputs
   );
 
   if (!updatedProduct) {
-    throw new Error("Product not found.");
+    return res.status(404).json({ error: "Product not found." });
   }
 
   res.status(200).json({ success: true, data: updatedProduct });
 }
 
+// Retrieve products
 async function handleGetProducts(req, res) {
   if (req.query.id) {
     const product = await Product.findById(req.query.id);
 
     if (!product) {
-      throw new Error("Product not found.");
+      return res.status(404).json({ error: "Product not found." });
     }
 
     return res.status(200).json({ success: true, data: product });
@@ -97,18 +159,34 @@ async function handleGetProducts(req, res) {
   res.status(200).json({ success: true, data: products });
 }
 
+// Product deletion
 async function handleDeleteProduct(req, res) {
   const { id } = req.query;
+  const { ids } = req.body;
+
+  if (ids) {
+    const deletedProducts = await Product.deleteMany({ _id: { $in: ids } });
+
+    if (deletedProducts.deletedCount === 0) {
+      return res.status(404).json({ error: "No matching products found." });
+    }
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Products deleted." });
+  }
 
   if (!id) {
-    throw new Error("Product ID is required for deletion.");
+    return res
+      .status(400)
+      .json({ error: "Product ID is required for deletion." });
   }
 
   const deletedProduct = await Product.findByIdAndDelete(id);
 
   if (!deletedProduct) {
-    throw new Error("Product not found.");
+    return res.status(404).json({ error: "Product not found." });
   }
 
-  res.status(200).json({ success: true, data: {} });
+  res.status(200).json({ success: true, message: "Product deleted." });
 }

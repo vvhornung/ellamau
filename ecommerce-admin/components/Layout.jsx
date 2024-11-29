@@ -40,9 +40,9 @@ export default function Layout({ children }) {
     
         </div>
       </div>
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen ">
         <Nav show={showNav} />
-        <div className="flex-grow p-4 m-4 bg-zinc-950 ">{children}</div>
+        <div className="flex-grow p-4 m-4 bg-zinc-950  ">{children}</div>
       </div>
     </div>
   );

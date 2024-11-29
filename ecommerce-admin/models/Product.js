@@ -6,7 +6,12 @@ const ProductSchema = new Schema({
         type: String,
         required: [true, 'Please add a name'],
         unique: true,
-        maxlength: [50, 'Name can not be more than 50 characters']
+        maxlength: [200, 'Name can not be more than 50 characters']
+    },
+    reference: {
+        type: String,
+        required: [true, 'Please add a reference'],
+        maxlength: [50, 'Reference can not be more than 50 characters']
     },
     category: {
         type: mongoose.Types.ObjectId,
@@ -16,6 +21,10 @@ const ProductSchema = new Schema({
         type: String,
         required: [true, 'Please add a description'],
         maxlength: [500, 'Description can not be more than 500 characters']
+    },
+    details: {
+        type: [String],
+        maxlength: [1000, 'Details can not be more than 1000 characters']
     },
     price: {
         type: Number,
