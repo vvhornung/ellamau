@@ -1,16 +1,22 @@
 import { StyledUserNav } from "./styles/UserNav.styled";
-import UserSvg from "../../icons/user.svg";
+import { CiUser, CiShoppingCart } from "react-icons/ci";
+import { Flex } from "./styles/Flex.styled";
+import Link from "next/link";
+
 function UserNav() {
-    return (
-      <StyledUserNav>
-        <a href="">
-          <UserSvg/>
-        </a>
-        <a href="">
-          <img src="/landing/icons/bag.svg" alt="Shopping Bag Icon" />
-        </a>
-      </StyledUserNav>
-    );
+  return (
+    <StyledUserNav>
+      <Flex justify={"end"}>
+        <Link href="">
+          <CiUser />
+        </Link>
+
+        <Link href="">
+          <CiShoppingCart />
+        </Link>
+      </Flex>
+    </StyledUserNav>
+  );
 }
 
 export default UserNav;
