@@ -36,13 +36,22 @@ export default function Layout({ children }) {
             />
           </svg>
         </button>
-        <div className="flex grow justify-center mr-6">
-    
-        </div>
+        <div className="flex grow justify-center mr-6"></div>
       </div>
-      <div className="flex min-h-screen ">
-        <Nav show={showNav} />
-        <div className="flex-grow p-4 m-4 bg-zinc-950  ">{children}</div>
+      <div className="bg-black min-h-screen flex">
+        {/* Sidebar */}
+        <aside
+          className={`${
+            showNav ? "left-0" : "-left-full"
+          } fixed top-0 py-4 pl-4 w-full bg-black h-full md:w-1/6 md:left-0 md:overflow-y-auto transition-all`}
+        >
+          <Nav />
+        </aside>
+
+        {/* Content Area */}
+        <div className="flex-grow p-4 bg-zinc-950 md:ml-[16.666%] overflow-auto">
+          {children}
+        </div>
       </div>
     </div>
   );

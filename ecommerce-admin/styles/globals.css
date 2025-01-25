@@ -42,12 +42,10 @@ label{
     @apply cursor-pointer bg-black text-white px-4 py-2 rounded-sm shadow-sm font-semibold hover:bg-white hover:text-black duration-300 transition border border-white border-opacity-20;
 }
 table.basic {
-    @apply shadow-md shadow-zinc-800 border border-white border-opacity-10 rounded-md overflow-hidden table-auto;
+    @apply shadow-md shadow-zinc-800 bg-zinc-800 border border-white border-opacity-10 rounded-md overflow-hidden table-auto;
 }
 
-table.basic thead tr {
-    @apply bg-zinc-800;
-}
+
 
 table.basic thead tr td,
 table.basic thead tr th {
@@ -75,11 +73,11 @@ table.basic th {
 }
 
 .btn-default, .btn-red{
-    @apply px-4 py-1 rounded-md font-semibold cursor-pointer ;
+    @apply px-4 py-2 rounded-sm font-semibold cursor-pointer ;
 }
 .btn-red{
-    @apply bg-red-200 text-red-600 px-4 py-1 rounded-sm shadow-sm hover:bg-red-600 hover:text-white duration-300 transition;
+    @apply bg-red-200 text-red-600  shadow-sm hover:bg-red-600 hover:text-white duration-300 transition;
 }
 .btn-default{
-    @apply bg-white text-gray-800 px-4 py-1 rounded-sm border border-gray-200 shadow-sm hover:bg-neutral-300 hover:text-gray-800 duration-300 transition;
+    @apply bg-white text-gray-800  border border-gray-200 shadow-sm hover:bg-neutral-300 hover:text-gray-800 duration-300 transition;
 }
