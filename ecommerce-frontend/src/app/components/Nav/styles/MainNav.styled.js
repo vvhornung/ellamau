@@ -21,6 +21,8 @@ export const StyledMainNav = styled.nav`
       font-size: 16px;
       letter-spacing: .16em;
       color: black;
+      transition: all 0.3s ease;
+
       &:hover {
         color: ${ ({theme}) => theme.colors.primary}};
       }
