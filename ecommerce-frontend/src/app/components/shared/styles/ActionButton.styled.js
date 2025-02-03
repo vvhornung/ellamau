@@ -1,9 +1,11 @@
-import styled, { css } from "styled-components";
+"use client";
+
+import { styled, css } from "styled-components";
 
 // Base styles
 const baseStyles = css`
-  color: ${({ primarycolor }) => primarycolor || "white"};
-  border: 2px solid ${({ primarycolor }) => primarycolor || "white"};
+  color: ${({ $primaryColor }) => $primaryColor || "white"};
+  border: 2px solid ${({ $primaryColor }) => $primaryColor || "white"};
   padding: 0.5rem;
   font-size: 10px;
   cursor: pointer;
@@ -11,8 +13,8 @@ const baseStyles = css`
   background-color: transparent;
 
   &:hover {
-    background-color: ${({ primarycolor }) => primarycolor || "white"};
-    color: ${({ secondarycolor }) => secondarycolor || "black"};
+    background-color: ${({ $primaryColor }) => $primaryColor || "white"};
+    color: ${({ $secondarycolor }) => $secondarycolor || "black"};
   }
 `;
 
@@ -22,7 +24,7 @@ const underlineStyles = css`
   position: relative;
   padding: 0.5rem 0;
   background-color: transparent;
-  color: ${({ primarycolor }) => primarycolor || "white"};
+  color: ${({ $primaryColor }) => $primaryColor || "white"};
 
   &:after {
     content: "";
@@ -32,7 +34,7 @@ const underlineStyles = css`
     transform: translateX(-50%);
     width: 50%;
     height: 2px;
-    background-color: ${({ primarycolor }) => primarycolor || "white"};
+    background-color: ${({ $primaryColor }) => $primaryColor || "white"};
     transition: width 0.5s linear;
   }
 
@@ -42,12 +44,13 @@ const underlineStyles = css`
 
   &:hover {
     background-color: transparent;
-    color: ${({ primarycolor }) => primarycolor || "white"};
+    color: ${({ $primaryColor }) => $primaryColor || "white"};
   }
 `;
 
 export const ActionButton = styled.button`
-  ${({ variant }) => (variant === "underline" ? underlineStyles : baseStyles)};
+  ${({ $variant }) =>
+    $variant === "underline" ? underlineStyles : baseStyles};
 `;
 
 export default ActionButton;

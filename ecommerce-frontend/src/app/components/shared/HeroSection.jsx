@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import ActionButton from "./styles/ActionButton.styled";
 import {
   SubHeading,
@@ -17,13 +16,13 @@ const HeroSection = ({
   buttonText,
   imageSrc,
   onButtonClick,
-  imagepositionx = "50%",
-  imagepositiony = "50%",
+  image$positionX = "50%",
+  image$positionY = "50%",
   brightness = 1,
 }) => {
   return (
     <Section>
-      <ContentOverlay positionx={imagepositionx} positiony={imagepositiony}>
+      <ContentOverlay $positionX={image$positionX} $positionY={image$positionY}>
         <SubHeading>{heading}</SubHeading>
         <MainHeading>{subHeading}</MainHeading>
         <Description>{text}</Description>

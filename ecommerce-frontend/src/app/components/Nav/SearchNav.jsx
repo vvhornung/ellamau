@@ -7,7 +7,7 @@ import { Container } from "../shared/styles/Container.styled";
 function SearchNav() {
   return (
     <Container width={"90%"}>
-      <Flex justify={"space-between"}>
+      <Flex $justify={"space-between"}>
         <RegionSelector />
         <Logo />
         <SearchBar />

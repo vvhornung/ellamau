@@ -4,7 +4,7 @@ import { StyledMainNav } from "./styles/MainNav.styled";
 import { cinzel_decrative } from "@/app/fonts";
 import Link from "next/link";
 
-function MainNav( ) {
+function MainNav() {
   return (
     <Container width={"90%"}>
       <StyledMainNav className={cinzel_decrative.className}>

@@ -7,7 +7,7 @@ function OfferNav() {
   return (
     <StyledOfferNav>
       <Container>
-        <Flex gap={"4rem"}>
+        <Flex $gap={"4rem"}>
           <p>Shop Online RIGHT Now AND Enjoy Free Shipping</p>
           <ActionButton>SEE OFFERS</ActionButton>
         </Flex>

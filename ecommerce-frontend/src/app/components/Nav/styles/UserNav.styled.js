@@ -1,14 +1,11 @@
 import styled from "styled-components";
 
 export const StyledUserNav = styled.div`
+  background-color: #f2b513;
+  justify-content: flex-end;
+  width: 100%;
 
-  
-    background-color: #f2b513;
-    justify-content: flex-end;
-    width: 100%;
- 
- 
-   svg {
+  svg {
     width: 30px;
     height: 30px;
   }
@@ -18,9 +15,4 @@ export const StyledUserNav = styled.div`
     transition: 0.2s ease-in-out;
     fill: white;
   }
-
-
-
-
-
 `;

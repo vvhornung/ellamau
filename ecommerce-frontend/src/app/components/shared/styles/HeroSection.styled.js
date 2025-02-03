@@ -1,3 +1,5 @@
+"use client";
+
 import styled from "styled-components";
 import Image from "next/image";
 
@@ -16,8 +18,8 @@ export const Section = styled.section`
 
 export const ContentOverlay = styled.div`
   position: absolute;
-  top: ${({ positionY }) => positionY || "50%"};
-  left: ${({ positionx }) => positionx || "50%"};
+  top: ${({ $positionY }) => $positionY || "50%"};
+  left: ${({ $positionX }) => $positionX || "50%"};
   transform: translate(-50%, -50%);
   text-align: center;
   color: #fff;

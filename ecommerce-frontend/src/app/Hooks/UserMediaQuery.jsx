@@ -1,4 +1,4 @@
-import { useTheme } from "styled-components";
+import { useTheme, styled } from "styled-components";
 import { useState, useEffect } from "react";
 
 export function useMediaQuery(breakpointKey) {

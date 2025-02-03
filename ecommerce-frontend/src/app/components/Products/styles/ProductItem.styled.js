@@ -1,9 +1,11 @@
+"use client";
+
 import styled from "styled-components";
 
 export const StyledProductItem = styled.div`
   & > div {
-    ${({ variant }) =>
-      variant === "hover" &&
+    ${({ $variant }) =>
+      $variant === "hover" &&
       `
       transition: transform 0.3s ease, box-shadow 0.3s ease;
 
@@ -13,8 +15,8 @@ export const StyledProductItem = styled.div`
       }
     `}
 
-    ${({ border }) =>
-      border === "card" &&
+    ${({ $border }) =>
+      $border === "card" &&
       `
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     `}

@@ -3,7 +3,6 @@ import { StyledGrid } from "../shared/styles/Grid";
 import CarrouselItem from "../Products/ProductItem";
 
 function ProductSection() {
-
   const products = [
     {
       id: 1,
@@ -43,18 +42,18 @@ function ProductSection() {
     },
   ];
 
-    return (
-      <Container>
-        <h1>Recomendados</h1>
-        <StyledGrid columns={4} gap="1rem">
-          {/* Product cards go here */}
-          <div style={{ gridColumn: "span 2" }}></div>
-          {products.map((product) => (
-            <CarrouselItem key={product.id} product={product}  border={"card"} />
-          ))}
-        </StyledGrid>
-      </Container>
-    );
+  return (
+    <Container>
+      <h1>Recomendados</h1>
+      <StyledGrid $columns={4} $gap="1rem">
+        {/* Product cards go here */}
+        <div style={{ gridColumn: "span 2" }}></div>
+        {products.map((product) => (
+          <CarrouselItem key={product.id} product={product} $border={"card"} />
+        ))}
+      </StyledGrid>
+    </Container>
+  );
 }
 
 export default ProductSection;

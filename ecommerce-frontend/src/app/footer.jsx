@@ -12,7 +12,7 @@ function Footer() {
       <StyledFooter>
         <Container width={"fit-content"}>
           <Flex direction={"column"}>
-            <ActionButton primarycolor={"black"} secondarycolor={"white"}>
+            <ActionButton $primaryColor={"black"} $secondarycolor={"white"}>
               FOLLOW US TO STAY INFORMED
             </ActionButton>
             <SocialMedia />
@@ -20,7 +20,7 @@ function Footer() {
         </Container>
 
         <Container width={"fit-content"}>
-          <Flex direction={"column"} align={"start"} gap={"0.5rem"}>
+          <Flex direction={"column"} $align={"start"} $gap={"0.5rem"}>
             <h3>Sections</h3>
             <ul>
               <li>
@@ -40,7 +40,7 @@ function Footer() {
         </Container>
 
         <Container width={"fit-content"}>
-          <Flex direction={"column"} align={"start"} gap={"0.5rem"}>
+          <Flex direction={"column"} $align={"start"} $gap={"0.5rem"}>
             <h3>Orders</h3>
             <ul>
               <li>

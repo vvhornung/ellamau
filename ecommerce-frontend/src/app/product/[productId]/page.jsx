@@ -15,8 +15,6 @@ export default function CategoryPage({ params }) {
     },
   ];
 
-
-
   const { productId } = React.use(params);
 
   return (
