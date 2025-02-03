@@ -1,8 +1,9 @@
+"use client";
+
 import styled from "styled-components";
 
 export const StyledHeroVideo = styled.div`
-
-  background-color: ${({ bg }) => bg || "white"};
+  background-color: ${({ $bg }) => $bg || "white"};
 
   video {
     width: 100%;
@@ -12,5 +13,4 @@ export const StyledHeroVideo = styled.div`
     height: 100%;
     z-index: -1;
   }
-  
 `;

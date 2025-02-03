@@ -7,10 +7,12 @@ function CollectionItem({ product, bg }) {
   const { title, img } = product;
 
   return (
-    <StyledCarrouselItem bg={ bg }>
-      <Image height={550} width={350}  src={img} alt={title} />
-      <Flex direction={"column"} gap={"1rem"} align={"center"}>
-        <ActionButton primarycolor={"black"} variant={"underline"}>{title}</ActionButton>
+    <StyledCarrouselItem $bg={bg}>
+      <Image height={550} width={350} src={img} alt={title} />
+      <Flex direction={"column"} $gap={"1rem"} $align={"center"}>
+        <ActionButton $primaryColor={"black"} $variant={"underline"}>
+          {title}
+        </ActionButton>
       </Flex>
     </StyledCarrouselItem>
   );

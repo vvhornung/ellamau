@@ -1,4 +1,6 @@
-const { default: styled } = require("styled-components");
+"use client";
+
+import styled from "styled-components";
 
 export const StyledCarrouselItem = styled.div`
   display: flex;
@@ -39,7 +41,7 @@ export const StyledCarrouselItem = styled.div`
 
   & > div {
     padding: 1rem;
-    background-color: ${({ bg }) => bg || "white"};
+    background-color: ${({ $bg }) => $bg || "white"};
     z-index: 2;
   }
 `;

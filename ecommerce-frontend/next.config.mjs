@@ -5,7 +5,17 @@ const nextConfig = {
   },
   reactStrictMode: true,
   images: {
-    domains: ["127.0.0.1"],
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+    unoptimized: true, // Allows bypassing image optimization entirely if needed
   },
   webpack(config) {
     config.module.rules.push({

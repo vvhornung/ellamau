@@ -9,10 +9,10 @@ import Logo from "../../shared/Logo";
 function MobileNav() {
   return (
     <StyledMobileNav>
-      <Flex gap={"15px"} direction={"column"}>
+      <Flex $gap={"15px"} direction={"column"}>
         <OfferNav />
         <Logo />
-        <Flex justify={"space-around"}>
+        <Flex $justify={"space-around"}>
           {/* <!-- Navigation link to the Lingerie section --> */}
           <CiMenuFries fill="black" name="Menu" alt="Menu Icon" />
           <CiSearch fill="black" name="Search" alt="Search Icon" />

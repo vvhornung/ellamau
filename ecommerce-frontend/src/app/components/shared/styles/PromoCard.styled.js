@@ -1,14 +1,14 @@
+'use client'
+
 import styled from "styled-components";
 
 export const PromoCard = styled.div`
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    color: ${({ textColor }) => textColor || 'white'};
-    padding: 20px;
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: ${({ textColor }) => textColor || "white"};
+  padding: 20px;
 
   h2 {
     font-family: "Cinzel Decorative", serif;
@@ -33,5 +33,4 @@ export const PromoCard = styled.div`
     position: relative;
     cursor: pointer;
   }
-
 `;

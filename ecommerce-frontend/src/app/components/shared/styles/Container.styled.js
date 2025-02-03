@@ -1,3 +1,5 @@
+"use client";
+
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -8,10 +10,10 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: ${({ bg }) => bg || "transparent"};
+  background-color: ${({ $bg }) => $bg || "transparent"};
 
   /* Use overflow-x: auto to show scrollbar only when necessary */
-  overflow-x: ${({ scroll }) => (scroll ? "auto" : "hidden")};
+  overflow-x: ${({ $scroll }) => ($scroll ? "auto" : "hidden")};
 
   scrollbar-color: #ccc #f1f1f1;
   scrollbar-width: thin;
@@ -21,11 +23,11 @@ export const Container = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: ${({ bg }) => bg || "#ccc"};
+    background-color: ${({ $bg }) => $bg || "#ccc"};
     border-radius: 10px;
   }
 
   &::-webkit-scrollbar-track {
-    background-color: ${({ bg }) => bg || "#f1f1f1"};
+    background-color: ${({ $bg }) => $bg || "#f1f1f1"};
   }
 `;

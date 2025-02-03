@@ -15,10 +15,7 @@ export const StyledLogo = styled.div`
     font-size: 1.2rem;
   }
 
-  @media screen and (max-width: ${({theme}) => theme.breakpoints.tablet}) {
-
-    
-
+  @media screen and (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     h1 {
       font-size: 1.5rem;
     }

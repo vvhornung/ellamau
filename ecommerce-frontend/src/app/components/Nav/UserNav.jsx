@@ -8,15 +8,19 @@ function UserNav() {
   return (
     <StyledUserNav>
       <Container>
-      <Flex justify={"end"}>
-        <Link href="">
-          <CiUser fill="black" name="User" alt="User Icon" />
-        </Link>
+        <Flex $justify={"end"}>
+          <Link href="">
+            <CiUser fill="black" name="User" alt="User Icon" />
+          </Link>
 
-        <Link href="">
-          <CiShoppingCart fill="black" name="Shopping Cart" alt="Shopping Cart Icon" />
-        </Link>
-      </Flex>
+          <Link href="">
+            <CiShoppingCart
+              fill="black"
+              name="Shopping Cart"
+              alt="Shopping Cart Icon"
+            />
+          </Link>
+        </Flex>
       </Container>
     </StyledUserNav>
   );

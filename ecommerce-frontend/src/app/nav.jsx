@@ -6,9 +6,7 @@ import OfferNav from "./components/Nav/OfferNav";
 import SearchNav from "./components/Nav/SearchNav";
 import UserNav from "./components/Nav/UserNav";
 import { Flex } from "./components/shared/styles/Flex.styled";
-import { useMediaQuery } from "./Hooks/UserMediaQuery";
 import MobileNav from "./components/Nav/Mobile/MobileNav";
-
 
 const StyledNav = styled.div`
   font-size: 10px;
@@ -21,13 +19,12 @@ const StyledNav = styled.div`
 `;
 
 function Nav() {
-
-  const isMobile = useMediaQuery("mobile");
+  const isMobile = false;
 
   return (
     <StyledNav>
       {!isMobile ? (
-        <Flex direction={"column"} gap={"0"}>
+        <Flex direction={"column"} $gap={"0"}>
           <OfferNav />
           <UserNav />
           <SearchNav />
