@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
 import React from "react";
-import styled from "styled-components";
 import Filters from "@/app/components/Categories/Filters";
 import SubCategoriesCarrousel from "@/app/components/Categories/SubCategoriesCarrousel";
 import ProductSection from "@/app/components/Categories/ProductSection";
+import StyledTitle  from "@/app/components/shared/styles/Title.styled";
 
 export default function CategoryPage({ params }) {
   const collections = [
@@ -40,34 +40,16 @@ export default function CategoryPage({ params }) {
     },
   ];
 
-  const StyledCategoryTitle = styled.div`
-    padding: 1rem;
 
-    h1 {
-      line-height: 0.8;
-      font-size: 0.8rem;
-      color: black;
-      opacity: 0.8;
-      padding: 1rem;
-      font-family: Cinzel, serif;
-      margin-bottom: 0.2rem;
-      padding: 0;
-      overflow: visible;
-    }
-
-    h2 {
-      text-transform: capitalize;
-    }
-  `;
 
   const { categoryName } = React.use(params);
 
   return (
     <>
-      <StyledCategoryTitle>
+      <StyledTitle>
         <h1>Ellämäu /</h1>
         <h2>{categoryName}</h2>
-      </StyledCategoryTitle>
+      </StyledTitle>
 
       {categoryName?.toLowerCase() === "lingerie" && (
         <SubCategoriesCarrousel items={collections} />
