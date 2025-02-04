@@ -6,6 +6,7 @@ import "./globals.css";
 import Nav from "./nav";
 import Footer from "./footer";
 import ThemeClient from "./ThemeClient";
+import StyledComponentsRegistry from "@/app/lib/StyledComponentsRegistry"; // Import registry
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -23,15 +24,17 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <ThemeClient>
-          <StyleSheetManager>
+        <StyledComponentsRegistry>
+          {" "}
+          {/* Wrap your app here */}
+          <ThemeClient>
             <div className={`${geistSans.variable} ${geistMono.variable}`}>
               <Nav />
               <main>{children}</main>
               <Footer />
             </div>
-          </StyleSheetManager>
-        </ThemeClient>
+          </ThemeClient>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

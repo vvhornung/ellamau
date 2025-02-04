@@ -1,5 +1,5 @@
 import { Container } from "../shared/styles/Container.styled";
-import { StyledGrid } from "../shared/styles/Grid";
+import Grid  from "../shared/styles/Grid.styled";
 import CarrouselItem from "../Products/ProductItem";
 
 function ProductSection() {
@@ -42,18 +42,20 @@ function ProductSection() {
     },
   ];
 
+
   return (
     <Container>
       <h1>Recomendados</h1>
-      <StyledGrid $columns={4} $gap="1rem">
+      <Grid $columns={4} $gap="1rem">
         {/* Product cards go here */}
         <div style={{ gridColumn: "span 2" }}></div>
         {products.map((product) => (
           <CarrouselItem key={product.id} product={product} $border={"card"} />
         ))}
-      </StyledGrid>
+      </Grid>
     </Container>
   );
+
 }
 
 export default ProductSection;
