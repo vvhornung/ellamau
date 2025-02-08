@@ -1,4 +1,4 @@
-import { Flex } from "./styles/Flex.styled";
+
 import {
   FaFacebook,
   FaTwitter,
@@ -6,14 +6,9 @@ import {
   FaYoutube,
   FaPinterest,
 } from "react-icons/fa";
-import styled from "styled-components";
+import StyledSocialMedia from "./styles/SocialMedia.styled";
 
-const StyledSocialMedia = styled(Flex)`
-  svg {
-    width: 1.5rem;
-    height: auto;
-  }
-`;
+
 
 function SocialMedia() {
   return (

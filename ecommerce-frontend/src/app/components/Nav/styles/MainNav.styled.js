@@ -1,3 +1,5 @@
+'use client'
+
 import styled from 'styled-components';
 
 export const StyledMainNav = styled.nav`
@@ -16,7 +18,7 @@ export const StyledMainNav = styled.nav`
     a {
       color: #333;
       text-decoration: none;
-      text-transform: lowercase;
+      
       font-weight: 500;
       font-size: 16px;
       letter-spacing: .16em;
@@ -26,6 +28,10 @@ export const StyledMainNav = styled.nav`
       &:hover {
         color: ${ ({theme}) => theme.colors.primary}};
       }
+    }
+
+    a::first-letter {
+      text-transform: uppercase;
     }
 
 `;

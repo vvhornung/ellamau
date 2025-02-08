@@ -15,7 +15,6 @@ const HeroSection = ({
   text,
   buttonText,
   imageSrc,
-  onButtonClick,
   image$positionX = "50%",
   image$positionY = "50%",
   brightness = 1,
@@ -26,7 +25,7 @@ const HeroSection = ({
         <SubHeading>{heading}</SubHeading>
         <MainHeading>{subHeading}</MainHeading>
         <Description>{text}</Description>
-        <ActionButton onClick={onButtonClick}>{buttonText}</ActionButton>
+        <ActionButton >{buttonText}</ActionButton>
       </ContentOverlay>
       <BackgroundImage
         filterpercentagecentage={brightness}
