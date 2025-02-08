@@ -1,6 +1,4 @@
-"use client";
 
-import { StyleSheetManager } from "styled-components";
 import localFont from "next/font/local";
 import "./globals.css";
 import Nav from "./nav";

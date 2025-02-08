@@ -1,3 +1,5 @@
+'use client'
+
 import { Cinzel, Cinzel_Decorative, Public_Sans } from "next/font/google";
 
 export const cinzel = Cinzel({

@@ -1,12 +1,12 @@
-'use client';
-
 import React from "react";
 import Filters from "@/app/components/Categories/Filters";
 import SubCategoriesCarrousel from "@/app/components/Categories/SubCategoriesCarrousel";
 import ProductSection from "@/app/components/Categories/ProductSection";
 import StyledTitle  from "@/app/components/shared/styles/Title.styled";
+import connectDB from "@/app/lib/mongoose";
+import { Category } from "@/app/models/Category";
 
-export default function CategoryPage({ params }) {
+export default async function CategoryPage({ params }) {
   const collections = [
     {
       id: 1,
@@ -41,22 +41,25 @@ export default function CategoryPage({ params }) {
   ];
 
 
+  await connectDB();
+  const { categoryId } = params;
+  const category = await Category.findById((categoryId));
 
-  const { categoryName } = React.use(params);
+  
 
   return (
     <>
       <StyledTitle>
         <h1>Ellämäu /</h1>
-        <h2>{categoryName}</h2>
+        <h2>{category.name}</h2>
       </StyledTitle>
 
-      {categoryName?.toLowerCase() === "lingerie" && (
-        <SubCategoriesCarrousel items={collections} />
+      {category.name?.toLowerCase() === "lingerie" && (
+        <SubCategoriesCarrousel categoryId={categoryId} />
       )}
 
       <Filters />
-      <ProductSection />
+      <ProductSection categoryId={categoryId} />
     </>
   );
 }

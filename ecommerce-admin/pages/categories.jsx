@@ -136,7 +136,7 @@ function Categories({ swal }) {
         <div>
           <label htmlFor="">
             {editingCategory
-              ? `Edit Category ${editingCategory.name}`
+              ? `Edit Category ${editingCategory.name +' | ' + editingCategory._id}`
               : "Add Category"}
           </label>
           <div className="flex gap-1 items-center">

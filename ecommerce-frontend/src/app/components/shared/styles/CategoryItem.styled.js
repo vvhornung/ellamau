@@ -1,4 +1,6 @@
-const { default: styled } = require("styled-components");
+'use client';
+
+import styled from "styled-components";
 
 export const StyledCategoryItem = styled.div`
   flex: 0 0 calc(100% / 6 - 20px);

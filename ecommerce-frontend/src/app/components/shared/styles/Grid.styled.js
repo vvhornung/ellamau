@@ -1,3 +1,5 @@
+'use client'
+
 import styled from "styled-components";
 
 // Styled component for the Grid
@@ -10,4 +12,3 @@ const StyledGrid = styled.div`
 `;
 
 export default StyledGrid;
-

@@ -79,8 +79,18 @@ async function handleUpdateCategory(req, res) {
 }
 
 async function handleGetCategories(req, res) {
-  const categories = await Category.find().populate("parentCategory");
-  res.status(200).json(categories);
+  const  { id } = req.query;
+  if (id) {
+    const category = await Category.findById(id).populate("parentCategory");
+    if (!category) {
+      throw new Error("Category not found");
+    }
+    return res.status(200).json(category);
+  }else {
+    const categories = await Category.find().populate("parentCategory");
+    res.status(200).json(categories);
+  }
+
 }
 
 async function handleDeleteCategory(req, res) {

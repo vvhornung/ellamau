@@ -1,4 +1,3 @@
-"use client";
 
 import { Container } from "./components/shared/styles/Container.styled";
 import { Flex } from "./components/shared/styles/Flex.styled";

@@ -6,23 +6,23 @@ import HeroSection from "./components/shared/HeroSection";
 import CollectionCarrousel from "./components/Collections/CollectionCarrousel";
 import HeroVideo from "./components/Videos/HeroVideo";
 import { Product } from "./models/Product";
+import { Category } from "./models/Category";
 import connectDB from "./lib/mongoose";
 
 export default async function Home() {
   const heroProduct = "6748ff47225c34b37fdd846d";
   connectDB();
   const product = await Product.findById(heroProduct);
-console.log("hi product: ", product);
+  console.log("hi product: ", product);
+
   const item = [
     {
       title: "hi",
-      img: "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg",
+      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvlsk-SALklbJKn7Cq58x3d_TbiXPsWcPjzQ&s",
       price: 90,
       id: 1,
     },
   ];
-
-  
 
   return (
     <>
@@ -60,7 +60,7 @@ console.log("hi product: ", product);
         subHeading="beauty"
         text="Discover the collection"
         buttonText="Shop Now"
-        imageSrc="https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg"
+        imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvlsk-SALklbJKn7Cq58x3d_TbiXPsWcPjzQ&s"
         image$positionX="35%"
         image$positionY="40%"
       />
@@ -69,7 +69,7 @@ console.log("hi product: ", product);
         subHeading="DISCOVER SPORTSWEAR"
         text="Leave an unforgettable impression with our exclusive fragrances"
         buttonText="Shop Now"
-        imageSrc="https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg"
+        imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvlsk-SALklbJKn7Cq58x3d_TbiXPsWcPjzQ&s"
         brightness={0.7}
       />
 
@@ -87,9 +87,8 @@ console.log("hi product: ", product);
         text="Discover the collection"
         buttonText="Shop Now"
         image$positionX="30%"
-        imageSrc="https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg"
+        imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvlsk-SALklbJKn7Cq58x3d_TbiXPsWcPjzQ&s"
       />
     </>
   );
 }
-

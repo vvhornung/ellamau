@@ -2,7 +2,6 @@ import { Flex } from "../../shared/styles/Flex.styled";
 import { CiMenuFries, CiUser, CiShoppingCart, CiSearch } from "react-icons/ci";
 import Link from "next/link";
 import OfferNav from "../OfferNav";
-import { Container } from "../../shared/styles/Container.styled";
 import { StyledMobileNav } from "./styles/MobileNav.styled";
 import Logo from "../../shared/Logo";
 
