@@ -1,9 +1,9 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { ReactSortable } from "react-sortablejs";
 import Spinner from "./Spinner";
-import { toTitleCase } from "@/utils";
+import { toast } from "react-hot-toast";
 
 function ProductForm({
   _id,
@@ -13,8 +13,9 @@ function ProductForm({
   description: initialDescription,
   details: initialDetails,
   price: initialPrice,
+  stock: initialStock,
   images: initialImages,
-  properties: initialProperties,
+  variants: initialVariants,
 }) {
   const [name, setName] = useState(initialName || "");
   const [reference, setReference] = useState(initialRef || "");
@@ -22,155 +23,192 @@ function ProductForm({
   const [description, setDescription] = useState(initialDescription || "");
   const [details, setDetails] = useState(initialDetails || []);
   const [price, setPrice] = useState(initialPrice || "");
+  const [stock, setStock] = useState(initialStock || 0);
   const [images, setImages] = useState(initialImages || []);
   const [isUploading, setIsUploading] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [properties, setProperties] = useState(initialProperties || {});
+  const [variants, setVariants] = useState(initialVariants || []);
+  const [hasVariants, setHasVariants] = useState(
+    !(initialName && initialVariants?.length == 0)
+  );
   const [goToProducts, setGoToProducts] = useState(false);
-
-  // Creation of dictionary for pairing name of a category with its _id
 
   const router = useRouter();
 
   useEffect(() => {
     axios.get("/api/categories").then((res) => {
       setCategories(res.data);
-      
+    });
+  }, []);
 
-    })
-     console.log("Properties:", properties);;
-  }, [properties]);
+  const validateVariant = (variant) => {
+    return variant.color?.trim() && variant.size?.trim() && variant.stock > 0;
+  };
 
-  function saveProduct(ev) {
+  const canAddNewVariant = () => {
+    if (variants.length === 0) return true;
+    return variants.every(validateVariant);
+  };
+
+  async function saveProduct(ev) {
     ev.preventDefault();
 
+    // Basic validation
+    if (!name || !reference || !category || !description) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    if (!price) {
+      toast.error("Price is required");
+      return;
+    }
+
+    if (hasVariants) {
+      if (variants.length === 0) {
+        toast.error("Please add at least one variant");
+        return;
+      }
+
+      if (!variants.every(validateVariant)) {
+        toast.error(
+          "All variants must be completed with color, size and stock"
+        );
+        return;
+      }
+    } else {
+      if (stock === undefined || stock === null || stock < 0) {
+        toast.error("Please enter a valid stock amount");
+        return;
+      }
+    }
+
     const data = {
-      // include the properties here
-      name: `${reference,'-',name.split(' (')[0]} (${Object.values(properties).join(", ")})`,
+      name: initialName ? initialName : `${reference}-${name}`,
       reference,
       category,
       description,
-      details,
-      price,
+      details: details.filter((d) => d.trim() !== ""),
       images,
-      properties,
+      price: parseFloat(price),
     };
-    console.log("Product data:", data);
-    console.log("Product ID:", _id);
 
-    if (_id) {
-      data.id = _id;
-      axios.put(`/api/products`, data).then((res) => {
-        console.log(res.data);
-      });
+    if (hasVariants) {
+      data.variants = variants.map((variant) => ({
+        color: variant.color.trim(),
+        size: variant.size.trim(),
+        stock: parseInt(variant.stock),
+      }));
+      data.stock = variants.reduce(
+        (total, variant) => total + parseInt(variant.stock),
+        0
+      );
     } else {
-      axios.post("/api/products", data).then((res) => {
-        console.log(res.data);
-      });
+      data.stock = parseInt(stock);
+      data.variants = [];
     }
 
-    setGoToProducts(true);
+    try {
+      if (_id) {
+        data.id = _id;
+        await axios.put("/api/products", data);
+        toast.success("Product updated!");
+      } else {
+        await axios.post("/api/products", data);
+        toast.success("Product created!");
+      }
+      setGoToProducts(true);
+    } catch (error) {
+      console.error("Error saving product:", error);
+      toast.error(error.response?.data?.error || "Error saving product");
+    }
+  }
+
+  function addVariant() {
+    if (!canAddNewVariant()) {
+      toast.error("Please complete the current variant first");
+      return;
+    }
+
+    setVariants([
+      ...variants,
+      {
+        color: "",
+        size: "",
+        stock: 0,
+      },
+    ]);
+  }
+
+  function updateVariant(index, field, value) {
+    const newVariants = [...variants];
+    newVariants[index][field] = value;
+    setVariants(newVariants);
+  }
+
+  function removeVariant(index) {
+    setVariants(variants.filter((_, i) => i !== index));
+  }
+
+  async function uploadImages(ev) {
+    const files = ev.target?.files;
+    if (files?.length > 0) {
+      setIsUploading(true);
+      const data = new FormData();
+      for (const file of files) {
+        data.append("file", file);
+      }
+      try {
+        const res = await axios.post("/api/upload", data);
+        setImages((oldImages) => [...oldImages, ...res.data.links]);
+      } catch (error) {
+        console.error("Upload error:", error);
+        toast.error("Upload failed");
+      }
+      setIsUploading(false);
+    }
+  }
+
+  function updateImagesOrder(images) {
+    setImages(images);
   }
 
   if (goToProducts) {
     router.push("/products");
   }
 
-  function uploadImages(ev) {
-    setIsUploading(true);
-    const files = ev.target.files;
-    if (files?.length) {
-      const formData = new FormData();
-      for (const file of files) {
-        formData.append("images", file);
-      }
-      axios
-        .post("/api/upload", formData)
-        .then((res) => setImages([...images, ...res.data.links]))
-        .catch((error) => console.error("Error uploading images:", error))
-        .finally(() => setIsUploading(false));
-    }
-  }
-
-  function addProperty(property, ev) {
-    const { name } = property;
-    setProperties((prev) => ({ ...prev, [name]: ev.target.value }));
-  }
-
-  function getProperties(category) {
-    const properties = {};
-    const seenCategories = new Set();
-
-    let currentCategory = category;
-    while (currentCategory && !seenCategories.has(currentCategory._id)) {
-      seenCategories.add(currentCategory._id);
-
-      if (Array.isArray(currentCategory.properties)) {
-        currentCategory.properties.forEach(({ name, values }) => {
-          if (properties[name]) {
-            properties[name].values = Array.from(
-              new Set([...properties[name].values, ...values])
-            );
-          } else {
-            properties[name] = {
-              name,
-              values: [...values],
-            };
-          }
-        });
-      }
-
-      currentCategory = currentCategory.parentCategory;
-    }
-
-    return properties;
-  }
-
-  const categoryProperties = useMemo(() => {
-    if (category && categories.length > 0) {
-      const selectedCategory = categories.find((c) => c._id === category);
-      if (selectedCategory) {
-        return getProperties(selectedCategory);
-      }
-    }
-    return {};
-  }, [category, categories]);
-
-
-
-  
-
-
-
   return (
     <form onSubmit={saveProduct} className="space-y-4">
       <div>
-        <label htmlFor="">Name</label>
+        <label>Product Name</label>
         <input
           type="text"
           placeholder="Product Name"
           value={name}
           onChange={(ev) => setName(ev.target.value)}
+          required
         />
       </div>
 
       <div>
-        <label htmlFor="">Reference</label>
+        <label>Reference</label>
         <input
           type="text"
           placeholder="Product Reference"
           value={reference}
           onChange={(ev) => setReference(ev.target.value)}
+          required
         />
       </div>
 
       <div>
-        <label htmlFor="">Categories</label>
+        <label>Category</label>
         <select
-          value={category}
+          value={category._id}
           onChange={(ev) => setCategory(ev.target.value)}
+          required
         >
-          <option value="">No Category</option>
+          <option value="">Select a category</option>
           {categories?.length > 0 &&
             categories.map((category) => (
               <option key={category._id} value={category._id}>
@@ -180,105 +218,141 @@ function ProductForm({
         </select>
       </div>
 
-      {categoryProperties && Object.keys(categoryProperties).length > 0 && (
-        <div className="space-y-2">
-          <p className="font-semibold text-lg">Properties</p>
-          {Object.values(categoryProperties).map((property, index) => (
-            <div key={index}>
-              <label>{property.name}</label>
-              <select
-                value={toTitleCase(properties?.[property.name]) || ""}
-                onChange={(ev) => addProperty(property, ev)}
-              >
-                <option value="">Select a value</option>
-                {property.values.map((value, idx) => (
-                  <option key={idx} value={value}>
-                    {value}
-                  </option>
-                ))}
-              </select>
-            </div>
-          ))}
-        </div>
-      )}
-
       <div>
-        <label htmlFor="">Images</label>
-        <div className="space-y-2">
-          {images?.length === 0 && (
-            <div className="text-xs text-orange-600 ">
-              No Images for this product
-            </div>
-          )}
-          <div className="flex flex-wrap gap-1">
-            {isUploading && (
-              <div className="h-24 w-24 flex items-center bg-slate-800">
-                <Spinner />
-              </div>
-            )}
-            <ReactSortable
-              list={images}
-              className="flex flex-wrap gap-1"
-              setList={setImages}
-            >
-              {images?.length > 0 &&
-                images.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image}
-                    alt="Product"
-                    className="w-24 h-24 object-cover rounded-md"
-                  />
-                ))}
-            </ReactSortable>
-            <label className="w-24 h-24 cursor-pointer text-center flex flex-col items-center justify-center text-sm gap-1 text-primary rounded-lg shadow-sm border border-primary">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
-                />
-              </svg>
-              <div>Add image</div>
-              <input type="file" onChange={uploadImages} className="hidden" />
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <label htmlFor="">Description</label>
+        <label>Description</label>
         <textarea
           placeholder="Description"
           value={description}
           onChange={(ev) => setDescription(ev.target.value)}
+          required
         />
       </div>
 
       <div>
-        <label htmlFor="">Details</label>
-        <div className="flex flex-col gap-4">
+        <label>Price (applies to all variants)</label>
+        <input
+          type="number"
+          step="0.01"
+          placeholder="Price"
+          value={price}
+          onChange={(ev) => setPrice(ev.target.value)}
+          required
+        />
+      </div>
+
+      {!hasVariants && (
+        <div>
+          <label>Stock</label>
+          <input
+            type="number"
+            placeholder="Stock"
+            value={stock}
+            onChange={(ev) => setStock(ev.target.value)}
+            required
+            min="0"
+          />
+        </div>
+      )}
+      <div className="mb-4 flex gap-2 items-center justify-start">
+        <input
+          id="hasVariants"
+          type="checkbox"
+          checked={hasVariants}
+          className="w-fit bg-black"
+          onChange={(ev) => {
+            setHasVariants(ev.target.checked);
+            if (!ev.target.checked) {
+              setVariants([]);
+            }
+          }}
+        />
+        <label htmlFor="hasVariants" className="mb-2">
+          <span>This product has variants (colors, sizes, etc.)</span>
+        </label>
+      </div>
+      {hasVariants && (
+        <div className="space-y-4">
+          <div className="flex flex-col gap-2 items-start">
+            <label className="text-lg font-semibold">Variants</label>
+            <button
+              type="button"
+              onClick={addVariant}
+              className={`btn-default ${
+                !canAddNewVariant() ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={!canAddNewVariant()}
+            >
+              Add Variant
+            </button>
+          </div>
+          {variants.map((variant, index) => (
+            <div key={index} className="border p-4 rounded-lg space-y-4">
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <label>Color</label>
+                  <input
+                    type="text"
+                    placeholder="Color"
+                    value={variant.color}
+                    onChange={(ev) =>
+                      updateVariant(index, "color", ev.target.value)
+                    }
+                    required
+                  />
+                </div>
+                <div>
+                  <label>Size</label>
+                  <input
+                    type="text"
+                    placeholder="Size"
+                    value={variant.size}
+                    onChange={(ev) =>
+                      updateVariant(index, "size", ev.target.value)
+                    }
+                    required
+                  />
+                </div>
+                <div>
+                  <label>Stock</label>
+                  <input
+                    type="number"
+                    placeholder="Stock"
+                    value={variant.stock}
+                    onChange={(ev) =>
+                      updateVariant(index, "stock", ev.target.value)
+                    }
+                    required
+                    min="0"
+                  />
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => removeVariant(index)}
+                className="btn-red"
+              >
+                Remove Variant
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+      <div>
+        <label>Details</label>
+        <div className="space-y-2">
           {details.map((detail, index) => (
-            <div key={index} className="flex gap-2 items-center">
+            <div key={index} className="flex gap-2">
               <input
                 type="text"
-                placeholder="Detail"
                 value={detail}
-                className="w-1/3"
                 onChange={(ev) => {
                   const newDetails = [...details];
                   newDetails[index] = ev.target.value;
                   setDetails(newDetails);
                 }}
+                placeholder="Product detail"
+                className="flex-grow"
               />
-              {/* button for removing detail */}
               <button
                 type="button"
                 onClick={() => {
@@ -292,27 +366,77 @@ function ProductForm({
               </button>
             </div>
           ))}
+          <button
+            type="button"
+            onClick={() => setDetails([...details, ""])}
+            className="btn-default"
+          >
+            Add Detail
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={() => setDetails([...details, ""])}
-          className="btn-default "
-        >
-          Add Detail
-        </button>
       </div>
       <div>
-        <label htmlFor="">Price</label>
-        <input
-          type="text"
-          placeholder="Price"
-          value={price}
-          onChange={(ev) => setPrice(ev.target.value)}
-        />
+        <label>Images</label>
+        <div className="mb-2 flex flex-wrap gap-2">
+          <ReactSortable
+            list={images}
+            className="flex flex-wrap gap-2"
+            setList={updateImagesOrder}
+          >
+            {!!images?.length &&
+              images.map((link) => (
+                <div key={link} className="h-24 relative">
+                  <img src={link} alt="" className="rounded-lg h-24" />
+                  <button
+                    type="button"
+                    className="absolute top-0 right-0 p-1 bg-red-500 text-white rounded-full"
+                    onClick={() =>
+                      setImages(images.filter((img) => img !== link))
+                    }
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+          </ReactSortable>
+          {isUploading && (
+            <div className="h-24 w-24 flex items-center justify-center">
+              <Spinner />
+            </div>
+          )}
+          <label className="w-24 h-24 border text-center flex flex-col items-center justify-center rounded-lg bg-transparent cursor-pointer">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
+              />
+            </svg>
+            <div className="text-sm">Add Image</div>
+            <input type="file" onChange={uploadImages} className="hidden" />
+          </label>
+        </div>
       </div>
-      <button type="submit" className="btn-primary mt-6">
-        Save
-      </button>
+
+      <div className="flex gap-2 justify-end">
+        <button
+          type="button"
+          onClick={() => router.push("/products")}
+          className="btn-default"
+        >
+          Cancel
+        </button>
+        <button type="submit" className="btn-primary">
+          Save
+        </button>
+      </div>
     </form>
   );
 }

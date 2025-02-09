@@ -11,9 +11,9 @@ import connectDB from "./lib/mongoose";
 import { getProductsByCategory } from "./lib/fetchProducts";
 
 export default async function Home() {
-  const heroProductId = "6748ff47225c34b37fdd846d";
+
   connectDB();
-  const heroProduct = await Product.findById(heroProductId);
+
 
   const categories = await Category.find({ parentCategory: null });
 
@@ -46,8 +46,6 @@ export default async function Home() {
 
   return (
     <>
-      
-
       <Container $bg={"black"}>
         <PromoCard>
           <h2>new lingerie</h2>
@@ -65,7 +63,9 @@ export default async function Home() {
         subHeading="new lingerie"
         text="Discover the collection"
         buttonText="Shop Now"
-        imageSrc={heroProduct.images[0]}
+        imageSrc={
+          "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg"
+        }
       />
 
       <Container>

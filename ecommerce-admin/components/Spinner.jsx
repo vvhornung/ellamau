@@ -1,5 +1,5 @@
-import { PacmanLoader } from "react-spinners";
+import { ClipLoader } from "react-spinners";
 
 export default function Spinner() {
-  return <PacmanLoader color={"#000000"} speedMultiplier={2} />;
+  return <ClipLoader color={"#000000"} speedMultiplier={2} />;
 }
