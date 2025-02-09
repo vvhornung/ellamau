@@ -8,28 +8,45 @@ import HeroVideo from "./components/Videos/HeroVideo";
 import { Product } from "./models/Product";
 import { Category } from "./models/Category";
 import connectDB from "./lib/mongoose";
+import { getProductsByCategory } from "./lib/fetchProducts";
 
 export default async function Home() {
-  const heroProduct = "6748ff47225c34b37fdd846d";
+  const heroProductId = "6748ff47225c34b37fdd846d";
   connectDB();
-  const product = await Product.findById(heroProduct);
-  console.log("hi product: ", product);
+  const heroProduct = await Product.findById(heroProductId);
 
-  const item = [
-    {
-      title: "hi",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvlsk-SALklbJKn7Cq58x3d_TbiXPsWcPjzQ&s",
-      price: 90,
-      id: 1,
-    },
-  ];
+  const categories = await Category.find({ parentCategory: null });
+
+  const swimwearCategory = await categories.find(
+    (category) => category.name.toLowerCase() === "swimwear"
+  );
+
+  const collectionItems = await Promise.all(
+    categories.map(async (category) => ({
+      product: await getProductsByCategory(category.id, 1),
+      categoryName: category.name,
+    }))
+  );
+
+
+  collectionItems.forEach((item) => {
+    item.product.img =
+        "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg";
+    });
+
+
+
+  const latestProducts = await Product.find().sort({ createdAt: -1 }).limit(4);
+  latestProducts.forEach((product) => {
+    product.img =
+      "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg";
+  });
+
+  const swimwearProducts = await getProductsByCategory(swimwearCategory.id, 4);
 
   return (
     <>
-      <HeroVideo
-        $bg={"black"}
-        src={"https://www.youtube.com/watch?v=3A-ynQmWIA0"}
-      />
+      
 
       <Container $bg={"black"}>
         <PromoCard>
@@ -48,11 +65,11 @@ export default async function Home() {
         subHeading="new lingerie"
         text="Discover the collection"
         buttonText="Shop Now"
-        imageSrc={product.images[0]}
+        imageSrc={heroProduct.images[0]}
       />
 
       <Container>
-        <ProductCarrousel $border={"card"} items={item} />
+        <ProductCarrousel $border={"card"} items={latestProducts} />
       </Container>
 
       <HeroSection
@@ -60,7 +77,7 @@ export default async function Home() {
         subHeading="beauty"
         text="Discover the collection"
         buttonText="Shop Now"
-        imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvlsk-SALklbJKn7Cq58x3d_TbiXPsWcPjzQ&s"
+        imageSrc="https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg"
         image$positionX="35%"
         image$positionY="40%"
       />
@@ -69,16 +86,16 @@ export default async function Home() {
         subHeading="DISCOVER SPORTSWEAR"
         text="Leave an unforgettable impression with our exclusive fragrances"
         buttonText="Shop Now"
-        imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvlsk-SALklbJKn7Cq58x3d_TbiXPsWcPjzQ&s"
+        imageSrc="https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg"
         brightness={0.7}
       />
 
       <Container>
-        <CollectionCarrousel items={item} />
+        <CollectionCarrousel items={collectionItems} />
       </Container>
 
       <Container $bg={"#f5e5c5"}>
-        <ProductCarrousel $bg="#f5e5c5" items={item} />
+        <ProductCarrousel $bg="#f5e5c5" items={swimwearProducts} />
       </Container>
 
       <HeroSection
@@ -87,7 +104,7 @@ export default async function Home() {
         text="Discover the collection"
         buttonText="Shop Now"
         image$positionX="30%"
-        imageSrc="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvlsk-SALklbJKn7Cq58x3d_TbiXPsWcPjzQ&s"
+        imageSrc="https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg"
       />
     </>
   );

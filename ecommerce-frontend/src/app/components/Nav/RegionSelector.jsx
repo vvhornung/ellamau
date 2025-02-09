@@ -14,7 +14,7 @@ function RegionSelector() {
         src="http://127.0.0.1:5500/landing/icons/usa.svg"
         width={25}
         height={25}
-        alt=""
+        alt="usa"
       />
       <VerticalDivider />
       <p>english ( usa )</p>

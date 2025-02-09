@@ -1,7 +1,10 @@
 import { Container } from "../shared/styles/Container.styled";
 import { Flex } from "../shared/styles/Flex.styled";
 import CollectionItem from "./CollectionItem";
-function CollectionCarrousel({ bg, items }) {
+async function CollectionCarrousel({ bg, items }) {
+
+  console.log(items)
+
   return (
     <Container>
       <Flex direction={"column"}>
@@ -9,7 +12,12 @@ function CollectionCarrousel({ bg, items }) {
         <Container width="fit-content" $scroll={"true"} $bg={bg}>
           <Flex $justify={"start"} $gap={"0.1rem"}>
             {items.map((item) => (
-              <CollectionItem key={item.id} product={item} $bg={bg} />
+              <CollectionItem
+                key={item.id}
+                product={item.product[0]}
+                name={item.categoryName}
+                $bg={bg}
+              />
             ))}
           </Flex>
         </Container>
