@@ -9,21 +9,23 @@ import { Product } from "@/app/models/Product";
 import { getProductsByCategory } from "@/app/lib/fetchProducts";
 
 export default async function ProductPage({ params }) {
+  const { productId } = await params;
   await connectDB();
-  const product = await Product.findById(params.productId);
+  const product = await Product.findById(productId);
+
   product.img =
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvlsk-SALklbJKn7Cq58x3d_TbiXPsWcPjzQ&s";
+    "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg";
 
-  const details = product.details[0].split(";");
-  const productName = product.name.split("(")[0];
+  const details = product?.details[0]?.split(";");
+  const productName = product.name;
 
-  const products = await getProductsByCategory(product.category, 4, );
+  const products = await getProductsByCategory(product.category, 4);
 
   return (
     <Container>
       <Flex $justify="space-between" $gap="2rem" $align="start">
         <Grid>
-          <img src={product.img} alt={product.name} />
+          <img src={product.img} alt={productName} />
         </Grid>
 
         <StyledTitle>
@@ -33,7 +35,7 @@ export default async function ProductPage({ params }) {
               <strong>Ellamau</strong>
             </h1>
 
-            <h1>{product.name}</h1>
+            <h1>{productName}</h1>
 
             <Flex $justify="space-between">
               <h1>
@@ -46,14 +48,17 @@ export default async function ProductPage({ params }) {
               <p>{product.description}</p>
             </StyledDescription>
 
-            <h1>
-              <strong>Descripcion</strong>
-            </h1>
-            <ul>
-              {details.map((detail, index) => (
-                <li key={index}>{detail}</li>
+            {details &&
+              details.map((detail, index) => (
+                <>
+                  <h1>
+                    <strong>Details</strong>
+                  </h1>
+                  <ul>
+                    <li key={index}>{detail}</li>
+                  </ul>
+                </>
               ))}
-            </ul>
           </Flex>
         </StyledTitle>
       </Flex>

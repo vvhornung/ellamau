@@ -12,10 +12,6 @@ async function ProductSection({ categoryId }) {
 
   const products = await getProductsByCategory(categoryId, 6);
 
- 
-
-  console.log("📦 Products found:", products);
-
   return (
     <Container>
       <h1>Recomendados</h1>
@@ -25,9 +21,8 @@ async function ProductSection({ categoryId }) {
           <p>No hay productos disponibles.</p>
         ) : (
           products.map((product) => (
-            
             <CarrouselItem
-              key={product._id}
+              key={product.id}
               product={product}
               $border={"card"}
             />

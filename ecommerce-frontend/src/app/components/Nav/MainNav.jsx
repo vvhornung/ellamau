@@ -3,15 +3,11 @@ import { StyledMainNav } from "./styles/MainNav.styled";
 import { cinzel_decrative } from "@/app/fonts";
 import Link from "next/link";
 import connectDB from "@/app/lib/mongoose";
-import {Category} from "@/app/models/Category";
+import { Category } from "@/app/models/Category";
 
 export default async function MainNav() {
-
   await connectDB();
-  const categories = await Category.find({parentCategory : null});
-  console.log(categories)
-  
-
+  const categories = await Category.find({ parentCategory: null });
 
   return (
     <Container width={"90%"}>
@@ -21,10 +17,8 @@ export default async function MainNav() {
         <ul>
           {categories.map((category) => {
             return (
-              <li key={category._id}>
-                <Link href={`/category/${category._id}`}>
-                  {category.name}
-                </Link>
+              <li key={category.id}>
+                <Link href={`/category/${category.id}`}>{category.name}</Link>
               </li>
             );
           })}
@@ -33,4 +27,3 @@ export default async function MainNav() {
     </Container>
   );
 }
-

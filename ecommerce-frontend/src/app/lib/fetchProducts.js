@@ -3,7 +3,7 @@ import { Category } from "@/app/models/Category";
 import { Product } from "@/app/models/Product";
 import connectDB from "@/app/lib/mongoose";
 
-export async function getProductsByCategory(categoryId, limit = 6, name='') {
+export async function getProductsByCategory(categoryId, limit = 6, name = "") {
   await connectDB();
 
   try {
@@ -20,7 +20,7 @@ export async function getProductsByCategory(categoryId, limit = 6, name='') {
     // 3️⃣ Extract category IDs (parent + subcategories)
     const categoryIds = [
       new mongoose.Types.ObjectId(categoryId),
-      ...subcategories.map((sub) => sub._id),
+      ...subcategories.map((sub) => sub.id),
     ];
 
     // 4️⃣ Query products that belong to any of these categories
@@ -30,11 +30,13 @@ export async function getProductsByCategory(categoryId, limit = 6, name='') {
 
     products.forEach((product) => {
       product.img =
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvlsk-SALklbJKn7Cq58x3d_TbiXPsWcPjzQ&s";
+        "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg";
     });
 
-    if(name){
-      return products.filter(product => product.name.toLowerCase().includes(name.toLowerCase()));
+    if (name) {
+      return products.filter((product) =>
+        product.name.toLowerCase().includes(name.toLowerCase())
+      );
     }
 
     return products;

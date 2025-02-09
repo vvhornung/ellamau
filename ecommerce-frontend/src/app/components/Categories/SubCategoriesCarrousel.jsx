@@ -11,14 +11,14 @@ async function SubCategoriesCarrousel({ categoryId }) {
 
   categories.forEach((category) => {
     category.img =
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvlsk-SALklbJKn7Cq58x3d_TbiXPsWcPjzQ&s";
+      "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg";
   });
 
   return (
     <Container $scroll={"true"}>
       <Flex $justify={"center"} $gap={"4px"}>
         {categories.map((category) => (
-          <Link key={category._id} href={`/category/${category._id}`}>
+          <Link key={category.id} href={`/category/${category.id}`}>
             <SubCategoryItem product={category} />
           </Link>
         ))}

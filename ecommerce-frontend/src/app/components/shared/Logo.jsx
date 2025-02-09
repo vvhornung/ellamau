@@ -1,11 +1,13 @@
+import Link from "next/link";
 import { StyledLogo } from "./styles/Logo.styled";
 
 function Logo() {
   return (
-    <StyledLogo >
-      <h1>Ellämäu</h1>
-    </StyledLogo>
-
+    <Link href="/">
+      <StyledLogo>
+        <h1>Ellämäu</h1>
+      </StyledLogo>
+    </Link>
   );
 }
 
