@@ -18,7 +18,7 @@ export default async function MainNav() {
           {categories.map((category) => {
             return (
               <li key={category.id}>
-                <Link href={`/category/${category.id}`}>{category.name}</Link>
+                <a href={`/category/${category.id}`}>{category.name}</a>
               </li>
             );
           })}

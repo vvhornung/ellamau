@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     // Verify admin privileges
     await isAdminRequest(req, res);
 
-    // Connect to the database only if it's not already connected
+    // Connect to the database if not already connected
     if (mongoose.connection.readyState !== 1) {
       await connectDB();
     }
@@ -18,7 +18,6 @@ export default async function handler(req, res) {
     switch (method) {
       case "POST":
         if (req.body.products) {
-          // Handle bulk creation if products array is provided
           await handleBulkCreateProducts(req, res);
         } else {
           await handleCreateProduct(req, res);
@@ -47,23 +46,23 @@ export default async function handler(req, res) {
 
 // CRUD Operations
 
-// Single product creation
 async function handleCreateProduct(req, res) {
   const {
     name,
     reference,
     category,
     description,
-    details,
     price,
+    stock,
+    variants,
+    details,
     images,
-    properties,
   } = req.body;
 
   if (!name || !price || !category) {
     return res
       .status(400)
-      .json({ error: "Name, reference, price, and category are required." });
+      .json({ error: "Name, price, and category are required." });
   }
 
   const product = await Product.create({
@@ -74,13 +73,13 @@ async function handleCreateProduct(req, res) {
     details,
     price,
     images,
-    properties,
+    stock,
+    variants: variants || [], // Ensure an empty array if no variants
   });
 
   res.status(201).json({ success: true, data: product });
 }
 
-// Bulk product creation
 async function handleBulkCreateProducts(req, res) {
   const { products } = req.body;
 
@@ -91,7 +90,7 @@ async function handleBulkCreateProducts(req, res) {
   }
 
   try {
-    const result = await Product.insertMany(products); // Ignore errors for individual products
+    const result = await Product.insertMany(products);
     res
       .status(201)
       .json({ success: true, message: `${result.length} products added.` });
@@ -101,7 +100,6 @@ async function handleBulkCreateProducts(req, res) {
   }
 }
 
-// Product update
 async function handleUpdateProduct(req, res) {
   const {
     id,
@@ -112,7 +110,8 @@ async function handleUpdateProduct(req, res) {
     details,
     price,
     images,
-    properties,
+    stock,
+    variants,
   } = req.body;
 
   if (!id) {
@@ -131,9 +130,10 @@ async function handleUpdateProduct(req, res) {
       details,
       price,
       images,
-      properties,
+      stock,
+      variants: variants || [],
     },
-    { new: true, runValidators: true } // Return the updated document and validate inputs
+    { new: true, runValidators: true }
   );
 
   if (!updatedProduct) {
@@ -143,23 +143,94 @@ async function handleUpdateProduct(req, res) {
   res.status(200).json({ success: true, data: updatedProduct });
 }
 
-// Retrieve products
 async function handleGetProducts(req, res) {
-  if (req.query.id) {
-    const product = await Product.findById(req.query.id);
+  const { id, category, page = 1, limit = 50, search } = req.query;
 
-    if (!product) {
-      return res.status(404).json({ error: "Product not found." });
+  try {
+    // Single product fetch with complete data
+    if (id) {
+      const product = await Product.findById(id)
+        .select(
+          "name price stock variants category reference description details images"
+        )
+        .populate("category", "_id name")
+        .lean();
+
+      if (!product) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+      return res.status(200).json({ success: true, data: product });
     }
 
-    return res.status(200).json({ success: true, data: product });
-  }
+    // Build query
+    let query = {};
 
-  const products = await Product.find();
-  res.status(200).json({ success: true, data: products });
+    // Add text search if provided
+    if (search) {
+      query.$text = { $search: search };
+    }
+
+    // Add category filter with descendants
+    if (category) {
+      const categoryIds = await getCategoryAndDescendants(category);
+      query.category = { $in: categoryIds };
+    }
+
+    // Calculate pagination
+    const skip = (page - 1) * parseInt(limit);
+
+    // Execute query with pagination
+    const [products, total] = await Promise.all([
+      Product.find(query)
+        .select("name price stock variants category reference images")
+        .populate("category", "_id name")
+        .skip(skip)
+        .limit(parseInt(limit))
+        .lean(),
+      Product.countDocuments(query),
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: products,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total,
+        pages: Math.ceil(total / parseInt(limit)),
+      },
+    });
+  } catch (error) {
+    console.error("API Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 }
 
-// Product deletion
+// Optimized category descendant lookup
+async function getCategoryAndDescendants(categoryId) {
+  const results = await Category.aggregate([
+    { $match: { _id: new mongoose.Types.ObjectId(categoryId) } },
+    {
+      $graphLookup: {
+        from: "categories",
+        startWith: "$_id",
+        connectFromField: "children",
+        connectToField: "_id",
+        as: "descendants",
+      },
+    },
+    {
+      $project: {
+        allCategories: {
+          $concatArrays: [["$_id"], "$descendants._id"],
+        },
+      },
+    },
+  ]);
+
+  return results[0]?.allCategories || [categoryId];
+}
+
 async function handleDeleteProduct(req, res) {
   const { id } = req.query;
   const { ids } = req.body;

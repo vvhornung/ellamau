@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     // Verify admin privileges
     await isAdminRequest(req, res);
 
-    // Connect to the database only if it's not already connected
+    // Connect to the database if it's not already connected
     if (mongoose.connection.readyState !== 1) {
       await connectDB();
     }
@@ -55,6 +55,13 @@ async function handleCreateCategory(req, res) {
     properties,
   });
 
+  // ✅ If there's a parent category, update its `children` array
+  if (parentCategory) {
+    await Category.findByIdAndUpdate(parentCategory, {
+      $addToSet: { children: category._id },
+    });
+  }
+
   res.status(201).json(category);
 }
 
@@ -65,32 +72,139 @@ async function handleUpdateCategory(req, res) {
     throw new Error("Category ID is required for updates");
   }
 
+  const oldCategory = await Category.findById(id);
+  if (!oldCategory) {
+    throw new Error("Category not found");
+  }
+
   const updatedCategory = await Category.findByIdAndUpdate(
     id,
     { name, parentCategory: parentCategory || null, properties },
-    { new: true } // Return the updated document
+    { new: true }
   );
 
-  if (!updatedCategory) {
-    throw new Error("Category not found");
+  // ✅ If parent changed, update `children` arrays
+  if (oldCategory.parentCategory?.toString() !== parentCategory?.toString()) {
+    // Remove from old parent
+    if (oldCategory.parentCategory) {
+      await Category.findByIdAndUpdate(oldCategory.parentCategory, {
+        $pull: { children: id },
+      });
+    }
+
+    // Add to new parent
+    if (parentCategory) {
+      await Category.findByIdAndUpdate(parentCategory, {
+        $addToSet: { children: id },
+      });
+    }
   }
 
   res.status(200).json(updatedCategory);
 }
 
 async function handleGetCategories(req, res) {
-  const  { id } = req.query;
-  if (id) {
-    const category = await Category.findById(id).populate("parentCategory");
-    if (!category) {
-      throw new Error("Category not found");
-    }
-    return res.status(200).json(category);
-  }else {
-    const categories = await Category.find().populate("parentCategory");
-    res.status(200).json(categories);
-  }
+  const { id, parent } = req.query;
 
+  try {
+    if (id) {
+      // Single category fetch with complete hierarchy
+      const category = await Category.findById(id)
+        .populate({
+          path: "parentCategory",
+          select: "_id name",
+        })
+        .populate({
+          path: "children",
+          select: "_id name children",
+          populate: {
+            path: "children",
+            select: "_id name",
+          },
+        })
+        .lean();
+
+      if (!category) {
+        return res.status(404).json({ error: "Category not found" });
+      }
+      return res.status(200).json(category);
+    }
+
+    if (parent) {
+      // Fetch direct children of a parent category
+      const categories = await Category.find({ parentCategory: parent })
+        .populate({
+          path: "parentCategory",
+          select: "_id name",
+        })
+        .populate({
+          path: "children",
+          select: "_id name children",
+          populate: {
+            path: "children",
+            select: "_id name",
+          },
+        })
+        .lean();
+
+      return res.status(200).json(categories);
+    }
+
+    // Fetch all categories with optimized hierarchy
+    const categories = await Category.aggregate([
+      {
+        $graphLookup: {
+          from: "categories",
+          startWith: "$_id",
+          connectFromField: "children",
+          connectToField: "_id",
+          as: "descendents",
+          maxDepth: 10,
+        },
+      },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "parentCategory",
+          foreignField: "_id",
+          as: "parentCategory",
+        },
+      },
+      {
+        $addFields: {
+          parentCategory: { $arrayElemAt: ["$parentCategory", 0] },
+          childCount: { $size: "$children" },
+          descendentCount: { $size: "$descendents" },
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          children: 1,
+          childCount: 1,
+          descendentCount: 1,
+          "parentCategory._id": 1,
+          "parentCategory.name": 1,
+        },
+      },
+      {
+        $sort: {
+          "parentCategory._id": 1,
+          name: 1,
+        },
+      },
+    ]);
+
+    return res.status(200).json(categories);
+  } catch (error) {
+    console.error("Category fetch error:", error);
+    return res.status(500).json({
+      error: "Failed to fetch categories",
+      details:
+        process.env.NODE_ENV === "development" ? error.message : undefined,
+    });
+  }
 }
 
 async function handleDeleteCategory(req, res) {
@@ -100,11 +214,25 @@ async function handleDeleteCategory(req, res) {
     throw new Error("Category ID is required for deletion");
   }
 
-  const deletedCategory = await Category.findByIdAndDelete(id);
-
-  if (!deletedCategory) {
+  const category = await Category.findById(id);
+  if (!category) {
     throw new Error("Category not found");
   }
 
+  // ✅ Remove from parent category's children array
+  if (category.parentCategory) {
+    await Category.findByIdAndUpdate(category.parentCategory, {
+      $pull: { children: id },
+    });
+  }
+
+  // ✅ Reassign child categories to the parent (or set them as top-level)
+  await Category.updateMany(
+    { parentCategory: id },
+    { $set: { parentCategory: category.parentCategory || null } }
+  );
+
+  // ✅ Finally, delete the category
+  const deletedCategory = await Category.findByIdAndDelete(id);
   res.status(200).json(deletedCategory);
 }
