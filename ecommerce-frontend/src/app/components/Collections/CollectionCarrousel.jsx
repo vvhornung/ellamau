@@ -3,7 +3,7 @@ import { Flex } from "../shared/styles/Flex.styled";
 import CollectionItem from "./CollectionItem";
 async function CollectionCarrousel({ bg, items }) {
 
-  console.log(items)
+  console.log(items);
 
   return (
     <Container>

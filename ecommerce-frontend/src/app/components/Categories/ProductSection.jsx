@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { Container } from "../shared/styles/Container.styled";
-import Grid from "../shared/styles/Grid.styled";
-import CarrouselItem from "../Products/ProductItem";
+import { Grid } from "../shared/styles/Grid.styled";
+import ProductItem from "../Products/ProductItem";
 import connectDB from "@/app/lib/mongoose";
 import { Category } from "@/app/models/Category";
 import { Product } from "@/app/models/Product";
@@ -9,8 +9,7 @@ import { getProductsByCategory } from "@/app/lib/fetchProducts";
 
 async function ProductSection({ categoryId }) {
   await connectDB();
-
-  const products = await getProductsByCategory(categoryId, 6);
+  const { products } = await getProductsByCategory(categoryId, 6);
 
   return (
     <Container>
@@ -21,11 +20,7 @@ async function ProductSection({ categoryId }) {
           <p>No hay productos disponibles.</p>
         ) : (
           products.map((product) => (
-            <CarrouselItem
-              key={product.id}
-              product={product}
-              $border={"card"}
-            />
+            <ProductItem key={product._id} product={product} $border={"card"} />
           ))
         )}
       </Grid>

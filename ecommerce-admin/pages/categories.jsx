@@ -34,11 +34,18 @@ function Categories({ swal }) {
     const payload = {
       name,
       parentCategory: parentCategory || null,
-      properties: properties.map((property) => ({
-        name: property.name,
-        values: property.value.split(",").map((v) => v.trim()),
-      })),
     };
+
+    // Only include properties if they exist and have both name and values
+    if (properties.length > 0) {
+      const validProperties = properties.filter((p) => p.name && p.value);
+      if (validProperties.length > 0) {
+        payload.properties = validProperties.map((property) => ({
+          name: property.name,
+          values: property.value.split(",").map((v) => v.trim()),
+        }));
+      }
+    }
 
     try {
       if (editingCategory) {
@@ -59,10 +66,10 @@ function Categories({ swal }) {
     setName(category.name);
     setParentCategory(category.parentCategory?._id || "");
     setProperties(
-      category.properties.map((property) => ({
+      category.properties?.map((property) => ({
         name: property.name,
         value: property.values.join(", "),
-      }))
+      })) || []
     );
   }
 

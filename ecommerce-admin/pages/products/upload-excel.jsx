@@ -3,7 +3,6 @@ import Papa from "papaparse";
 import axios from "axios";
 import { useEffect } from "react";
 import Router from "next/router";
-import { toTitleCase } from "@/utils";
 
 function UploadExcel() {
   const [csvData, setCsvData] = useState([]);
@@ -55,99 +54,117 @@ function UploadExcel() {
       });
   }
 
-async function saveProductsFromCsv() {
-  if (categories.length === 0) {
-    alert("Categories are not loaded yet. Please try again in a moment.");
-    return;
-  }
+  async function saveProductsFromCsv() {
+    if (categories.length === 0) {
+      alert("Categories are not loaded yet. Please try again in a moment.");
+      return;
+    }
 
-  const productsToUpload = [];
+    const productsToUpload = [];
 
-  for (const row of csvData) {
-    const {
-      name,
-      REF,
-      category: categoryName,
-      description,
-      details,
-      price,
-      ...dynamicProperties
-    } = row;
+    for (const row of csvData) {
+      const {
+        name: baseProductName,
+        REF,
+        category: categoryName,
+        description,
+        details,
+        price,
+        color,
+        size,
+      } = row;
 
-    console.log("Row:", row);
+      // Standardize category name
+      const standardizedCategoryName = categoryName?.toLowerCase().trim();
 
-    // Find the category object by name
-    const categoryObject = categories.find(
-      (c) => c.name === categoryName.trim()
-    );
-
-    if (!categoryObject) {
-      console.error(`Category "${categoryName}" not found in database.`);
-      alert(
-        `Category "${categoryName}" not found. Product "${name}" was not added.`
+      // Find or create the category
+      let categoryObject = categories.find(
+        (c) => c.name.trim() === standardizedCategoryName
       );
-      continue;
-    }
 
-    const categoryId = categoryObject._id;
-
-    const properties = {};
-    for (const [key, value] of Object.entries(dynamicProperties)) {
-      if (value) {
-        properties[key] = value;
-      }
-    }
-
-    const propertyCombinations = Object.keys(properties).reduce((acc, key) => {
-      const values = properties[key].includes(",") ? properties[key].split(",") : [properties[key.trim()]];
-      if (acc.length === 0) {
-        return values.map((v) => ({ [toTitleCase(key).trim()]: toTitleCase(v).trim() }));
-      }
-
-      const newCombinations = [];
-      for (const accItem of acc) {
-        for (const value of values) {
-          newCombinations.push({
-            ...accItem,
-            [toTitleCase(key).trim()]: toTitleCase(value).trim(),
+      if (!categoryObject) {
+        try {
+          const response = await axios.post("/api/categories", {
+            name: standardizedCategoryName,
           });
+          categoryObject = response.data;
+          setCategories((prev) => [...prev, categoryObject]);
+        } catch (error) {
+          console.error(
+            `Failed to create category "${standardizedCategoryName}"`,
+            error
+          );
+          alert(
+            `Failed to create category "${standardizedCategoryName}". Product "${baseProductName}" was not added.`
+          );
+          continue;
         }
       }
 
-      return newCombinations;
-    }, []);
-
-    for (const combination of propertyCombinations) {
-      const product = {
-        name: `${REF}-${name} (${Object.values(combination).join(", ")})`,
+      let product = {
+        name: REF + "-" + baseProductName,
         reference: REF,
-        category: categoryId,
+        category: categoryObject._id,
         description,
-        details,
+        details: details.split(";").map((detail) => detail.trim()),
         price: parseFloat(price),
-        properties: combination,
+        images: [
+          "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg",
+        ],
       };
 
+      // Check if product has variants (if size field exists)
+      if (size) {
+        // Split colors and sizes into arrays
+        const colors = color.split(",").map((c) => c.trim());
+        const sizes = size.split(",").map((s) => s.trim());
+
+        // Create variants array
+        const variants = [];
+        for (const currentColor of colors) {
+          for (const currentSize of sizes) {
+            variants.push({
+              color: currentColor,
+              size: currentSize,
+              stock: 0,
+              images: [
+                "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg",
+              ],
+            });
+          }
+        }
+        product.variants = variants;
+      } else {
+        // For products without variants, add color as a single variant
+        product.variants = [
+          {
+            color: color,
+            size: "unique",
+            stock: 0,
+            images: [
+              "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg",
+            ],
+          },
+        ];
+      }
+
       productsToUpload.push(product);
-      console.log("Product:", product);
+    }
+
+    if (productsToUpload.length === 0) {
+      alert("No products to upload.");
+      return;
+    }
+
+    try {
+      await axios.post("/api/products", { products: productsToUpload });
+      alert("All products from CSV have been added!");
+      Router.push("/products");
+    } catch (error) {
+      console.error("Error uploading products:", error);
+      alert("Failed to upload products. Please try again.");
     }
   }
-
-  if (productsToUpload.length === 0) {  
-    alert("No products to upload.");
-    return;
-  }
-
-  try {
-    await axios.post("/api/products", { products: productsToUpload });
-    alert("All products from CSV have been added!");
-    Router.push("/products");
-  } catch (error) {
-    console.error("Error uploading products:", error);
-    alert("Failed to upload products. Please try again.");
-  }
-}
-
 
   return (
     <div className="container mx-auto px-4 py-8">

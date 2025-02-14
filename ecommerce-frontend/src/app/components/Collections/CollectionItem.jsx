@@ -6,9 +6,16 @@ import Link from "next/link";
 
 async function CollectionItem({ product, name, bg }) {
 
-  const { img, id } = product;
+  const { images, id } = product || {
+    images: [
+      "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg",
+    ],
+    id: 0,
+  };
 
-
+  const img =
+    images[0] ||
+    "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg";
 
 
 
