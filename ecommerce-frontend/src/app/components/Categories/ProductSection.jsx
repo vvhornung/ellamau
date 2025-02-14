@@ -9,7 +9,7 @@ import { getProductsByCategory } from "@/app/lib/fetchProducts";
 
 async function ProductSection({ categoryId }) {
   await connectDB();
-  const { products } = await getProductsByCategory(categoryId, 6);
+  const products  = await getProductsByCategory(categoryId, 6);
 
   return (
     <Container>
