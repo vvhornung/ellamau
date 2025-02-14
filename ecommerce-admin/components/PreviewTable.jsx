@@ -1,25 +1,27 @@
 const PreviewTable = ({ data }) => {
   return (
     <div>
-      <h2 className="text-lg font-semibold mb-2">Preview (All Combinations)</h2>
+      <h2 className="text-lg font-semibold mb-2">
+        Preview (Products to be created)
+      </h2>
       <table className="basic">
         <thead>
           <tr>
             <th>Name</th>
+            <th>Reference</th>
             <th>Category</th>
-            <th>Properties</th>
+            <th>Price</th>
+            <th>Variants Count</th>
           </tr>
         </thead>
         <tbody>
           {data.map((row, index) => (
             <tr key={index}>
               <td>{row.name}</td>
+              <td>{row.reference}</td>
               <td>{row.category}</td>
-              <td>
-                {Object.entries(row.properties)
-                  .map(([key, value]) => `${key}: ${value}`)
-                  .join(", ")}
-              </td>
+              <td>${row.price}</td>
+              <td>{row.variants?.length || 0} combinations</td>
             </tr>
           ))}
         </tbody>

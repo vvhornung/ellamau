@@ -1,14 +1,17 @@
-'use client'
+"use client";
 
 import styled from "styled-components";
 
-// Styled component for the Grid
-const StyledGrid = styled.div`
+export const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(${({ $columns }) => $columns}, 1fr);
-  gap: ${({ $gap }) => $gap};
-  align-items: ${({ alignItems }) => alignItems};
-  justify-content: ${({ justifyContent }) => justifyContent};
-`;
+  grid-template-columns: repeat(${(props) => props.$columns || 4}, 1fr);
+  gap: ${(props) => props.$gap || "1rem"};
 
-export default StyledGrid;
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+`;

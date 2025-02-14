@@ -1,4 +1,10 @@
-import React, { useState, useRef, useMemo, useCallback } from "react";
+import React, {
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+  useEffect,
+} from "react";
 import Link from "next/link";
 
 const ProductsTable = ({
@@ -16,6 +22,11 @@ const ProductsTable = ({
   // Add pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // You can adjust this value
+
+  // Reset pagination when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filterCategory, searchQuery]);
 
   // Create a complete category map with all category data
   const categoryMap = useMemo(() => {
@@ -185,10 +196,16 @@ const ProductsTable = ({
     </div>
   );
 
-  // Calculate pagination info
+  // Calculate pagination info with safety checks
   const paginationInfo = useMemo(() => {
     const totalItems = filteredProducts.length;
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+
+    // Ensure current page is valid
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
     const currentItems = filteredProducts.slice(startIndex, endIndex);
@@ -199,12 +216,20 @@ const ProductsTable = ({
       currentItems,
       startIndex,
       endIndex,
+      isEmpty: totalItems === 0,
     };
   }, [filteredProducts, currentPage, itemsPerPage]);
 
-  // Add pagination controls
+  // Improved pagination controls
   const renderPagination = () => {
-    const { totalPages } = paginationInfo;
+    const { totalPages, isEmpty, totalItems, startIndex, endIndex } =
+      paginationInfo;
+
+    if (isEmpty) {
+      return (
+        <div className="mt-4 px-4 text-sm text-gray-500">No items found</div>
+      );
+    }
 
     return (
       <div className="mt-4 flex items-center justify-between px-4">
@@ -212,7 +237,7 @@ const ProductsTable = ({
           <button
             className="btn-default px-3 py-1"
             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-            disabled={currentPage === 1}
+            disabled={currentPage <= 1}
           >
             Previous
           </button>
@@ -222,20 +247,20 @@ const ProductsTable = ({
           <button
             className="btn-default px-3 py-1"
             onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-            disabled={currentPage === totalPages}
+            disabled={currentPage >= totalPages}
           >
             Next
           </button>
         </div>
         <div className="text-sm text-gray-500">
-          Showing {paginationInfo.startIndex + 1} to {paginationInfo.endIndex}{" "}
-          of {paginationInfo.totalItems} items
+          {totalItems === 0
+            ? "No items"
+            : `Showing ${startIndex + 1} to ${endIndex} of ${totalItems} items`}
         </div>
       </div>
     );
   };
 
-  // Modify the return statement to use paginated items
   return (
     <div>
       <table className="w-full basic" onMouseUp={handleMouseUp}>
@@ -250,50 +275,64 @@ const ProductsTable = ({
           </tr>
         </thead>
         <tbody>
-          {paginationInfo.currentItems.map((product) => (
-            <React.Fragment key={product._id}>
-              <tr
-                className={`
-                  ${selectedProducts.includes(product._id) ? "bg-zinc-900" : ""}
-                  ${product.variants?.length > 0 ? "font-semibold" : ""}
-                `}
-                onMouseDown={() => handleMouseDown(product._id)}
-                onMouseOver={() => handleMouseOver(product._id)}
-              >
-                <td className="hidden md:block">
-                  <input
-                    type="checkbox"
-                    checked={selectedProducts.includes(product._id)}
-                    readOnly
-                  />
-                </td>
-                <td className="select-none">
-                  <div className="flex items-center gap-2">
-                    <span>{product.name}</span>
-                    {product.variants?.length > 0 && (
-                      <button
-                        className="btn-default text-xs"
-                        onClick={() => toggleVariant(product._id)}
-                      >
-                        {expandedBaseProduct === product._id ? "Hide" : "Show"}{" "}
-                        Variants ({product.variants.length})
-                      </button>
-                    )}
-                  </div>
-                </td>
-                <td className="select-none">
-                  {product?.category?.name || "N/A"}
-                </td>
-                <td className="select-none">{getTotalStock(product)}</td>
-                <td className="select-none">{formatPrice(product.price)}</td>
-                <td>{renderProductActions(product._id)}</td>
-              </tr>
-              {expandedBaseProduct === product._id &&
-                product.variants?.map((variant, idx) =>
-                  renderVariantRow(variant, product._id, idx)
-                )}
-            </React.Fragment>
-          ))}
+          {paginationInfo.isEmpty ? (
+            <tr>
+              <td colSpan="6" className="text-center py-4">
+                No products found
+              </td>
+            </tr>
+          ) : (
+            paginationInfo.currentItems.map((product) => (
+              <React.Fragment key={product._id}>
+                <tr
+                  className={`
+                    ${
+                      selectedProducts.includes(product._id)
+                        ? "bg-zinc-900"
+                        : ""
+                    }
+                    ${product.variants?.length > 0 ? "font-semibold" : ""}
+                  `}
+                  onMouseDown={() => handleMouseDown(product._id)}
+                  onMouseOver={() => handleMouseOver(product._id)}
+                >
+                  <td className="hidden md:block">
+                    <input
+                      type="checkbox"
+                      checked={selectedProducts.includes(product._id)}
+                      readOnly
+                    />
+                  </td>
+                  <td className="select-none">
+                    <div className="flex items-center gap-2">
+                      <span>{product.name}</span>
+                      {product.variants?.length > 0 && (
+                        <button
+                          className="btn-default text-xs"
+                          onClick={() => toggleVariant(product._id)}
+                        >
+                          {expandedBaseProduct === product._id
+                            ? "Hide"
+                            : "Show"}{" "}
+                          Variants ({product.variants.length})
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                  <td className="select-none">
+                    {product?.category?.name || "N/A"}
+                  </td>
+                  <td className="select-none">{getTotalStock(product)}</td>
+                  <td className="select-none">{formatPrice(product.price)}</td>
+                  <td>{renderProductActions(product._id)}</td>
+                </tr>
+                {expandedBaseProduct === product._id &&
+                  product.variants?.map((variant, idx) =>
+                    renderVariantRow(variant, product._id, idx)
+                  )}
+              </React.Fragment>
+            ))
+          )}
         </tbody>
       </table>
       {renderPagination()}

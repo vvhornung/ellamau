@@ -19,7 +19,7 @@ export default async function ProductPage({ params }) {
   const details = product?.details[0]?.split(";");
   const productName = product.name;
 
-  const products = await getProductsByCategory(product.category, 4);
+  const products = await getProductsByCategory(product.category, 4,productId);
 
   return (
     <Container>
