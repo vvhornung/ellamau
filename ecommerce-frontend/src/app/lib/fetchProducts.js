@@ -3,7 +3,7 @@ import { Category } from "@/app/models/Category";
 import { Product } from "@/app/models/Product";
 import connectDB from "@/app/lib/mongoose";
 
-export async function getProductsByCategory(categoryId, limit = 6, name = "") {
+export async function getProductsByCategory(categoryId, limit = 6, name = "", filterId='') {
   await connectDB();
 
   try {
@@ -26,6 +26,7 @@ export async function getProductsByCategory(categoryId, limit = 6, name = "") {
     // 4️⃣ Query products that belong to any of these categories
     const products = await Product.find({
       category: { $in: categoryIds },
+      ...(filterId && { _id: { $ne: filterId } })
     }).limit(limit);
 
     products.forEach((product) => {
@@ -39,6 +40,7 @@ export async function getProductsByCategory(categoryId, limit = 6, name = "") {
       );
     }
 
+    console.log(products)
     return products;
   } catch (error) {
     console.error("🚨 Error fetching products:", error);
