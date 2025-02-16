@@ -9,17 +9,17 @@ import { getProductsByCategory } from "@/app/lib/fetchProducts";
 
 async function ProductSection({ categoryId }) {
   await connectDB();
-  const products  = await getProductsByCategory(categoryId, 6);
+  const products = await getProductsByCategory(categoryId, 6);
 
   return (
     <Container>
       <h1>Recomendados</h1>
       <Grid $columns={4} $gap="1rem">
         <div style={{ gridColumn: "span 2" }}></div>
-        {products.length === 0 ? (
+        {products?.length === 0 ? (
           <p>No hay productos disponibles.</p>
         ) : (
-          products.map((product) => (
+          products?.map((product) => (
             <ProductItem key={product._id} product={product} $border={"card"} />
           ))
         )}

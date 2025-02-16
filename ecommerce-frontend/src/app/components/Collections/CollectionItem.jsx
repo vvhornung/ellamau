@@ -4,7 +4,8 @@ import ActionButton from "../shared/styles/ActionButton.styled";
 import Image from "next/image";
 import Link from "next/link";
 
-async function CollectionItem({ product, name, bg }) {
+async function CollectionItem({ product, bg }) {
+
 
   const { images, id } = product || {
     images: [
@@ -22,10 +23,10 @@ async function CollectionItem({ product, name, bg }) {
   return (
     <Link href={`/product/${id}`}>
       <StyledCarrouselItem $bg={bg}>
-        <Image height={550} width={350} src={img} alt={name} />
+        <Image height={550} width={350} src={img} alt={product.categoryName} />
         <Flex direction={"column"} $gap={"1rem"} $align={"center"}>
           <ActionButton $primaryColor={"black"} $variant={"underline"}>
-            {name}
+            {product.categoryName } 
           </ActionButton>
         </Flex>
       </StyledCarrouselItem>
