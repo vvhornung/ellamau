@@ -19,7 +19,7 @@ function ProductForm({
 }) {
   const [name, setName] = useState(initialName || "");
   const [reference, setReference] = useState(initialRef || "");
-  const [category, setCategory] = useState(initialCategory || "");
+  const [category, setCategory] = useState(initialCategory?._id || "");
   const [description, setDescription] = useState(initialDescription || "");
   const [details, setDetails] = useState(initialDetails || []);
   const [price, setPrice] = useState(initialPrice || "");
@@ -42,7 +42,7 @@ function ProductForm({
   }, []);
 
   const validateVariant = (variant) => {
-    return variant.color?.trim() && variant.size?.trim() && variant.stock > 0;
+    return variant.color?.trim() && variant.size?.trim() && variant.stock >= 0;
   };
 
   const canAddNewVariant = () => {
@@ -142,7 +142,8 @@ function ProductForm({
 
   function updateVariant(index, field, value) {
     const newVariants = [...variants];
-    newVariants[index][field] = value;
+    newVariants[index][field] =
+      field === "stock" ? parseInt(value) || 0 : value;
     setVariants(newVariants);
   }
 
@@ -204,15 +205,15 @@ function ProductForm({
       <div>
         <label>Category</label>
         <select
-          value={category._id}
+          value={category}
           onChange={(ev) => setCategory(ev.target.value)}
           required
         >
           <option value="">Select a category</option>
           {categories?.length > 0 &&
-            categories.map((category) => (
-              <option key={category._id} value={category._id}>
-                {category.name}
+            categories.map((c) => (
+              <option key={c._id} value={c._id}>
+                {c.name}
               </option>
             ))}
         </select>
@@ -319,7 +320,7 @@ function ProductForm({
                     placeholder="Stock"
                     value={variant.stock}
                     onChange={(ev) =>
-                      updateVariant(index, "stock", ev.target.value)
+                      updateVariant(index, "stock", parseInt(ev.target.value))
                     }
                     required
                     min="0"
@@ -433,7 +434,7 @@ function ProductForm({
         >
           Cancel
         </button>
-        <button type="submit" className="btn-primary">
+        <button type="submit" className="btn-primary" onClick={saveProduct}>
           Save
         </button>
       </div>
