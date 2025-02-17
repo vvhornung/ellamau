@@ -2,10 +2,11 @@
 
 import styled from "styled-components";
 
-export const Grid = styled.div`
+const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(${(props) => props.$columns || 4}, 1fr);
   gap: ${(props) => props.$gap || "1rem"};
+  width: ${({width}) => width || "100%"};
 
   @media (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
@@ -15,3 +16,5 @@ export const Grid = styled.div`
     grid-template-columns: 1fr;
   }
 `;
+
+export default Grid

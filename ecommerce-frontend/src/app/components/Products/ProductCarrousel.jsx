@@ -11,7 +11,7 @@ function ProductCarrousel({ $bg, $border, items }) {
           <Flex $justify={"start"}>
             {items.map((item) => (
               <ProductItem
-                key={item.id}
+                key={item._id}
                 product={item}
                 $bg={$bg}
                 $border={$border}

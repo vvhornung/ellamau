@@ -1,10 +1,9 @@
 import Layout from "@/components/Layout";
 import axios from "axios";
 import Link from "next/link";
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState } from "react";
 import ProductsTable from "@/components/ProductTable";
 import { toast } from "react-hot-toast";
-import debounce from "lodash.debounce";
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -43,19 +42,6 @@ function Products() {
     }
   }
 
-
-  // Debounce search query
-  const debouncedSearch = useCallback(
-    debounce((value) => {
-      setSearchQuery(value);
-    }, 300),
-    []
-  );
-
-
-
-
-
   // Delete selected products
   const deleteSelectedProducts = async () => {
     if (!selectedProducts.length) return;
@@ -69,7 +55,6 @@ function Products() {
         data: { ids: selectedProducts },
       });
 
-      console.log(products)
       setProducts((prev) =>
         prev.filter((product) => !selectedProducts.includes(product._id))
       );
@@ -124,7 +109,7 @@ function Products() {
                 placeholder="Search products..."
                 className="border rounded px-2 py-1"
                 value={searchQuery}
-                onChange={(e) => debouncedSearch(e.target.value)}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
           </div>

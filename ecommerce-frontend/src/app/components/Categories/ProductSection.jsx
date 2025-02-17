@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Container } from "../shared/styles/Container.styled";
-import { Grid } from "../shared/styles/Grid.styled";
+import  Grid  from "../shared/styles/Grid.styled";
 import ProductItem from "../Products/ProductItem";
 import connectDB from "@/app/lib/mongoose";
 import { Category } from "@/app/models/Category";

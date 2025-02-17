@@ -6,7 +6,7 @@ export const StyledDescription = styled.div`
     border-left: 1px solid pink;
     padding: 1rem;
 
-    p {
+    h2 {
         opacity: 0.8;
     }
 `;
