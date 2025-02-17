@@ -2,30 +2,38 @@
 
 import styled from 'styled-components';
 
-const StyledTitle = styled.div`
+const StyledProduct = styled.div`
   padding: 1rem;
+  width: 100%;
 
-  h1, li {
-    line-height: 0.8;
-    font-size: 0.8rem;
-    color: black;
-    opacity: 0.8;
-    padding: 1rem;
+
+
+  h1 {
     font-family: Cinzel, serif;
-    margin-bottom: 0.2rem;
-    padding: 0;
-    overflow: visible;
+    font-size: 0.8rem;
+    font-weight: 600;
+
   }
 
+  h2,h3,  p, li {
+    text-transform: capitalize;
+    
+    font-weight: 200;
+  }
 
   h2 {
-    text-transform: capitalize;
+    font-size: 1rem;
   }
 
 
 
-  
+  h3 , p, li {
+    font-size: 0.8rem;
+  }
+
+
+
 `;
 
 
-export default StyledTitle;
+export default StyledProduct;

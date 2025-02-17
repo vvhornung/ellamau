@@ -1,6 +1,6 @@
 "use client";
 import { useContext, useState } from "react";
-import { CartContext } from "../Cart/CartContext";
+import { CartContext } from "@/app/contexts/CartContext";
 import { Flex } from "../shared/styles/Flex.styled";
 import { StyledDescription } from "./styles/Description.styled";
 import ProductVariantSelector from "./ProductVariantSelector";
