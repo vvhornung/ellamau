@@ -1,10 +1,10 @@
-
 import localFont from "next/font/local";
 import "./globals.css";
 import Nav from "./nav";
 import Footer from "./footer";
 import ThemeClient from "./ThemeClient";
 import StyledComponentsRegistry from "@/app/lib/StyledComponentsRegistry"; // Import registry
+import { CartProvider } from "./providers/CartProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -23,15 +23,15 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <StyledComponentsRegistry>
-          {" "}
-          {/* Wrap your app here */}
-          <ThemeClient>
-            <div className={`${geistSans.variable} ${geistMono.variable}`}>
-              <Nav />
-              <main>{children}</main>
-              <Footer />
-            </div>
-          </ThemeClient>
+          <CartProvider>
+            <ThemeClient>
+              <div className={`${geistSans.variable} ${geistMono.variable}`}>
+                <Nav />
+                <main>{children}</main>
+                <Footer />
+              </div>
+            </ThemeClient>
+          </CartProvider>
         </StyledComponentsRegistry>
       </body>
     </html>
