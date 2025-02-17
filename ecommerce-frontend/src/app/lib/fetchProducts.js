@@ -2,8 +2,9 @@ import mongoose from "mongoose";
 import { Category } from "@/app/models/Category";
 import { Product } from "@/app/models/Product";
 import connectDB from "@/app/lib/mongoose";
+import serialize from "../utils/serializer";
 
-export async function getProductsByCategory(categoryId, limit = 6, name = "", filterId='') {
+export async function getProductsByCategory(categoryId, limit = 6, filterId='') {
   await connectDB();
 
   try {
@@ -34,16 +35,13 @@ export async function getProductsByCategory(categoryId, limit = 6, name = "", fi
         "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg";
     });
 
-    if (name) {
-      return products.filter((product) =>
-        product.name.toLowerCase().includes(name.toLowerCase())
-      );
-    }
 
-    console.log(products)
-    return products;
+
+    return serialize(products);
   } catch (error) {
     console.error("🚨 Error fetching products:", error);
     return [];
   }
 }
+
+
