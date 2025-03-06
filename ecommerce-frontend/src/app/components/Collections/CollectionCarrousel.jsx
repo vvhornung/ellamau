@@ -20,7 +20,7 @@ async function CollectionCarrousel({ bg, items }) {
         <Container width="fit-content" $scroll={"true"} $bg={bg}>
           <Flex $justify={"start"} $gap={"0.1rem"}>
             {items?.map(({product}) => (
-              <CollectionItem key={product.products[0]['_id']} product={product} bg={bg} />
+              <CollectionItem key={product['_id']} product={product} bg={bg} />
             ))}
 
           </Flex>

@@ -23,7 +23,7 @@ export default async function Home() {
 
   const collectionItems = await Promise.all(
     categories.map(async (category) => ({
-      product: await getProductsByCategory(category.id, 1),
+      product: (await getProductsByCategory(category.id, 1)).products[0],
       categoryName: category.name,
     }))
   );
@@ -44,7 +44,7 @@ export default async function Home() {
 
   console.log(latestProducts);
 
-  const swimwearProducts = await getProductsByCategory(swimwearCategory.id, 4);
+  const swimwearProducts = (await getProductsByCategory(swimwearCategory.id, 4)).products;
   console.log(swimwearProducts);
 
   return (
@@ -98,7 +98,7 @@ export default async function Home() {
       </Container>
 
       <Container $bg={"#f5e5c5"}>
-        <ProductCarrousel $bg="#f5e5c5" items={swimwearProducts.products} />
+        <ProductCarrousel $bg="#f5e5c5" items={swimwearProducts} />
       </Container>
 
       <HeroSection
