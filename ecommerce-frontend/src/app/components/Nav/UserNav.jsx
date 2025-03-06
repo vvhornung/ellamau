@@ -9,11 +9,9 @@ function UserNav() {
     <StyledUserNav>
       <Container>
         <Flex $justify={"end"}>
-          <Link href="">
-            <CiUser fill="black" name="User" alt="User Icon" />
-          </Link>
+      
 
-          <Link href="">
+          <Link href={"/cart"}>
             <CiShoppingCart
               fill="black"
               name="Shopping Cart"

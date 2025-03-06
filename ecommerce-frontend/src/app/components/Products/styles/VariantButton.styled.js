@@ -9,5 +9,21 @@ export const VariantButton = styled.button`
   cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
   opacity: ${(props) => (props.$disabled ? "0.5" : "1")};
   border-radius: 4px;
-  transition: all ease-in-out 200ms
+  transition: all ease-in-out 200ms;
+  position: relative;
+
+  ${(props) =>
+    props.$disabled &&
+    `
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(to bottom left, transparent calc(50% - 1px),rgba(0, 0, 0, 0.5), transparent calc(50% + 1px));
+      pointer-events: none;
+    }
+  `}
 `;
