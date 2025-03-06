@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 async function CollectionItem({ product, bg }) {
-
+ 
 
   const { images, id } = product || {
     images: [

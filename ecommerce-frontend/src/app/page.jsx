@@ -23,7 +23,7 @@ export default async function Home() {
 
   const collectionItems = await Promise.all(
     categories.map(async (category) => ({
-      product: await getProductsByCategory(category.id, 1),
+      product: (await getProductsByCategory(category.id, 1)).products[0],
       categoryName: category.name,
     }))
   );
@@ -42,7 +42,10 @@ export default async function Home() {
       "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg";
   });
 
-  const swimwearProducts = await getProductsByCategory(swimwearCategory.id, 4);
+  console.log(latestProducts);
+
+  const swimwearProducts = (await getProductsByCategory(swimwearCategory.id, 4)).products;
+  console.log(swimwearProducts);
 
   return (
     <>

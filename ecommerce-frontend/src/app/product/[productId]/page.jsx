@@ -9,6 +9,7 @@ export default async function ProductPage({ params }) {
   const { productId } = params;
   const { product, relatedProducts } = await getProductData(productId, true);
 
+
   return (
     <Container>
       <Flex $justify="space-between" $gap="2rem" $align="start">

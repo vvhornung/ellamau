@@ -10,7 +10,7 @@ function ProductCarrousel({ $bg, $border, items }) {
         <h1>Product Carrousel</h1>
         <Container $scroll={"true"} $bg={$bg}>
           <Flex $justify={"start"}>
-            {items.products.map((item) => (
+            {items?.map((item) => (
               <ProductItem
                 key={item._id}
                 product={item}
