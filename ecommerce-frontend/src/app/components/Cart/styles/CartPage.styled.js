@@ -41,6 +41,14 @@ export const CartItemsSection = styled.div`
   padding: 2rem 3rem;
   display: flex;
   flex-direction: column;
+  gap: 2rem;
+
+  hr {
+    border: 1px solid #eaeaea; /* Set the border color */
+    margin: 20px 0; /* Optional: Add some margin for spacing */
+    width: 100%; /* Optional: Set the width to 100% */
+    background-color: transparent; /* Ensure background is transparent */
+  }
 `;
 
 export const CartSummarySection = styled.div``;

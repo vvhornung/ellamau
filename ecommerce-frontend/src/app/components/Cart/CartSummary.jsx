@@ -1,4 +1,4 @@
-"use client";
+
 import { useContext, useState } from "react";
 import { CartContext } from "@/app/contexts/CartContext";
 import {
@@ -32,9 +32,12 @@ export default function CartSummary() {
 
   return (
     <SummaryContainer>
-      <h2>Order Summary</h2>
-
       <SummaryRow $withBorder>
+
+      <h2>Order Summary</h2>
+      </SummaryRow>
+
+      <SummaryRow >
         <span>Subtotal</span>
         <span>${subtotal.toFixed(2)}</span>
       </SummaryRow>

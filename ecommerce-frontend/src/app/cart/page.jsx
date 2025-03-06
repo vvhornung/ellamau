@@ -1,5 +1,5 @@
 "use client";
-import { useContext } from "react";
+import { useContext, Fragment, useEffect, useState } from "react";
 import { CartContext } from "@/app/contexts/CartContext";
 import { Container } from "@/app/components/shared/styles/Container.styled";
 import CartItem from "@/app/components/Cart/CartItem";
@@ -13,8 +13,13 @@ import {
   CartSummarySection,
 } from "@/app/components/Cart/styles/CartPage.styled";
 
+
+
 export default function CartPage() {
-  const { cart, removeFromCart, updateQuantity } = useContext(CartContext);
+  const { cart } = useContext(CartContext);
+
+
+
 
   // Filter out invalid cart items
   const validCartItems = cart
@@ -26,6 +31,7 @@ export default function CartPage() {
       <Container>
         <CartContainer>
           <CartTitle>Your Cart</CartTitle>
+          
           <EmptyCart />
         </CartContainer>
       </Container>
@@ -37,16 +43,25 @@ export default function CartPage() {
       <CartContainer>
         <CartLayout>
           <CartItemsSection>
-              <CartTitle>
-                        Shopping Bag  <span>{validCartItems.length} {validCartItems.length > 1 ?  'items' : 'item'} </span>
-                    </CartTitle>
+            <CartTitle>
+              Shopping Bag{" "}
+              <span>
+                {validCartItems.length}{" "}
+                {validCartItems.length > 1 ? "items" : "item"}{" "}
+              </span>
+            </CartTitle>
+
+      
+
             {validCartItems.map((item, index) => (
-              <CartItem
+              <Fragment
                 key={`${item.product._id || "unknown"}-${
                   item.variant?._id || index
                 }`}
-                item={item}
-              />
+              >
+                <CartItem item={item} />
+                {index < validCartItems.length - 1 && <hr />}
+              </Fragment>
             ))}
           </CartItemsSection>
 

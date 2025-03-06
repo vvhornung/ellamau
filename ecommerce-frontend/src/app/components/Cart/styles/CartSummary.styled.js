@@ -1,13 +1,17 @@
 import styled from "styled-components";
 
 export const SummaryContainer = styled.div`
-  background: #f9f9f9;
-  padding: 1.5rem;
-  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.223);
+  border-radius: 0.2rem;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.107);
+  padding: 2rem 3rem;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const SummaryRow = styled.div`
   display: flex;
+  
   justify-content: space-between;
   margin-bottom: 1rem;
   font-size: ${(props) => (props.$large ? "1.2rem" : "1rem")};
@@ -17,20 +21,21 @@ export const SummaryRow = styled.div`
 `;
 
 export const CheckoutButton = styled.button`
-  background: #000;
+  background: ${({ theme }) => theme.colors.logo};
+  font-family: "Public Sans", sans-serif;
   color: #fff;
   width: 100%;
   padding: 1rem;
   border: none;
   border-radius: 4px;
-  font-weight: bold;
+  font-weight: 400;
   font-size: 1rem;
   margin-top: 1rem;
   cursor: pointer;
   transition: background 0.2s ease;
 
   &:hover {
-    background: #333;
+    background: ${({ theme }) => theme.colors.primary};
   }
 
   &:disabled {
