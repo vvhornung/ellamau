@@ -2,6 +2,7 @@
 import React from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import styled from "styled-components";
+import { prefetchCategoryPage } from "@/app/Hooks/useProducts";
 
 const PaginationContainer = styled.div`
   display: flex;
@@ -36,7 +37,7 @@ const PageIndicator = styled.span`
   font-size: 0.9rem;
 `;
 
-const Pagination = ({ currentPage, totalPages }) => {
+const Pagination = ({ currentPage, totalPages, categoryId }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -51,6 +52,15 @@ const Pagination = ({ currentPage, totalPages }) => {
   // Handle page change
   const handlePageChange = (pageNumber) => {
     router.push(createPageURL(pageNumber));
+  };
+
+  // Handle prefetch on hover
+  const handlePrefetch = (pageNumber) => {
+    // Extract categoryId from pathname if not provided as prop
+    const extractedCategoryId = categoryId || pathname.split("/").pop();
+    if (extractedCategoryId) {
+      prefetchCategoryPage(extractedCategoryId, pageNumber);
+    }
   };
 
   // Calculate which page numbers to show
@@ -96,6 +106,7 @@ const Pagination = ({ currentPage, totalPages }) => {
     <PaginationContainer>
       <PageButton
         onClick={() => handlePageChange(currentPage - 1)}
+        onMouseEnter={() => handlePrefetch(currentPage - 1)}
         disabled={currentPage <= 1}
       >
         Previous
@@ -107,6 +118,7 @@ const Pagination = ({ currentPage, totalPages }) => {
             key={index}
             $active={page === currentPage}
             onClick={() => page !== currentPage && handlePageChange(page)}
+            onMouseEnter={() => handlePrefetch(page)}
           >
             {page}
           </PageButton>
@@ -117,6 +129,7 @@ const Pagination = ({ currentPage, totalPages }) => {
 
       <PageButton
         onClick={() => handlePageChange(currentPage + 1)}
+        onMouseEnter={() => handlePrefetch(currentPage + 1)}
         disabled={currentPage >= totalPages}
       >
         Next

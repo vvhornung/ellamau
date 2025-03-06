@@ -1,11 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Container } from "../shared/styles/Container.styled";
 import Grid from "../shared/styles/Grid.styled";
 import ProductItem from "../Products/ProductItem";
 import Pagination from "../shared/Pagination";
-import { getProductsByCategory } from "@/app/lib/fetchProducts";
+import { useProducts, prefetchProductPage } from "@/app/Hooks/useProducts";
 
 function ProductSection({ categoryId, initialPage = 1 }) {
   const searchParams = useSearchParams();
@@ -15,55 +15,40 @@ function ProductSection({ categoryId, initialPage = 1 }) {
     10
   );
 
-  const [productData, setProductData] = useState({
-    products: [],
-    total: 0,
-    pages: 0,
-    currentPage: currentPage,
-    isLoading: true,
-  });
+  // Use our custom hook for cached data
+  const { products, total, pages, isLoading, isValidating } = useProducts(
+    categoryId,
+    currentPage
+  );
 
+  // Prefetch adjacent pages for faster navigation
   useEffect(() => {
-    const fetchProducts = async () => {
-      setProductData((prev) => ({ ...prev, isLoading: true }));
-
-      try {
-        const result = await getProductsByCategory(
-          categoryId,
-          6,
-          "",
-          false,
-          currentPage
-        );
-        setProductData({
-          products: result.products,
-          total: result.total,
-          pages: result.pages,
-          currentPage: result.currentPage,
-          isLoading: false,
-        });
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setProductData((prev) => ({ ...prev, isLoading: false }));
-      }
-    };
-
-    fetchProducts();
-  }, [categoryId, currentPage]);
+    // Prefetch next and previous pages for smoother navigation
+    if (currentPage < pages) {
+      prefetchProductPage(categoryId, currentPage + 1);
+    }
+    if (currentPage > 1) {
+      prefetchProductPage(categoryId, currentPage - 1);
+    }
+  }, [categoryId, currentPage, pages]);
 
   return (
     <Container>
       <h1>Recomendados</h1>
 
-      {productData.isLoading ? (
-        <div>Loading products...</div>
-      ) : productData.products?.length === 0 ? (
+      {isLoading ? (
+        <div
+          style={{ display: "flex", justifyContent: "center", padding: "3rem" }}
+        >
+          Loading...
+        </div>
+      ) : products?.length === 0 ? (
         <p>No hay productos disponibles.</p>
       ) : (
         <>
           <Grid $columns={4} $gap="1rem">
             <div style={{ gridColumn: "span 2" }}></div>
-            {productData.products?.map((product) => (
+            {products?.map((product) => (
               <ProductItem
                 key={product._id}
                 product={product}
@@ -72,10 +57,15 @@ function ProductSection({ categoryId, initialPage = 1 }) {
             ))}
           </Grid>
 
-          <Pagination
-            currentPage={productData.currentPage}
-            totalPages={productData.pages}
-          />
+          {isValidating && (
+            <div
+              style={{ textAlign: "center", padding: "10px", color: "#888" }}
+            >
+              Updating products...
+            </div>
+          )}
+
+          <Pagination currentPage={currentPage} totalPages={pages} />
         </>
       )}
     </Container>
