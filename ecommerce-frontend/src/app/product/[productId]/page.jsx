@@ -9,6 +9,7 @@ export default async function ProductPage({ params }) {
   const { productId } = params;
   const { product, relatedProducts } = await getProductData(productId, true);
 
+
   return (
     <Container>
       <Flex $justify="space-between" $gap="2rem" $align="start">
@@ -18,7 +19,7 @@ export default async function ProductPage({ params }) {
         <ProductDetails product={product} />
       </Flex>
       <Container>
-        <ProductCarrousel border={"card"} items={relatedProducts} />
+        <ProductCarrousel border={"card"} items={relatedProducts.products} />
       </Container>
     </Container>
   );

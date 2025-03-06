@@ -42,7 +42,10 @@ export default async function Home() {
       "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg";
   });
 
+  console.log(latestProducts);
+
   const swimwearProducts = await getProductsByCategory(swimwearCategory.id, 4);
+  console.log(swimwearProducts);
 
   return (
     <>
@@ -95,7 +98,7 @@ export default async function Home() {
       </Container>
 
       <Container $bg={"#f5e5c5"}>
-        <ProductCarrousel $bg="#f5e5c5" items={swimwearProducts} />
+        <ProductCarrousel $bg="#f5e5c5" items={swimwearProducts.products} />
       </Container>
 
       <HeroSection

@@ -1,13 +1,15 @@
+
 import { Container } from "../shared/styles/Container.styled";
 import { Flex } from "../shared/styles/Flex.styled";
 import CollectionItem from "./CollectionItem";
 async function CollectionCarrousel({ bg, items }) {
 
-  const products = items.map((item) => { 
-    item.product[0].categoryName = item.categoryName;
-    return item.product[0];
-  });
 
+
+  items.forEach((item) => {
+    item.product.categoryName = item.categoryName;
+  }
+  );
 
 
 
@@ -17,8 +19,8 @@ async function CollectionCarrousel({ bg, items }) {
         <h1>Collection Carrousel</h1>
         <Container width="fit-content" $scroll={"true"} $bg={bg}>
           <Flex $justify={"start"} $gap={"0.1rem"}>
-            {products.map((product) => (
-              <CollectionItem key={product._id} product={product} bg={bg} />
+            {items?.map(({product}) => (
+              <CollectionItem key={product.products[0]['_id']} product={product} bg={bg} />
             ))}
 
           </Flex>

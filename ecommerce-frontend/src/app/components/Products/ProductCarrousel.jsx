@@ -3,13 +3,14 @@ import ProductItem from "./ProductItem";
 import { Flex } from "../shared/styles/Flex.styled";
 
 function ProductCarrousel({ $bg, $border, items }) {
+  console.log(items);
   return (
     <Container>
       <Flex direction={"column"}>
         <h1>Product Carrousel</h1>
         <Container $scroll={"true"} $bg={$bg}>
           <Flex $justify={"start"}>
-            {items.products.map((item) => (
+            {items?.map((item) => (
               <ProductItem
                 key={item._id}
                 product={item}
