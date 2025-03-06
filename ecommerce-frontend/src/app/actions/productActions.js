@@ -27,6 +27,7 @@ export async function getProductData(productId, fullProduct = false) {
   };
 }
 
+
 export async function getVariantData(productId, variantId) {
   try {
     await connectDB();
@@ -54,3 +55,4 @@ export async function getVariantData(productId, variantId) {
     throw error;
   }
 }
+
