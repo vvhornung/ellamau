@@ -1,6 +1,6 @@
-import mongoose, { model, Schema, models } from "mongoose";
+import mongoose from "mongoose";
 
-const VariantSchema = new Schema({
+const VariantSchema = new mongoose.Schema({
   color: String, // Optional (For clothing, shoes, etc.)
   size: String, // Optional (For clothing, shoes, etc.)
   stock: {
@@ -11,7 +11,7 @@ const VariantSchema = new Schema({
   images: [String], // Multiple images per variant
 });
 
-const ProductSchema = new Schema(
+const ProductSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -25,7 +25,7 @@ const ProductSchema = new Schema(
       maxlength: [50, "Reference cannot be more than 50 characters"],
     },
     category: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       required: true,
     },
@@ -66,4 +66,6 @@ ProductSchema.index({ createdAt: -1 });
 // Compound index for category + name searches
 ProductSchema.index({ category: 1, name: 1 });
 
-export const Product = models.Product || model("Product", ProductSchema);
+// Fix: Access models directly from mongoose instead of destructuring
+export const Product =
+  mongoose.models.Product || mongoose.model("Product", ProductSchema);
