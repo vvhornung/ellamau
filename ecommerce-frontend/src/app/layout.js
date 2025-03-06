@@ -4,7 +4,7 @@ import Nav from "./nav";
 import Footer from "./footer";
 import ThemeClient from "./ThemeClient";
 import StyledComponentsRegistry from "@/app/lib/StyledComponentsRegistry"; // Import registry
-import { CartProvider } from "./providers/CartProvider";
+import { CartProvider } from "./contexts/CartContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
