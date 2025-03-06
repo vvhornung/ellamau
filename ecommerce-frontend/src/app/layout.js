@@ -4,7 +4,8 @@ import Nav from "./nav";
 import Footer from "./footer";
 import ThemeClient from "./ThemeClient";
 import StyledComponentsRegistry from "@/app/lib/StyledComponentsRegistry"; // Import registry
-import { CartProvider } from "./providers/CartProvider";
+import { CartProvider } from "./contexts/CartContext";
+import { Public_Sans } from "next/font/google";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -18,6 +19,8 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+const publicSans = Public_Sans({subsets: ['latin']})
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -25,7 +28,7 @@ export default function RootLayout({ children }) {
         <StyledComponentsRegistry>
           <CartProvider>
             <ThemeClient>
-              <div className={`${geistSans.variable} ${geistMono.variable}`}>
+              <div className={`${geistSans.variable} ${geistMono.variable} ${publicSans.className}`}>
                 <Nav />
                 <main>{children}</main>
                 <Footer />
