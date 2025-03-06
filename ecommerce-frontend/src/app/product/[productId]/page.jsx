@@ -18,7 +18,7 @@ export default async function ProductPage({ params }) {
         <ProductDetails product={product} />
       </Flex>
       <Container>
-        <ProductCarrousel border={"card"} items={relatedProducts} />
+        <ProductCarrousel border={"card"} items={relatedProducts.products} />
       </Container>
     </Container>
   );

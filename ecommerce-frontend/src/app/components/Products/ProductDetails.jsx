@@ -51,7 +51,13 @@ export default function ProductDetails({ product }) {
         </Flex>
 
         <StyledDescription>
-          <p>{product.description}</p>
+          {
+            // Display the first paragraph of the description
+            product?.description?.split(";").map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))
+            
+          }
         </StyledDescription>
 
         {details && (
