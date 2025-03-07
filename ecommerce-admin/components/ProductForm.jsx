@@ -95,9 +95,11 @@ function ProductForm({
 
     if (hasVariants) {
       data.variants = variants.map((variant) => ({
+        _id: variant._id, // Preserve existing IDs
         color: variant.color.trim(),
         size: variant.size.trim(),
         stock: parseInt(variant.stock),
+        images: variant.images || [], // Also preserve images
       }));
       data.stock = variants.reduce(
         (total, variant) => total + parseInt(variant.stock),
