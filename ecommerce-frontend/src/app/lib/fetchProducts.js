@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import mongoose from "mongoose";
 import { Category } from "@/app/models/Category";
@@ -11,9 +11,9 @@ export async function getProductsByCategory(
   limit = 6,
   filterId = "",
   fullProduct = false,
-  page = 1
+  page = 1,
+  filters = {}
 ) {
-  
   await connectDB();
 
   try {
@@ -36,10 +36,14 @@ export async function getProductsByCategory(
     const fieldsToSelect = fullProduct
       ? {}
       : {
-          variants: 0,
-          details: 0,
-          description: 0,
-          reference: 0,
+          variants: 1,
+          name: 1,
+          price: 1,
+          discountPrice: 1,
+          img: 1,
+          category: 1,
+          slug: 1,
+          _id: 1,
         };
 
     // Query filter
@@ -48,9 +52,24 @@ export async function getProductsByCategory(
       ...(filterId && { _id: { $ne: filterId } }),
     };
 
+    // Apply variant filters if they exist
+    if (filters.color || filters.size) {
+      const variantCriteria = {};
+
+      if (filters.color) {
+        variantCriteria["variants.color"] = filters.color;
+      }
+
+      if (filters.size) {
+        variantCriteria["variants.size"] = filters.size;
+      }
+
+      Object.assign(filter, variantCriteria);
+    }
+
     // Get total count for pagination
     const total = await Product.countDocuments(filter);
-    
+
     // Calculate total pages
     const pages = Math.ceil(total / limit);
 
@@ -65,13 +84,13 @@ export async function getProductsByCategory(
       product.img =
         "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg";
     });
-
+ 
     // Return pagination data along with products
     return {
       products: serialize(products),
       total,
       pages,
-      currentPage: page
+      currentPage: page,
     };
   } catch (error) {
     console.error("🚨 Error fetching products:", error);

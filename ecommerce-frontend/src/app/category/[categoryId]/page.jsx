@@ -1,4 +1,3 @@
-
 import React from "react";
 import Filters from "@/app/components/Categories/Filters";
 import SubCategoriesCarrousel from "@/app/components/Categories/SubCategoriesCarrousel";
@@ -13,12 +12,8 @@ export const dynamic = "force-dynamic";
 export default async function CategoryPage({ params, searchParams }) {
   await connectDB();
   const { categoryId } = await params;
-  const {page} = await searchParams
+  const { page } = await searchParams;
   const category = await Category.findById(categoryId);
-
-  // Fix: Don't try to parse searchParams directly
-  // Instead, pass the entire searchParams object to the client component
-  // and let it handle the parsing
 
   return (
     <>
@@ -31,7 +26,7 @@ export default async function CategoryPage({ params, searchParams }) {
         <SubCategoriesCarrousel categoryId={categoryId} />
       )}
 
-      <Filters />
+      <Filters categoryId={categoryId} />
       <ProductSection
         categoryId={categoryId}
         initialPage={page ? parseInt(searchParams.page, 10) : 1}

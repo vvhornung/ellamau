@@ -118,17 +118,17 @@ export default function CartItem({ item }) {
 
         <StockStatus
           $status={
-            currentStock <= 0
-              ? "outOfStock"
-              : currentStock < 5
+            isLoading
+            ? "loadingStock":
+             currentStock <= 5
               ? "lowStock"
               : "inStock"
           }
         >
           {isLoading
             ? "Updating..."
-            : currentStock <= 0
-            ? "Out of Stock"
+            : currentStock <= 5
+            ? "Low Stock"
             : "In Stock"}
         </StockStatus>
 

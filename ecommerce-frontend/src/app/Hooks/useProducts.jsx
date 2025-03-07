@@ -5,7 +5,7 @@ import { getProductsByCategory } from "@/app/lib/fetchProducts";
 // In-memory cache for products by category and page
 const productCache = new Map();
 
-export function useProducts(categoryId, page = 1, limit = 6) {
+export function useProducts(categoryId, page = 1, limit = 6, filters = {}) {
   const [state, setState] = useState({
     products: [],
     total: 0,
@@ -15,8 +15,13 @@ export function useProducts(categoryId, page = 1, limit = 6) {
     isValidating: false,
   });
 
-  // Generate a cache key based on category and page
-  const cacheKey = `${categoryId}-${page}-${limit}`;
+  // Generate a cache key based on category, page, and filters
+  const filtersKey = Object.entries(filters)
+    .filter(([_, value]) => value)
+    .map(([key, value]) => `${key}-${value}`)
+    .join('_');
+    
+  const cacheKey = `${categoryId}-${page}-${limit}-${filtersKey}`;
 
   useEffect(() => {
     // Check if we have cached data
@@ -46,7 +51,8 @@ export function useProducts(categoryId, page = 1, limit = 6) {
           limit,
           "",
           false,
-          page
+          page,
+          filters
         );
 
         // Update state with fresh data
@@ -88,7 +94,7 @@ export function useProducts(categoryId, page = 1, limit = 6) {
     }, 60 * 1000); // Check every minute
 
     return () => clearInterval(intervalId);
-  }, [categoryId, page, limit, cacheKey]);
+  }, [categoryId, page, limit,  filters, cacheKey]);
 
   // Method to manually invalidate cache
   const invalidateCache = () => {
@@ -110,13 +116,18 @@ export function useProducts(categoryId, page = 1, limit = 6) {
 }
 
 // Function to prefetch next/prev pages
-export function prefetchCategoryPage(categoryId, page, limit = 6) {
-  const cacheKey = `${categoryId}-${page}-${limit}`;
+export function prefetchCategoryPage(categoryId, page, limit = 6, filters = {}) {
+  const filtersKey = Object.entries(filters)
+    .filter(([_, value]) => value)
+    .map(([key, value]) => `${key}-${value}`)
+    .join('_');
+  
+  const cacheKey = `${categoryId}-${page}-${limit}-${filtersKey}`;
 
   // If already in cache, don't refetch
   if (productCache.has(cacheKey)) return Promise.resolve();
 
-  return getProductsByCategory(categoryId, limit, "", false, page).then(
+  return getProductsByCategory(categoryId, limit, "", false, page, filters).then(
     (result) => {
       productCache.set(cacheKey, {
         products: result.products,

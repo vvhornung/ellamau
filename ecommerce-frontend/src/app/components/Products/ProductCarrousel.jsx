@@ -3,7 +3,7 @@ import ProductItem from "./ProductItem";
 import { Flex } from "../shared/styles/Flex.styled";
 
 function ProductCarrousel({ $bg, $border, items }) {
-  console.log(items);
+
   return (
     <Container>
       <Flex direction={"column"}>

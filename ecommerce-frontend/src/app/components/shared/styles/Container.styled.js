@@ -14,6 +14,7 @@ export const Container = styled.div`
 
   /* Use overflow-x: auto to show scrollbar only when necessary */
   overflow-x: ${({ $scroll }) => ($scroll ? "auto" : "hidden")};
+  overflow: ${({$overflow}) => ($overflow || 'auto')};
 
   scrollbar-color: #ccc #f1f1f1;
   scrollbar-width: thin;

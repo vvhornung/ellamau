@@ -171,10 +171,10 @@ const lowStockStyles = css`
   color: "#ffffff";
 `;
 
-const outOfStockStyles = css`
-  background-color: #e74c3c;
+const loadingStockStyles = css`
+  background-color: white;
   border-color: black;
-  color: #ffffff;
+  color: black;
 `;
 
 // Now use these in StockStatus component
@@ -193,8 +193,8 @@ export const StockStatus = styled.div`
 
   /* Use style fragments based on status prop */
   ${({ $status }) =>
-    $status === "outOfStock"
-      ? outOfStockStyles
+    $status === "loadingStock"
+      ? loadingStockStyles
       : $status === "lowStock"
       ? lowStockStyles
       : inStockStyles}
