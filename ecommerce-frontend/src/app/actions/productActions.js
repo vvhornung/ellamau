@@ -39,6 +39,7 @@ export async function getVariantData(productId, variantId) {
       throw new Error("Product not found");
     }
 
+
     // Find the specific variant within the product
     const variant = product.variants.id(variantId);
 

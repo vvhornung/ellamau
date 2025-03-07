@@ -42,10 +42,10 @@ export default async function Home() {
       "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg";
   });
 
-  console.log(latestProducts);
+
 
   const swimwearProducts = (await getProductsByCategory(swimwearCategory.id, 4)).products;
-  console.log(swimwearProducts);
+
 
   return (
     <>
