@@ -17,6 +17,12 @@ const nextConfig = {
     ],
     unoptimized: true, // Allows bypassing image optimization entirely if needed
   },
+  experimental: {
+    serverActions: {
+      allowedOrigins: ["localhost:3000"],
+    },
+  },
+
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
