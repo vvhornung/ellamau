@@ -6,16 +6,16 @@ import Link from "next/link";
 
 async function CollectionItem({ product, bg }) {
  
-
-  const { images, id } = product || {
+console.log(product)
+  const { img, id } = product || {
     images: [
       "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg",
     ],
     id: 0,
   };
 
-  const img =
-    images[0] ||
+  const image =
+    img ||
     "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg";
 
 
@@ -23,7 +23,7 @@ async function CollectionItem({ product, bg }) {
   return (
     <Link href={`/product/${id}`}>
       <StyledCarrouselItem $bg={bg}>
-        <Image height={550} width={350} src={img} alt={product.categoryName} />
+        <Image height={550} width={350} src={image} alt={product.categoryName} />
         <Flex direction={"column"} $gap={"1rem"} $align={"center"}>
           <ActionButton $primaryColor={"black"} $variant={"underline"}>
             {product.categoryName } 
