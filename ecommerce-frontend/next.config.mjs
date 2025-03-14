@@ -5,22 +5,25 @@ const nextConfig = {
   },
   reactStrictMode: true,
   images: {
+    domains: [
+      "gratisography.com",
+      `${process.env.S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com`,
+      "ellamau-bucket.s3.us-east-2.amazonaws.com",
+    ],
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: "**",
+        protocol: "https",
+        hostname: `${process.env.S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com`,
+        port: "",
+        pathname: "/**",
       },
       {
         protocol: "https",
-        hostname: "**",
+        hostname: "s3.amazonaws.com",
+        port: "",
+        pathname: `/${process.env.S3_BUCKET}/**`,
       },
     ],
-    unoptimized: true, // Allows bypassing image optimization entirely if needed
-  },
-  experimental: {
-    serverActions: {
-      allowedOrigins: ["localhost:3000"],
-    },
   },
 
   webpack(config) {

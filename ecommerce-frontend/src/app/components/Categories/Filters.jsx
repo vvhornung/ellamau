@@ -15,8 +15,6 @@ function Filters({ categoryId }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { colors, sizes, isLoading } = useVariantOptions(categoryId);
-  console.log("colors", colors);
-  console.log("sizes", sizes);
 
 
   // Get current filter values from URL or set to empty

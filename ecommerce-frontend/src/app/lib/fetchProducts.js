@@ -40,7 +40,7 @@ export async function getProductsByCategory(
           name: 1,
           price: 1,
           discountPrice: 1,
-          img: 1,
+          images: 1,
           category: 1,
           slug: 1,
           _id: 1,

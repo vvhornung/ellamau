@@ -17,6 +17,8 @@ export default async function handler(req, res) {
         });
     });
 
+    console.log(files)
+
 
     const client = new S3Client({
       region: process.env.AWS_REGION,
@@ -28,7 +30,7 @@ export default async function handler(req, res) {
 
     // Upload images to S3
     const links = [];
-    for (const file of files.images) {
+    for (const file of files.file) {
         const { originalFilename, path } = file;
         const ext = originalFilename.split('.').pop();
         const newFilename = `${Date.now()}.${ext}`;

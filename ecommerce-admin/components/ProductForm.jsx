@@ -379,25 +379,42 @@ function ProductForm({
         </div>
       </div>
       <div>
-        <label>Images</label>
-        <div className="mb-2 flex flex-wrap gap-2">
+        <label>
+          Images{" "}
+          <span className="text-sm text-gray-500">
+            (First image will be used as preview)
+          </span>
+        </label>
+        <div className="mb-2 flex flex-wrap gap-2 relative">
           <ReactSortable
             list={images}
             className="flex flex-wrap gap-2"
             setList={updateImagesOrder}
           >
             {!!images?.length &&
-              images.map((link) => (
-                <div key={link} className="h-24 relative">
+              images.map((link, index) => (
+                <div
+                  key={link}
+                  className={`h-24 relative ${
+                    index === 0
+                      ? "border-2 border-neutral-200 p-1 rounded-lg shadow-md"
+                      : ""
+                  }`}
+                >
                   <img src={link} alt="" className="rounded-lg h-24" />
+                  {index === 0 && (
+                    <div className=" bg-neutral-800 text-white text-xs px-2 py-1 mt-2 rounded-b-lg">
+                      Preview
+                    </div>
+                  )}
                   <button
                     type="button"
-                    className="absolute top-0 right-0 p-1 bg-red-500 text-white rounded-full"
+                    className="absolute top-0 right-0 flex flex-col justify-center items-center text-center p-1 w-4 h-4 bg-red-500 text-white rounded-full"
                     onClick={() =>
                       setImages(images.filter((img) => img !== link))
                     }
                   >
-                    ×
+                    &times;
                   </button>
                 </div>
               ))}
@@ -407,14 +424,14 @@ function ProductForm({
               <Spinner />
             </div>
           )}
-          <label className="w-24 h-24 border text-center flex flex-col items-center justify-center rounded-lg bg-transparent cursor-pointer">
+          <label className="w-24 h-24 border text-center flex flex-col items-center justify-center rounded-lg bg-transparent cursor-pointer hover:bg-gray-100 hover:text-black group transition-colors duration-200 ease-in-out">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6"
+              className="w-6 h-6 group-hover:text-black"
             >
               <path
                 strokeLinecap="round"
@@ -422,8 +439,14 @@ function ProductForm({
                 d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
               />
             </svg>
-            <div className="text-sm">Add Image</div>
-            <input type="file" onChange={uploadImages} className="hidden" />
+            <div className="text-sm  ">Add Images</div>
+            <div className="text-xs text-gray-500 mt-1">(Select multiple)</div>
+            <input
+              type="file"
+              onChange={uploadImages}
+              className="hidden"
+              multiple
+            />
           </label>
         </div>
       </div>

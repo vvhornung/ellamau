@@ -8,6 +8,7 @@ const StyledProduct = styled.div`
 
 
 
+
   h1 {
     font-family: Cinzel, serif;
     font-size: 0.8rem;

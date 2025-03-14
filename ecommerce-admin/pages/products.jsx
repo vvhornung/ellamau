@@ -4,8 +4,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import ProductsTable from "@/components/ProductTable";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/router";
 
 function Products() {
+  const router = useRouter();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -13,10 +15,58 @@ function Products() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
+  // Load filters from URL or localStorage on component mount
   useEffect(() => {
     fetchProducts();
     fetchCategories();
-  }, []);
+
+    // Try to get filters from URL first
+    const { category, search } = router.query;
+
+    if (category) {
+      setFilterCategory(category);
+    } else {
+      // If not in URL, try localStorage
+      const savedCategory = localStorage.getItem("productFilterCategory");
+      if (savedCategory) setFilterCategory(savedCategory);
+    }
+
+    if (search) {
+      setSearchQuery(search);
+    } else {
+      const savedSearch = localStorage.getItem("productSearchQuery");
+      if (savedSearch) setSearchQuery(savedSearch);
+    }
+  }, [router.query]);
+
+  // Save filters to localStorage and URL whenever they change
+  useEffect(() => {
+    if (filterCategory) {
+      localStorage.setItem("productFilterCategory", filterCategory);
+    } else {
+      localStorage.removeItem("productFilterCategory");
+    }
+
+    if (searchQuery) {
+      localStorage.setItem("productSearchQuery", searchQuery);
+    } else {
+      localStorage.removeItem("productSearchQuery");
+    }
+
+    // Update URL with current filters without full page reload
+    const query = {};
+    if (filterCategory) query.category = filterCategory;
+    if (searchQuery) query.search = searchQuery;
+
+    router.replace(
+      {
+        pathname: router.pathname,
+        query,
+      },
+      undefined,
+      { shallow: true }
+    );
+  }, [filterCategory, searchQuery]);
 
   // Fetch products
   async function fetchProducts() {
@@ -46,10 +96,6 @@ function Products() {
   const deleteSelectedProducts = async () => {
     if (!selectedProducts.length) return;
 
-    if (!confirm("Are you sure you want to delete the selected products?")) {
-      return;
-    }
-
     try {
       await axios.delete("/api/products", {
         data: { ids: selectedProducts },
@@ -64,6 +110,15 @@ function Products() {
       console.error("Error deleting products:", error);
       toast.error("Failed to delete products");
     }
+  };
+
+  // Handle filter changes
+  const handleCategoryChange = (e) => {
+    setFilterCategory(e.target.value);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
   };
 
   return (
@@ -92,7 +147,7 @@ function Products() {
               <select
                 className="border rounded px-2 py-1"
                 value={filterCategory}
-                onChange={(e) => setFilterCategory(e.target.value)}
+                onChange={handleCategoryChange}
               >
                 <option value="">All Categories</option>
                 {categories?.map((category) => (
@@ -109,7 +164,7 @@ function Products() {
                 placeholder="Search products..."
                 className="border rounded px-2 py-1"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={handleSearchChange}
               />
             </div>
           </div>

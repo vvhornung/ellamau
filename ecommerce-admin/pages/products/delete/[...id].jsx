@@ -27,14 +27,26 @@ function DeleteProduct() {
     });
 
     if (res.status === 200) {
-      router.push("/products");
+      navigateBack();
     } else {
       console.error("Failed to delete product");
     }
   };
 
-  const goBack = () => {
-    router.push("/products");
+  const navigateBack = () => {
+    // Get stored filters
+    const category = localStorage.getItem("productFilterCategory") || "";
+    const search = localStorage.getItem("productSearchQuery") || "";
+
+    // Build query object for router
+    const query = {};
+    if (category) query.category = category;
+    if (search) query.search = search;
+
+    router.push({
+      pathname: "/products",
+      query,
+    });
   };
 
   return (
@@ -46,7 +58,7 @@ function DeleteProduct() {
         <button onClick={deleteProduct} className="btn-red">
           Yes
         </button>
-        <button className="btn-default" onClick={goBack}>
+        <button className="btn-default" onClick={navigateBack}>
           NO
         </button>
       </div>

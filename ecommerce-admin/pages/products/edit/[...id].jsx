@@ -22,12 +22,12 @@ export default function EditProductPage() {
           setProduct(res.data.data);
         } else {
           toast.error("Product not found");
-          router.push("/products");
+          navigateBack();
         }
       } catch (error) {
         console.error("Error fetching product:", error);
         toast.error("Error loading product");
-        router.push("/products");
+        navigateBack();
       } finally {
         setIsLoading(false);
       }
@@ -37,6 +37,22 @@ export default function EditProductPage() {
       fetchProduct();
     }
   }, [id, router]);
+
+  const navigateBack = () => {
+    // Get stored filters
+    const category = localStorage.getItem("productFilterCategory") || "";
+    const search = localStorage.getItem("productSearchQuery") || "";
+
+    // Build query object for router
+    const query = {};
+    if (category) query.category = category;
+    if (search) query.search = search;
+
+    router.push({
+      pathname: "/products",
+      query,
+    });
+  };
 
   if (isLoading) {
     return (
@@ -55,10 +71,7 @@ export default function EditProductPage() {
           <h1 className="text-2xl font-bold m-0">
             Edit Product - {product?.reference}
           </h1>
-          <button
-            className="btn-default"
-            onClick={() => router.push("/products")}
-          >
+          <button className="btn-default" onClick={navigateBack}>
             Back to Products
           </button>
         </div>

@@ -38,8 +38,6 @@ export async function getVariantOptions(categoryId) {
       }
     });
 
-    console.log([...colors], [...sizes]);
-
     return {
       colors: [...colors].sort(),
       sizes: [...sizes].sort(),

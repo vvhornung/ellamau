@@ -8,7 +8,6 @@ const VariantSchema = new Schema({
     required: true,
     default: 0,
   },
-  images: [String], // Multiple images per variant
 });
 
 const ProductSchema = new Schema(

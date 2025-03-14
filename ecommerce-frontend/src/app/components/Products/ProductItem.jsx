@@ -6,6 +6,8 @@ import Image from "next/image";
 
 function ProductItem({ product, $bg, $border }) {
 
+  
+
   // Ensure we're working with plain object properties
   const { name, images, price, _id, stock } =
     typeof product._doc === "object" ? product._doc : product;
@@ -23,7 +25,7 @@ function ProductItem({ product, $bg, $border }) {
             width={350}
             src={img}
             alt={name}
-            priority={true}
+
           />
           <Flex direction={"column"} $gap={"1rem"} $align={"start"}>
             <p>{name}</p>

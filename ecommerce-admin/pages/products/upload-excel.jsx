@@ -63,16 +63,21 @@ function UploadExcel() {
     const productsToUpload = [];
 
     for (const row of csvData) {
+      // Create a new object with trimmed keys to ensure consistent property access
+      const trimmedRow = Object.fromEntries(
+        Object.entries(row).map(([key, value]) => [key.trim(), value])
+      );
+
       const {
-        name: baseProductName,
         REF,
-        category: categoryName,
+        name: baseProductName,
         description,
         details,
-        price,
         color,
         size,
-      } = row;
+        price,
+        category: categoryName,
+      } = trimmedRow;
 
       // Standardize category name
       const standardizedCategoryName = categoryName?.toLowerCase().trim();
@@ -91,7 +96,9 @@ function UploadExcel() {
           setCategories((prev) => [...prev, categoryObject]);
         } catch (error) {
           console.error(
-            `Failed to create category "${standardizedCategoryName}"`,
+            `Failed to create category "${standardizedCategoryName}" from ROW ${JSON.stringify(
+              row
+            )}:`,
             error
           );
           alert(
@@ -109,7 +116,7 @@ function UploadExcel() {
         details: details.split(";").map((detail) => detail.trim()),
         price: parseFloat(price),
         images: [
-          "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg",
+      
         ],
       };
 

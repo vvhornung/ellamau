@@ -9,11 +9,11 @@ export default function VariantGroup({
   onSelect,
 }) {
   return (
-    <div>
+    <div >
       <h3>
         <strong>{type.charAt(0).toUpperCase() + type.slice(1)}</strong>
       </h3>
-      <Flex $gap="0.5rem">
+      <Flex $wrap={'wrap'} $justify={'start'} $gap="0.5rem">
         {options.map((option) => (
           <VariantButton
             key={option}
