@@ -13,12 +13,13 @@ export default async function MainNav() {
     <Container width={"90%"}>
       <StyledMainNav className={cinzel_decrative.className}>
         {/* <!-- Navigation links --> */}
-
         <ul>
           {categories.map((category) => {
             return (
               <li key={category.id}>
-                <a href={`/category/${category.id}`}>{category.name}</a>
+                <Link href={`/category/${category.id}`} passHref>
+                  {category.name}
+                </Link>
               </li>
             );
           })}
