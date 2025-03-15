@@ -31,7 +31,7 @@ export default async function CategoryPage({ params, searchParams }) {
         <SubCategoriesCarrousel categoryId={categoryId} />
       )}
 
-      <Filters />
+      <Filters categoryId={categoryId} />
       <ProductSection
         categoryId={categoryId}
         initialPage={page ? parseInt(searchParams.page, 10) : 1}
