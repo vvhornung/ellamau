@@ -1,74 +1,56 @@
-import { useState, useEffect } from "react";
+"use client";
+import { useState, useEffect, useMemo } from "react";
 import { getProductsByCategory } from "@/app/lib/fetchProducts";
 
-// Cache for storing products by category and page
-const productCache = {};
+export function useProducts(categoryId, page = 1, limit = 6, filters = {}) {
+  // Simplified initial state without cache
+  const [state, setState] = useState({
+    products: [],
+    total: 0,
+    pages: 0,
+    isLoading: true,
+    isValidating: false,
+  });
 
-// Initial state
-const initialState = {
-  products: [],
-  total: 0,
-  pages: 0,
-  isLoading: true,
-  isValidating: false,
-  currentPage: 1,
-  error: null,
-};
+  // Create a stable string representation of filters
+  const filtersString = useMemo(() => JSON.stringify(filters), [filters]);
 
-export function useProducts(categoryId, page = 1) {
-  const [state, setState] = useState(initialState);
-  const cacheKey = `${categoryId}-${page}`;
-
+  // Use useEffect with a stable reference for filters
   useEffect(() => {
+    // Log to debug the filters values
+    console.log("Filters in useProducts:", filters);
+
     let isMounted = true;
+    const fetchData = async () => {
+      if (!isMounted) return;
 
-    const fetchProducts = async () => {
+      setState((prevState) => ({
+        ...prevState,
+        isLoading: true,
+        isValidating: true,
+      }));
+
       try {
-        // First, check if we already have cached data for this page
-        if (productCache[cacheKey]) {
-          if (isMounted) {
-            setState({
-              ...productCache[cacheKey],
-              isLoading: false,
-              isValidating: true, // Still revalidate in background
-              currentPage: page,
-            });
-          }
-        } else {
-          // No cache - set loading state
-          if (isMounted) {
-            setState((prev) => ({
-              ...prev,
-              isLoading: !productCache[cacheKey], // Only show loading if no cache
-              currentPage: page,
-            }));
-          }
-        }
+        const result = await getProductsByCategory(
+          categoryId,
+          limit,
+          "",
+          false,
+          page,
+          filters // Use filters directly
+        );
 
-        // Fetch fresh data regardless of cache
-        const data = await getProductsByCategory(categoryId, 6, null, page);
+        if (!isMounted) return;
 
-        // Update cache
-        productCache[cacheKey] = {
-          products: data.products,
-          total: data.total,
-          pages: data.pages,
-          currentPage: page,
-          error: null,
-        };
-
-        // Update state if component is still mounted
-        if (isMounted) {
-          setState({
-            products: data.products,
-            total: data.total,
-            pages: data.pages,
-            isLoading: false,
-            isValidating: false,
-            currentPage: page,
-            error: null,
-          });
-        }
+        // Update state with fresh data
+        setState({
+          products: result.products,
+          total: result.total,
+          pages: result.pages,
+          currentPage: result.currentPage,
+          isLoading: false,
+          isValidating: false,
+        });
       } catch (error) {
         console.error("Error fetching products:", error);
         if (isMounted) {
@@ -76,41 +58,35 @@ export function useProducts(categoryId, page = 1) {
             ...prev,
             isLoading: false,
             isValidating: false,
-            error: error.message || "Error fetching products",
           }));
         }
       }
     };
 
-    fetchProducts();
+    fetchData();
 
-    // Cleanup function
     return () => {
       isMounted = false;
     };
-  }, [categoryId, page, cacheKey]); // Add cacheKey to dependencies
+  }, [categoryId, page, limit, filtersString]); // Use filtersString instead of dynamic array
 
   return state;
 }
 
-// Function to prefetch the next/previous page
-export async function prefetchCategoryPage(categoryId, page) {
-  const cacheKey = `${categoryId}-${page}`;
-
-  // Don't prefetch if already cached
-  if (productCache[cacheKey]) return;
-
-  try {
-    const data = await getProductsByCategory(categoryId, 6, null, page);
-    // Store in cache
-    productCache[cacheKey] = {
-      products: data.products,
-      total: data.total,
-      pages: data.pages,
-      currentPage: page,
-      error: null,
-    };
-  } catch (error) {
-    console.error("Error prefetching page:", error);
-  }
+// No changes needed to prefetchCategoryPage function
+export function prefetchCategoryPage(
+  categoryId,
+  page,
+  limit = 6,
+  filters = {}
+) {
+  console.log("Prefetching with filters:", filters);
+  return getProductsByCategory(
+    categoryId,
+    limit,
+    "",
+    false,
+    page,
+    filters
+  ).then((result) => result);
 }

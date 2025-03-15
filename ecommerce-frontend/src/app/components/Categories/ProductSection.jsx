@@ -15,23 +15,36 @@ function ProductSection({ categoryId, initialPage = 1 }) {
     10
   );
 
-  // Use our custom hook for cached data
+  // Extract filter values from URL params
+  const filters = {
+    color: searchParams.get("color") || undefined,
+    size: searchParams.get("size") || undefined,
+    // Add any other filters here
+  };
+
+  // Clean up undefined values
+  Object.keys(filters).forEach(
+    (key) => filters[key] === undefined && delete filters[key]
+  );
+
+  // Use our custom hook with filters from URL
   const { products, total, pages, isLoading, isValidating } = useProducts(
     categoryId,
-    currentPage
+    currentPage,
+    6, // limit
+    filters // Pass extracted filters
   );
 
   // Prefetch adjacent pages for faster navigation
   useEffect(() => {
-    console.log("a");
-    // Prefetch next and previous pages for smoother navigation
+    // Pass the same filters to prefetch
     if (currentPage < pages) {
-      prefetchCategoryPage(categoryId, currentPage + 1);
+      prefetchCategoryPage(categoryId, currentPage + 1, 6, filters);
     }
     if (currentPage > 1) {
-      prefetchCategoryPage(categoryId, currentPage - 1);
+      prefetchCategoryPage(categoryId, currentPage - 1, 6, filters);
     }
-  }, [categoryId, currentPage, pages]);
+  }, [categoryId, currentPage, pages, filters]);
 
   return (
     <Container>
