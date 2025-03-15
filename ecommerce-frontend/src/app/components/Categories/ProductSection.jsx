@@ -5,6 +5,7 @@ import { Container } from "../shared/styles/Container.styled";
 import Grid from "../shared/styles/Grid.styled";
 import ProductItem from "../Products/ProductItem";
 import Pagination from "../shared/Pagination";
+import Spinner from "../shared/Spinner";
 import { useProducts, prefetchCategoryPage } from "@/app/Hooks/useProducts";
 
 function ProductSection({ categoryId, initialPage = 1 }) {
@@ -51,11 +52,7 @@ function ProductSection({ categoryId, initialPage = 1 }) {
       <h1>Recomendados</h1>
 
       {isLoading ? (
-        <div
-          style={{ display: "flex", justifyContent: "center", padding: "3rem" }}
-        >
-          Loading...
-        </div>
+        <Spinner />
       ) : products?.length === 0 ? (
         <p>No hay productos disponibles.</p>
       ) : (
@@ -75,7 +72,7 @@ function ProductSection({ categoryId, initialPage = 1 }) {
             <div
               style={{ textAlign: "center", padding: "10px", color: "#888" }}
             >
-              Updating products...
+              <Spinner />
             </div>
           )}
 

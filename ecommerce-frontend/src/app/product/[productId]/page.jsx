@@ -8,6 +8,7 @@ import ProductDetails from "@/app/components/Products/ProductDetails";
 import { getProductData } from "@/app/actions/productActions";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import Spinner from "@/app/components/shared/Spinner";
 
 export default function ProductPage({ params }) {
   // Get product ID from URL
@@ -20,7 +21,6 @@ export default function ProductPage({ params }) {
   // Effect to fetch product data
   useEffect(() => {
     const fetchData = async () => {
-  
       const { product, relatedProducts } = await getProductData(
         productId,
         true
@@ -35,7 +35,11 @@ export default function ProductPage({ params }) {
 
   // If product data is not yet loaded, return a loading state
   if (!product || !relatedProducts) {
-    return <div>Loading...</div>;
+    return (
+      <Container>
+        <Spinner />
+      </Container>
+    );
   }
 
   return (

@@ -9,13 +9,13 @@ import {
   FilterBadge,
 } from "./styles/FilterOption.styled";
 import { Container } from "../shared/styles/Container.styled";
+import Spinner from "../shared/Spinner";
 import { useVariantOptions } from "@/app/Hooks/useVariantOptions";
 
 function Filters({ categoryId }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { colors, sizes, isLoading } = useVariantOptions(categoryId);
-
 
   // Get current filter values from URL or set to empty
   const currentColor = searchParams.get("color") || "";
@@ -96,7 +96,9 @@ function Filters({ categoryId }) {
                 </FilterItem>
 
                 {isLoading ? (
-                  <FilterItem>Loading...</FilterItem>
+                  <FilterItem>
+                    <Spinner />
+                  </FilterItem>
                 ) : (
                   colors.map((color) => (
                     <FilterItem
@@ -131,7 +133,9 @@ function Filters({ categoryId }) {
                 </FilterItem>
 
                 {isLoading ? (
-                  <FilterItem>Loading...</FilterItem>
+                  <FilterItem>
+                    <Spinner />
+                  </FilterItem>
                 ) : (
                   sizes.map((size) => (
                     <FilterItem
