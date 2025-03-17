@@ -26,6 +26,13 @@ const nextConfig = {
     ],
   },
 
+  experimental: {
+    serverActions: {
+      // edit: updated to new key. Was previously `allowedForwardedHosts`
+      allowedOrigins: ["localhost:3000", "localhost:3001"],
+    },
+  },
+
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
