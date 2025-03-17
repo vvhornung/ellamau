@@ -74,19 +74,21 @@ export default function ProductPage({ params }) {
               width="fit-content"
             >
               {product.images.map((img, i) => (
-                <Image
-                  key={i}
-                  src={img}
-                  alt={product.name}
-                  width={100}
-                  height={100}
-                  style={{
-                    filter: selectedImage === img ? "none" : "brightness(0.8)",
-                    cursor: "pointer",
-                    transition: "filter 0.4s",
-                  }}
-                  onClick={() => setSelectedImage(img)} // Update selected image on click
-                />
+                <div style={{width: '100px', height:'100px', position:'relative'}} key={i}>
+                  <Image
+                    src={img}
+                    alt={product.name}
+                    fill
+                    style={{
+                      filter:
+                        selectedImage === img ? "none" : "brightness(0.8)",
+                      cursor: "pointer",
+                      transition: "filter 0.4s",
+                      objectFit: "cover",
+                    }}
+                    onClick={() => setSelectedImage(img)} // Update selected image on click
+                  />
+                </div>
               ))}
             </Flex>
           </Container>
