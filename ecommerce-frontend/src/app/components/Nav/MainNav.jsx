@@ -1,6 +1,5 @@
 import { Container } from "../shared/styles/Container.styled";
 import { StyledMainNav } from "./styles/MainNav.styled";
-import { cinzel_decrative } from "@/app/fonts";
 import Link from "next/link";
 import connectDB from "@/app/lib/mongoose";
 import { Category } from "@/app/models/Category";
@@ -11,7 +10,7 @@ export default async function MainNav() {
 
   return (
     <Container width={"90%"}>
-      <StyledMainNav className={cinzel_decrative.className}>
+      <StyledMainNav >
         {/* <!-- Navigation links --> */}
         <ul>
           {categories.map((category) => {

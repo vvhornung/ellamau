@@ -27,7 +27,7 @@ export default function ProductPage({ params }) {
       );
       setProduct(product);
       setRelatedProducts(relatedProducts);
-      setSelectedImage(product.images[0]);
+      setSelectedImage(product.images[0] || 'https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg');
     };
 
     fetchData();

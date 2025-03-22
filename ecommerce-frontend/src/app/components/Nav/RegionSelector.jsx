@@ -8,7 +8,6 @@ function RegionSelector() {
     <Flex
       $justify={"start"}
       width={"fit-content"}
-      className={cinzel_decrative.className}
     >
       <Image
         src="http://127.0.0.1:5500/landing/icons/usa.svg"

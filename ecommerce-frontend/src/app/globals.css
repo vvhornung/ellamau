@@ -48,8 +48,6 @@ h1{
     font-family: "Cinzel", serif;
     font-weight: 400;
     font-size: 2.5rem;
-    text-transform: uppercase;
-
 }
 
 
@@ -76,3 +74,11 @@ input[type=number] {
   }
 }
 
+@keyframes skeletonKeyframes{
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}

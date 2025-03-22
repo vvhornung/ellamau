@@ -2,6 +2,10 @@
 
 import { Cinzel, Cinzel_Decorative, Public_Sans } from "next/font/google";
 
+
+
+ 
+
 export const cinzel = Cinzel({
   weight: ["400", "600", "500", "700", "900"],
   subsets: ["latin"],

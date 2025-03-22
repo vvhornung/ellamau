@@ -9,8 +9,20 @@ export const StyledLogo = styled.div`
   padding: 1rem;
 
   h1 {
-    font-weight: 600;
     font-size: 3rem;
+    font-family: var(--font-denike);
+
+    span {
+      position: relative;
+    }
+
+    span::after {
+      position: absolute;
+      font-family: sans;
+      content: "¨";
+      top: 0;
+      left: 4px;
+    }
   }
 
   p {

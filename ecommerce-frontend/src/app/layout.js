@@ -19,6 +19,11 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+const denike = localFont({
+  src: "./fonts/Denike.otf",
+  variable: "--font-denike",
+});
+
 const publicSans = Public_Sans({subsets: ['latin']})
 
 export default function RootLayout({ children }) {
@@ -28,7 +33,8 @@ export default function RootLayout({ children }) {
         <StyledComponentsRegistry>
           <CartProvider>
             <ThemeClient>
-              <div className={`${geistSans.variable} ${geistMono.variable} ${publicSans.className}`}>
+              <div className={`${geistSans.variable} ${geistMono.variable} ${publicSans.className} ${denike.variable}`}>
+
                 <Nav />
                 <main>{children}</main>
                 <Footer />

@@ -11,7 +11,7 @@ async function SubCategoriesCarrousel({ categoryId }) {
 
   categories.forEach((category) => {
     category.img =
-      "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg";
+      "https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg";
   });
 
   return (

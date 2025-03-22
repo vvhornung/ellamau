@@ -11,9 +11,7 @@ import connectDB from "./lib/mongoose";
 import { getProductsByCategory } from "./lib/fetchProducts";
 
 export default async function Home() {
-
   connectDB();
-
 
   const categories = await Category.find({ parentCategory: null });
 
@@ -28,24 +26,21 @@ export default async function Home() {
     }))
   );
 
-
   collectionItems.forEach((item) => {
     item.product.img =
-        "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg";
-    });
-
-
+      "https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg";
+  });
 
   const latestProducts = await Product.find().sort({ createdAt: -1 }).limit(4);
   latestProducts.forEach((product) => {
     product.img =
-      "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg";
+      "https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg";
   });
+  //ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg
 
 
-
-  const swimwearProducts = (await getProductsByCategory(swimwearCategory.id, 4)).products;
-
+  const swimwearProducts = (await getProductsByCategory(swimwearCategory.id, 4))
+    .products;
 
   return (
     <>
@@ -67,7 +62,7 @@ export default async function Home() {
         text="Discover the collection"
         buttonText="Shop Now"
         imageSrc={
-          "https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg"
+          "https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg"
         }
       />
 
@@ -80,7 +75,7 @@ export default async function Home() {
         subHeading="beauty"
         text="Discover the collection"
         buttonText="Shop Now"
-        imageSrc="https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg"
+        imageSrc="https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg"
         image$positionX="35%"
         image$positionY="40%"
       />
@@ -89,7 +84,7 @@ export default async function Home() {
         subHeading="DISCOVER SPORTSWEAR"
         text="Leave an unforgettable impression with our exclusive fragrances"
         buttonText="Shop Now"
-        imageSrc="https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg"
+        imageSrc="https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg"
         brightness={0.7}
       />
 
@@ -107,7 +102,7 @@ export default async function Home() {
         text="Discover the collection"
         buttonText="Shop Now"
         image$positionX="30%"
-        imageSrc="https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg"
+        imageSrc="https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg"
       />
     </>
   );
