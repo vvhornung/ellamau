@@ -47,13 +47,14 @@ function ProductItem({ product, $bg, $border }) {
               style={{
                 textOverflow: "ellipsis",
                 display: "-webkit-box",
-                WebkitLineClamp: 2,
+                WebkitLineClamp: 1,
                 WebkitBoxOrient: "vertical",
                 overflow: "hidden",
                 maxWidth: "100%",
                 whiteSpace: "normal",
                 lineHeight: "1.4em",
                 maxHeight: "2.8em", 
+                textAlign: "left",
               }}
             >
               {name}
