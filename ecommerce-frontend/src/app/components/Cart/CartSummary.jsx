@@ -1,11 +1,22 @@
 
 import { useContext, useState } from "react";
 import { CartContext } from "@/app/contexts/CartContext";
+import CheckoutPage from "../Checkout/CheckoutPage";
 import {
   SummaryContainer,
   SummaryRow,
   CheckoutButton,
 } from "./styles/CartSummary.styled";
+import {
+  Elements,
+  CardElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import convertToSubCurrency from "@/app/lib/convertToSubCurrency";
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 export default function CartSummary() {
   const { cart } = useContext(CartContext);
@@ -33,38 +44,43 @@ export default function CartSummary() {
   return (
     <SummaryContainer>
       <SummaryRow $withBorder>
-
-      <h2>Order Summary</h2>
+        <h2>Order Summary</h2>
       </SummaryRow>
-
-      <SummaryRow >
+      <SummaryRow>
         <span>Subtotal</span>
         <span>${subtotal.toFixed(2)}</span>
       </SummaryRow>
-
       <SummaryRow>
         <span>Shipping</span>
         <span>
           {shippingCost === 0 ? "Free" : `$${shippingCost.toFixed(2)}`}
         </span>
       </SummaryRow>
-
       <SummaryRow $withBorder>
         <span>Tax (19%)</span>
         <span>${tax.toFixed(2)}</span>
       </SummaryRow>
-
       <SummaryRow $bold $large>
         <span>Total</span>
         <span>${total.toFixed(2)}</span>
       </SummaryRow>
 
-      <CheckoutButton
-        onClick={handleCheckout}
-        disabled={cart.length === 0 || isCheckingOut}
-      >
-        {isCheckingOut ? "Processing..." : "Proceed to Checkout"}
-      </CheckoutButton>
+      <SummaryRow $withBorder>
+        <h2>Payment Method</h2>
+      </SummaryRow>
+      <SummaryRow>
+        <Elements
+          stripe={stripePromise}
+          options={{
+            mode: "payment",
+            amount: convertToSubCurrency(total),
+            currency: "usd",
+          }}
+        >
+          <CheckoutPage amount={(total)} />
+        </Elements>
+      </SummaryRow>
+
     </SummaryContainer>
   );
 }
