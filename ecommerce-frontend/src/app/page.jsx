@@ -9,6 +9,10 @@ import { Product } from "./models/Product";
 import { Category } from "./models/Category";
 import connectDB from "./lib/mongoose";
 import { getProductsByCategory } from "./lib/fetchProducts";
+import Hero from "../../public/mobileHero.jpg";
+import heroOg from "../../public/heroOg.jpg";
+import Perfume from "../../public/perfumeHero.png";
+import PerfumeMobile from "../../public/perfumeHeroMobile.png";
 
 export default async function Home() {
   connectDB();
@@ -61,9 +65,8 @@ export default async function Home() {
         subHeading="new lingerie"
         text="Discover the collection"
         buttonText="Shop Now"
-        imageSrc={
-          "https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg"
-        }
+        imageSrc={heroOg}
+        tabletImageSrc={Hero}
       />
 
       <Container>
@@ -75,7 +78,8 @@ export default async function Home() {
         subHeading="beauty"
         text="Discover the collection"
         buttonText="Shop Now"
-        imageSrc="https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg"
+        imageSrc={Perfume}
+        mobileImageSrc={PerfumeMobile}
         image$positionX="35%"
         image$positionY="40%"
       />

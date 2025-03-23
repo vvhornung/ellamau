@@ -14,6 +14,20 @@ export const Section = styled.section`
     font-size: 1.5rem;
     border-radius: 0;
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    button {
+      padding: 10px 30px;
+      font-size: 1.2rem;
+    }
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    button {
+      padding: 6px 15px;
+      font-size: 0.8rem;
+    }
+  }
 `;
 
 export const ContentOverlay = styled.div`
@@ -24,6 +38,15 @@ export const ContentOverlay = styled.div`
   text-align: center;
   color: #fff;
   z-index: 2;
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1rem;
+    margin-bottom: 0.1rem;
+  }
 `;
 
 export const SubHeading = styled.h2`
@@ -32,6 +55,17 @@ export const SubHeading = styled.h2`
   font-size: 1.5rem;
   color: #ffffff;
   margin-bottom: 0.2rem;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    white-space: normal;
+  }
+
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 1rem;
+  }
 `;
 
 export const MainHeading = styled.h3`
@@ -41,6 +75,23 @@ export const MainHeading = styled.h3`
   margin-bottom: 28px;
   text-transform: lowercase;
   white-space: nowrap;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    white-space: normal;
+  }
+  @media (max-width: 663px) {
+    font-size: 2.2rem;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 2rem;
+  }
+
+  @media (max-width: 440px) {
+    font-size: 1.6rem;
+  }
 `;
 
 export const Description = styled.p`
@@ -48,13 +99,51 @@ export const Description = styled.p`
   font-size: 1.2rem;
   font-weight: 400;
   margin-bottom: 40px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    font-size: 1rem;
+    margin-bottom: 25px;
+  }
+
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    padding: 0 10px;
+  }
 `;
 
 export const BackgroundImage = styled(Image)`
   width: 100%;
-  height: auto;
+  height: 80vh !important; /* Altura predeterminada para desktop */
   object-fit: cover;
-  filter: brightness(
-    ${({ filterpercentagecentage }) => filterpercentagecentage || "100%"}
-  );
+  object-position: ${({ objectPosition }) => objectPosition || "center"};
+  filter: brightness(${({ filterBrightness }) => filterBrightness || "100%"});
+  transition: height 0.3s ease; /* Suaviza el cambio de altura */
+
+  /* Pantallas grandes */
+  @media (min-width: 1440px) {
+    height: 85vh !important;
+  }
+
+  /* Tablets */
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    height: 60vh !important;
+    object-position: ${({ tabletObjectPosition, objectPosition }) =>
+      tabletObjectPosition || objectPosition || "left top"};
+  }
+
+  /* Móviles grandes */
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    height: 50vh !important;
+  }
+
+
+ @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    height: 50vh !important;
+  }
+
+  
 `;
+
+

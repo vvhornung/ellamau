@@ -29,11 +29,11 @@ function ProductItem({ product, $bg, $border }) {
             style={{
               backgroundImage:
                 "background-image: linear-gradient(90deg, #eee, #f5f5f5, #eee)",
-                animation: "skeletonKeyframes 1300ms ease-in-out infinite",
-                backgroundColor: "#eee",
-                backgroundSize: "200px 100%",
-                backgroundRepeat: "no-repeat",
-                borderRadius: "4px",
+              animation: "skeletonKeyframes 1300ms ease-in-out infinite",
+              backgroundColor: "#eee",
+              backgroundSize: "200px 100%",
+              backgroundRepeat: "no-repeat",
+              borderRadius: "4px",
             }}
           />
 
@@ -46,19 +46,26 @@ function ProductItem({ product, $bg, $border }) {
             <p
               style={{
                 textOverflow: "ellipsis",
-                display: "block",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
                 overflow: "hidden",
                 maxWidth: "100%",
+                whiteSpace: "normal",
+                lineHeight: "1.4em",
+                maxHeight: "2.8em", 
               }}
             >
               {name}
             </p>
+
             <span>${price.toFixed(2)}</span>
           </Flex>
         </StyledCarrouselItem>
       </StyledProductItem>
     </Link>
   );
+
 }
 
 export default ProductItem;

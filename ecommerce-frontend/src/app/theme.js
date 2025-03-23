@@ -9,7 +9,7 @@ export const theme = {
     geistMono: "GeistMonoVF",
   },
   breakpoints: {
-    mobile: "520px",
+    mobile: "480px",
     tablet: "768px",
     desktop: "1024px",
   },
