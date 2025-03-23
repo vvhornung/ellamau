@@ -15,10 +15,12 @@ async function CollectionCarrousel({ bg, items }) {
 
   return (
     <Container>
+      
       <Flex direction={"column"}>
-        <h1>Collection Carrousel</h1>
-        <Container width="fit-content" $scroll={"true"} $bg={bg}>
-          <Flex $justify={"start"} $gap={"0.1rem"}>
+        <h1 className="carrousel-title">Collection Carrousel</h1>
+      
+        <Container   $scroll={"true"} $bg={bg}>
+          <Flex $justify={"space-around"} $gap={"0.1rem"}>
             {items?.map(({product}) => (
               <CollectionItem key={product['_id']} product={product} bg={bg} />
             ))}

@@ -7,7 +7,7 @@ function ProductCarrousel({ $bg, $border, items }) {
   return (
     <Container>
       <Flex direction={"column"}>
-        <h1>Product Carrousel</h1>
+        <h1 className="carrousel-title">Product Carrousel</h1>
         <Container $scroll={"true"} $bg={$bg}>
           <Flex $justify={"start"}>
             {items?.map((item) => (
