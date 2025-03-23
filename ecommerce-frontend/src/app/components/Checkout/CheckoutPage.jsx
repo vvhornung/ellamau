@@ -56,7 +56,7 @@ const CheckoutPage = ({amount}) => {
                 card: elements.getElement(PaymentElement)
             },
             confirmParams: {
-                return_url: 'http://localhost:3001/'
+                return_url: 'http://localhost:3001/success'
             }
         })
 
