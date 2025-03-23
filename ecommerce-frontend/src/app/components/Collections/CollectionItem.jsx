@@ -3,9 +3,10 @@ import { Flex } from "../shared/styles/Flex.styled";
 import ActionButton from "../shared/styles/ActionButton.styled";
 import Image from "next/image";
 import Link from "next/link";
+import styled from "styled-components";
 
 async function CollectionItem({ product, bg }) {
-  const { img, id } = product || {
+  const { images, _id:id } = product || {
     images: [
       "https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg",
     ],
@@ -13,15 +14,15 @@ async function CollectionItem({ product, bg }) {
   };
 
   const image =
-    img ||
+    images[0] ||
     "https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg";
 
   return (
-    <Link href={`/product/${id}`}>
+    <Link href={`/product/${id}`} style={{ width: "100%" }} passHref>
       <StyledCarrouselItem $bg={bg}>
         <Image
           height={550}
-          width={350}
+          width={700}
           src={image}
           alt={product.categoryName}
         />
