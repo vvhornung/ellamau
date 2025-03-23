@@ -9,7 +9,7 @@ export const StyledCarrouselItem = styled.div`
   justify-content: flex-end;
   width: ${({ width }) => width || "100%"};
   min-width: 200px;
-  max-width: 400px;
+  max-width: 600px;
   height: clamp(400px, 50vw, 550px);
   position: relative;
   font-family: "Public Sans", sans-serif;
