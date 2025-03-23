@@ -18,7 +18,7 @@ export function useProducts(categoryId, page = 1, limit = 6, filters = {}) {
   // Use useEffect with a stable reference for filters
   useEffect(() => {
     // Log to debug the filters values
-    console.log("Filters in useProducts:", filters);
+
 
     let isMounted = true;
     const fetchData = async () => {
@@ -74,13 +74,13 @@ export function useProducts(categoryId, page = 1, limit = 6, filters = {}) {
 }
 
 // No changes needed to prefetchCategoryPage function
-export function prefetchCategoryPage(
+export async function prefetchCategoryPage(
   categoryId,
   page,
   limit = 6,
   filters = {}
 ) {
-  console.log("Prefetching with filters:", filters);
+
   return getProductsByCategory(
     categoryId,
     limit,
