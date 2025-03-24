@@ -88,8 +88,6 @@ input[type=number] {
   margin-bottom: 1rem;
   text-transform: uppercase;
 }
-
-/* Tablets */
 @media screen and (max-width: 768px) {
   .carrousel-title {
     font-size: 1.8rem;
@@ -97,7 +95,7 @@ input[type=number] {
   }
 }
 
-/* Móviles */
+
 @media screen and (max-width: 480px) {
   .carrousel-title {
     font-size: 1.5rem;
@@ -105,3 +103,26 @@ input[type=number] {
   }
 }
 
+/* Estilos responsivos para tarjetas en ProductSection */
+@media (max-width: 768px) {
+  .product-section-item {
+    max-width: 200px !important;
+  }
+}
+
+@media (max-width: 555px) {
+  .product-section-item {
+    max-width: 170px !important;
+  }
+  
+  /* También ajustar el grid para esta sección específica */
+  .product-section-item {
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-section-item {
+    max-width: 150px !important;
+  }
+}
