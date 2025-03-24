@@ -26,6 +26,9 @@ export const StyledMainNav = styled.nav`
         color: ${({ theme }) => theme.colors.primary};
       }
     }
+  }
 
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: none
   }
 `;
