@@ -5,18 +5,22 @@ import SubCategoryItem from "./SubCategoryItem";
 import connectDB from "@/app/lib/mongoose";
 import { Category } from "@/app/models/Category";
 
-
 async function SubCategoriesCarrousel({ categoryId }) {
   await connectDB();
   const categories = await Category.find({ parentCategory: categoryId });
-  
-
-
-
 
   return (
-    <Container $scroll={"true"}>
-      <Flex $justify={"center"} $gap={"4px"}>
+    <Container
+      $scroll={"true"}
+      style={{ overflowX: "auto", whiteSpace: "nowrap", padding: "0 10px" }}
+    >
+      {" "}
+      {/* Enable horizontal scrolling */}
+      <Flex
+        $justify={"flex-start"} /* Align items to the start */
+        $gap={"0px"}
+        $wrap={"nowrap"}
+      >
         {categories.reverse().map((category) => (
           <Link key={category.id} href={`/category/${category.id}`}>
             <SubCategoryItem category={category} />

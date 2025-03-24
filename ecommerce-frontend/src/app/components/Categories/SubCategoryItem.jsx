@@ -4,9 +4,6 @@ import Image from "next/image";
 import { getProductsByCategory } from "@/app/lib/fetchProducts";
 
 async function SubCategoryItem({ category, bg }) {
-
-  
-
   const { name, _id } = category;
 
   const product = (await getProductsByCategory(_id, 1)).products[0];
@@ -17,7 +14,7 @@ async function SubCategoryItem({ category, bg }) {
   return (
     <StyledCategoryItem $bg={bg}>
       <Flex direction={"column"} $gap={"0"} $align={"center"}>
-        <Image height={550} width={350} src={image} alt={name} />
+        <Image height={238} width={350} src={image} alt={name} />{" "}
         <p>{name}</p>
       </Flex>
     </StyledCategoryItem>
