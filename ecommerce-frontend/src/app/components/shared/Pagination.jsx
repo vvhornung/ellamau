@@ -30,6 +30,10 @@ const PageButton = styled.button`
     cursor: not-allowed;
     opacity: 0.5;
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: 4px 8px;
+  }
 `;
 
 const PageIndicator = styled.span`

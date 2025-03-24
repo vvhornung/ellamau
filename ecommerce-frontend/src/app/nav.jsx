@@ -8,23 +8,27 @@ import { Flex } from "./components/shared/styles/Flex.styled";
 import MobileNav from "./components/Nav/Mobile/MobileNav";
 import StyledNav from "./components/Nav/styles/Nav.styled";
 
+import connectDB from "./lib/mongoose";
+import { Category } from "./models/Category";
+import { isMobile } from "./lib/utils/breakpoints";
 
+async function Nav() {
+  await connectDB();
+  const categories = await Category.find({ parentCategory: null });
 
-function Nav() {
-  const isMobile = false;
 
   return (
     <StyledNav>
-      {!isMobile ? (
-        <Flex direction={"column"} $gap={"0"}>
-          <OfferNav />
-          <UserNav />
-          <SearchNav />
-          <MainNav />
-        </Flex>
-      ) : (
-        <MobileNav></MobileNav>
-      )}
+      <Flex direction={"column"} $gap={"0"}>
+        <OfferNav />
+        <UserNav />
+        <SearchNav />
+        <MainNav categories={categories} />
+      </Flex>
+      <MobileNav
+        categories={JSON.parse(JSON.stringify(categories))}
+      ></MobileNav>
+
     </StyledNav>
   );
 }

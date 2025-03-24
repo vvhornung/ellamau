@@ -17,4 +17,9 @@ export const StyledUserNav = styled.div`
     transition: 0.2s ease-in-out;
     fill: white;
   }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: none;
+  }
+  
 `;

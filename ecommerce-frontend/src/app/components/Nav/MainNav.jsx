@@ -4,9 +4,8 @@ import Link from "next/link";
 import connectDB from "@/app/lib/mongoose";
 import { Category } from "@/app/models/Category";
 
-export default async function MainNav() {
-  await connectDB();
-  const categories = await Category.find({ parentCategory: null });
+export default async function MainNav({categories}) {
+
 
   return (
     <Container width={"90%"}>

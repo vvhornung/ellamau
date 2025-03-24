@@ -17,6 +17,7 @@ export default function ProductPage({ params }) {
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Effect to fetch product data
   useEffect(() => {
@@ -27,11 +28,25 @@ export default function ProductPage({ params }) {
       );
       setProduct(product);
       setRelatedProducts(relatedProducts);
-      setSelectedImage(product.images[0] || 'https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg');
+      setSelectedImage(
+        product.images[0] ||
+          "https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg"
+      );
     };
 
     fetchData();
   }, [productId]);
+
+  // Effect to handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1000);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // If product data is not yet loaded, return a loading state
   if (!product || !relatedProducts) {
@@ -44,29 +59,38 @@ export default function ProductPage({ params }) {
 
   return (
     <Container>
-      <Flex $justify="space-around" $gap="0" $align="start">
+      <Flex
+        $justify="space-between"
+        $align={isMobile ? "center" : "flex-start"}
+        direction={isMobile ? "column" : "row"}
+      >
         <Flex
           direction="column"
           $gap="1rem"
-          $align="end"
-          width="50%"
-          style={{ maxWidth: "500px" }}
+          width={isMobile ? "700px" : "40%"}
+          style={{ maxWidth: isMobile ? "100%" : "100%" }}
         >
           <Container
-            width="80%"
-            height="535px"
-            style={{ position: "relative" }}
+            width="100%"
+            height={isMobile ? "auto" : "50%"}
+            style={{
+              position: "relative",
+              maxHeight: "700px",
+              overflow: "hidden",
+            }}
           >
             <Image
               src={selectedImage}
               alt={product.name}
-              sizes="100%"
-              fill
-              style={{ objectFit: "cover" }}
+              layout="intrinsic" // Permite definir width y height exactos
+              width={500} // Ajusta según sea necesario
+              height={300} // Reduce la altura
+              objectFit="contain" // Para que la imagen se ajuste sin recortarse
               priority
             />
           </Container>
-          <Container width="80%" $align="start" $scroll>
+
+          <Container width="100%" $align="start" $scroll>
             <Flex
               $gap="1rem"
               $justify="start"
@@ -74,17 +98,24 @@ export default function ProductPage({ params }) {
               width="fit-content"
             >
               {product.images.map((img, i) => (
-                <div style={{width: '100px', height:'100px', position:'relative'}} key={i}>
+                <div
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    position: "relative",
+                  }}
+                  key={i}
+                >
                   <Image
                     src={img}
                     alt={product.name}
-                    fill
+                    layout="fill"
+                    objectFit="cover"
                     style={{
                       filter:
                         selectedImage === img ? "none" : "brightness(0.8)",
                       cursor: "pointer",
                       transition: "filter 0.4s",
-                      objectFit: "cover",
                     }}
                     onClick={() => setSelectedImage(img)} // Update selected image on click
                   />

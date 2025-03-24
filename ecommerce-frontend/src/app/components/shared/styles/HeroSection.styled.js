@@ -6,8 +6,18 @@ import Image from "next/image";
 export const Section = styled.section`
   position: relative;
   width: 100%;
+  height: 80vh; /* Altura fija para pantallas grandes */
   margin: 0 auto;
   overflow: hidden;
+  background-color: #000; /* Fondo negro para evitar espacios en blanco */
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    height: 60vh;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    height: 50vh;
+  }
 
   button {
     padding: 10px 30px;
@@ -29,6 +39,7 @@ export const Section = styled.section`
     }
   }
 `;
+
 
 export const ContentOverlay = styled.div`
   position: absolute;
@@ -84,6 +95,9 @@ export const MainHeading = styled.h3`
   @media (max-width: 663px) {
     font-size: 2.2rem;
   }
+  @media (max-width: 932px) {
+    font-size: 4rem;
+  }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     font-size: 2rem;
@@ -115,35 +129,8 @@ export const Description = styled.p`
 
 export const BackgroundImage = styled(Image)`
   width: 100%;
-  height: 80vh !important; /* Altura predeterminada para desktop */
+  height: 100%;
   object-fit: cover;
-  object-position: ${({ objectPosition }) => objectPosition || "center"};
-  filter: brightness(${({ filterBrightness }) => filterBrightness || "100%"});
-  transition: height 0.3s ease; /* Suaviza el cambio de altura */
+  object-position: center;
 
-  /* Pantallas grandes */
-  @media (min-width: 1440px) {
-    height: 85vh !important;
-  }
-
-  /* Tablets */
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    height: 60vh !important;
-    object-position: ${({ tabletObjectPosition, objectPosition }) =>
-      tabletObjectPosition || objectPosition || "left top"};
-  }
-
-  /* Móviles grandes */
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    height: 50vh !important;
-  }
-
-
- @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    height: 50vh !important;
-  }
-
-  
 `;
-
-

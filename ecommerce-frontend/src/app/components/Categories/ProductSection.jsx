@@ -49,7 +49,7 @@ function ProductSection({ categoryId, initialPage = 1 }) {
 
   return (
     <Container>
-      <h1>Recomendados</h1>
+      <h1 style={{ marginBottom: "2rem" }}>Recommended</h1>
 
       {isLoading ? (
         <Spinner />
@@ -63,15 +63,14 @@ function ProductSection({ categoryId, initialPage = 1 }) {
               <ProductItem
                 key={product._id}
                 product={product}
+                isProductSection
                 $border={"card"}
               />
             ))}
           </Grid>
 
           {isValidating && (
-            <div
-              style={{ textAlign: "center", padding: "10px", color: "#888" }}
-            >
+            <div style={{ textAlign: "center", color: "#888" }}>
               <Spinner />
             </div>
           )}
