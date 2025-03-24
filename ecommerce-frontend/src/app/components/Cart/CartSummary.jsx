@@ -15,11 +15,11 @@ import convertToSubCurrency from "@/app/lib/convertToSubCurrency";
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 export default function CartSummary() {
-  const { cartProducts } = useContext(CartContext);
+  const { cart } = useContext(CartContext);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   // Calculate totals
-  const subtotal = cartProducts.reduce((sum, item) => {
+  const subtotal = cart.reduce((sum, item) => {
     return sum + item.product.price * item.quantity;
   }, 0);
 
