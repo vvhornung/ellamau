@@ -182,6 +182,7 @@ const CheckoutPage = ({ amount }) => {
         setErrorMessage(error.message);
         setLoading(false);
         setProcessing(false);
+        setIsErrorModalOpen(true);
         return;
       }
 
@@ -201,6 +202,7 @@ const CheckoutPage = ({ amount }) => {
         window.location.href = `/success?order_id=${orderId}`;
       }
     } catch (err) {
+            setIsErrorModalOpen(true);
       setErrorMessage(err.message || "An unexpected error occurred");
     } finally {
       setLoading(false);

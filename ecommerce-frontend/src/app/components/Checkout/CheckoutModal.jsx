@@ -12,7 +12,7 @@ import {
   Form,
   FormGroup,
 } from "./styles/Modal.styled";
-import { PrimaryButton, OutlineButton } from "./styles/Button.styled";
+import ActionButton from "../shared/styles/ActionButton.styled";
 import { StyledInput } from "../shared/styles/Input.styled";
 
 const CheckoutModal = ({ isOpen, onClose, onSubmit, amount }) => {
@@ -182,7 +182,6 @@ const CheckoutModal = ({ isOpen, onClose, onSubmit, amount }) => {
                   },
                 }}
                 onChange={handleAddressChange}
-                
               />
               {formErrors.address && (
                 <span style={{ color: "red", fontSize: "0.8rem" }}>
@@ -194,12 +193,27 @@ const CheckoutModal = ({ isOpen, onClose, onSubmit, amount }) => {
         </ModalBody>
 
         <ModalFooter>
-          <OutlineButton type="button" onClick={onClose}>
+          <ActionButton
+            style={{ padding: "1rem", fontWeight: "bold" }}
+            $primaryColor="black"
+            $secondarycolor="white"
+            type="button"
+            onClick={onClose}
+          >
             Cancel
-          </OutlineButton>
-          <PrimaryButton type="button" onClick={handleSubmit}>
+          </ActionButton>
+          <ActionButton
+            style={{
+              backgroundColor: "black",
+              padding: "1rem",
+              fontWeight: "bold",
+            }}
+            $secondarycolor="white"
+            type="button"
+            onClick={handleSubmit}
+          >
             Continue to Pay ${amount}
-          </PrimaryButton>
+          </ActionButton>
         </ModalFooter>
       </ModalContainer>
     </ModalOverlay>
