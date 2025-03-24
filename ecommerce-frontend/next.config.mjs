@@ -42,6 +42,30 @@ const nextConfig = {
     });
     return config;
   },
+
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: `
+              default-src 'self';
+              script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com;
+              style-src 'self' 'unsafe-inline';
+              img-src 'self' data: https://*.stripe.com;
+              connect-src 'self' https://*.stripe.com;
+              frame-src 'self' https://*.stripe.com https://vercel.live;
+              font-src 'self';
+            `
+              .replace(/\s{2,}/g, " ")
+              .trim(),
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
