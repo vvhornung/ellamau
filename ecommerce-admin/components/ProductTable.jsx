@@ -123,7 +123,7 @@ const ProductsTable = ({
   const toggleProduct = (productId) => {
     setSelectedProducts((prev) =>
       prev.includes(productId)
-        ? prev?.filter((id) => id !== productId)
+        ? prev.filter((id) => id !== productId)
         : [...prev, productId]
     );
   };
@@ -265,19 +265,19 @@ const ProductsTable = ({
     <div>
       <table className="w-full basic" onMouseUp={handleMouseUp}>
         <thead>
-          <tr>
-            <td className="hidden md:block">Select</td>
-            <td>Product name</td>
-            <td>Category</td>
-            <td>Stock</td>
-            <td>Price</td>
-            <td>Actions</td>
+          <tr className="bg-zinc-700">
+            <td className="hidden md:block text-gray-300">Select</td>
+            <td className="text-gray-300">Product Name</td>
+            <td className="text-gray-300">Category</td>
+            <td className="text-gray-300">Stock</td>
+            <td className="text-gray-300">Price</td>
+            <td className="text-gray-300">Actions</td>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-zinc-800 divide-y divide-gray-700">
           {paginationInfo.isEmpty ? (
             <tr>
-              <td colSpan="6" className="text-center py-4">
+              <td colSpan="6" className="text-center py-4 text-gray-300">
                 No products found
               </td>
             </tr>
@@ -303,7 +303,7 @@ const ProductsTable = ({
                       readOnly
                     />
                   </td>
-                  <td className="select-none">
+                  <td className="select-none text-gray-300">
                     <div className="flex items-center gap-2">
                       <span>{product.name}</span>
                       {product.variants?.length > 0 && (
@@ -319,11 +319,15 @@ const ProductsTable = ({
                       )}
                     </div>
                   </td>
-                  <td className="select-none">
+                  <td className="select-none text-gray-300">
                     {product?.category?.name || "N/A"}
                   </td>
-                  <td className="select-none">{getTotalStock(product)}</td>
-                  <td className="select-none">{formatPrice(product.price)}</td>
+                  <td className="select-none text-gray-300">
+                    {getTotalStock(product)}
+                  </td>
+                  <td className="select-none text-gray-300">
+                    {formatPrice(product.price)}
+                  </td>
                   <td>{renderProductActions(product._id)}</td>
                 </tr>
                 {expandedBaseProduct === product._id &&
