@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import styled from "styled-components";
 
@@ -10,11 +10,11 @@ export const StyledCategoryItem = styled.div`
   gap: 0;
 
   img {
-    width: 228px;
-    height: 350px;
+    width: 100%;
+    height: 300px;
     object-fit: cover;
     transition: transform 0.5s ease;
-    
+
   }
 
   p {
