@@ -222,7 +222,7 @@ const CheckoutPage = ({ amount }) => {
   };
 
   return (
-    <div>
+    <>
       <PaymentContainer>
         <PaymentElement />
       </PaymentContainer>
@@ -256,7 +256,7 @@ const CheckoutPage = ({ amount }) => {
           <div>Processing your payment...</div>
         </ProcessingOverlay>
       )}
-    </div>
+    </>
   );
 };
 
