@@ -99,6 +99,7 @@ export function CartProvider({ children }) {
   return (
     <CartContext.Provider
       value={{
+        cart: cartProducts, // Add 'cart' as an alias for 'cartProducts'
         cartProducts,
         setCartProducts,
         addToCart,
