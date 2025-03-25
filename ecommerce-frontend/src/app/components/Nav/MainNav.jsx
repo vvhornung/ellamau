@@ -4,18 +4,18 @@ import Link from "next/link";
 import connectDB from "@/app/lib/mongoose";
 import { Category } from "@/app/models/Category";
 
-export default async function MainNav({categories}) {
-
-
+export default async function MainNav({ categories }) {
   return (
     <Container width={"90%"}>
-      <StyledMainNav >
-        {/* <!-- Navigation links --> */}
+      <StyledMainNav>
         <ul>
           {categories.map((category) => {
             return (
-              <li key={category.id}>
-                <Link href={`/category/${category.id}`} passHref>
+              <li key={category._id}>
+                <Link
+                  href={`/category/${encodeURIComponent(category.name)}`}
+                  passHref
+                >
                   {category.name}
                 </Link>
               </li>

@@ -15,14 +15,12 @@ async function SubCategoriesCarrousel({ categoryId }) {
       style={{ overflowX: "auto", whiteSpace: "nowrap", padding: "0 10px" }}
     >
       {" "}
-      {/* Enable horizontal scrolling */}
-      <Flex
-        $justify={"flex-start"} /* Align items to the start */
-        $gap={"0px"}
-        $wrap={"nowrap"}
-      >
+      <Flex $justify={"flex-start"} $gap={"0px"} $wrap={"nowrap"}>
         {categories.reverse().map((category) => (
-          <Link key={category.id} href={`/category/${category.id}`}>
+          <Link
+            key={category._id}
+            href={`/category/${encodeURIComponent(category.name)}`}
+          >
             <SubCategoryItem category={category} />
           </Link>
         ))}

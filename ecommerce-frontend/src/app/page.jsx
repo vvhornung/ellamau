@@ -67,6 +67,7 @@ export default async function Home() {
         buttonText="Shop Now"
         imageSrc={heroOg}
         tabletImageSrc={Hero}
+        href="/category/lingerie"
       />
 
       <Container>
@@ -84,6 +85,7 @@ export default async function Home() {
         image$positionX="35%"
         image$positionY="40%"
         className="beauty-hero" // Agrega esta clase
+        href="/category/beauty"
       />
 
       <HeroSection
@@ -93,6 +95,7 @@ export default async function Home() {
         buttonText="Shop Now"
         imageSrc={sportHero}
         brightness={0.7}
+        href="/category/sportswear"
       />
 
       <Container>
@@ -111,6 +114,7 @@ export default async function Home() {
         image$positionX="40%"
         imageSrc={Swimwear}
         mobileImageSrc={xsSwimwear}
+        href="/category/swimwear"
       />
     </>
   );

@@ -68,24 +68,23 @@ function MobileNav({ categories = [] }) {
       </Flex>
 
       {/* Apply the "open" class conditionally to trigger the slide animation */}
-     
-        <OverlayScreen className={isMenuOpen ? "open" : ""}>
-          <CloseButton onClick={toggleMenu}>
-            <IoClose size={24} />
-          </CloseButton>
 
-          {categories?.map((category) => (
-            <Link
-              key={category._id}
-              href={`/category/${category._id}`}
-              passHref
-              onClick={toggleMenu}
-            >
-              {category.name}
-            </Link>
-          ))}
-        </OverlayScreen>
-    
+      <OverlayScreen className={isMenuOpen ? "open" : ""}>
+        <CloseButton onClick={toggleMenu}>
+          <IoClose size={24} />
+        </CloseButton>
+
+        {categories?.map((category) => (
+          <Link
+            key={category._id}
+            href={`/category/${encodeURIComponent(category.name)}`}
+            passHref
+            onClick={toggleMenu}
+          >
+            {category.name}
+          </Link>
+        ))}
+      </OverlayScreen>
     </StyledMobileNav>
   );
 }
