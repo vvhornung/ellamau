@@ -9,4 +9,12 @@ export const StyledInput = styled.input`
   border: 1px solid #e6e6e6;
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02);
   color: #333;
+
+  /* Remove the autocomplete styles */
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    -webkit-text-fill-color: #333;
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+  }
 `;

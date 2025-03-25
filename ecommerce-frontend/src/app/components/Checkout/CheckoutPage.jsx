@@ -11,6 +11,7 @@ import CheckoutModal from "./CheckoutModal";
 import ErrorModal from "./ErrorModal";
 import styled from "styled-components";
 import { CartContext } from "@/app/contexts/CartContext";
+import ActionButton from "../shared/styles/Button.styled";
 
 // Add some styling to make the payment element look better
 const PaymentContainer = styled.div`
@@ -227,13 +228,15 @@ const CheckoutPage = ({ amount }) => {
         <PaymentElement />
       </PaymentContainer>
 
-      <CheckoutButton
+      <ActionButton
+        className="brand xl"
         onClick={handleCheckoutClick}
         type="button"
+        width = "100%"
         disabled={!stripe || loading}
       >
         {loading ? "Processing..." : `Checkout - $${amount}`}
-      </CheckoutButton>
+      </ActionButton>
 
       {/* Checkout Modal */}
       <CheckoutModal

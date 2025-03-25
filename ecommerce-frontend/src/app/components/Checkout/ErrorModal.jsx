@@ -9,7 +9,7 @@ import {
   ErrorTitle,
   ErrorMessage,
 } from "./styles/Modal.styled";
-import ActionButton from "../shared/styles/ActionButton.styled";
+import ActionButton from "../shared/styles/Button.styled";
 
 const ErrorModal = ({ isOpen, onClose, errorMessage }) => {
   if (!isOpen) return null;
@@ -30,7 +30,14 @@ const ErrorModal = ({ isOpen, onClose, errorMessage }) => {
         </ModalBody>
 
         <ModalFooter>
-          <ActionButton style={{padding: '1rem'}} $primaryColor='black' secondarycolor='black'  onClick={onClose}>Close</ActionButton>
+          <ActionButton
+            style={{ padding: "1rem" }}
+            $primaryColor="black"
+            secondarycolor="black"
+            onClick={onClose}
+          >
+            Close
+          </ActionButton>
         </ModalFooter>
       </ErrorModalContainer>
     </ModalOverlay>

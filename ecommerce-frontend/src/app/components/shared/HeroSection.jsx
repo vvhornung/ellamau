@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import ActionButton from "./styles/ActionButton.styled";
+import ActionButton from "./styles/Button.styled";
 import { useState, useEffect } from "react";
 import {
   SubHeading,
@@ -57,10 +57,10 @@ const HeroSection = ({
   return (
     <Section>
       <ContentOverlay $positionX={image$positionX} $positionY={image$positionY}>
-        <SubHeading>{heading}</SubHeading>
+        <SubHeading>{heading.toUpperCase()}</SubHeading>
         <MainHeading>{subHeading}</MainHeading>
         <Description>{text}</Description>
-        <ActionButton>{buttonText}</ActionButton>
+        <ActionButton className="outline secondary">{buttonText}</ActionButton>
       </ContentOverlay>
       <BackgroundImage
         filterpercentagecentage={brightness}
