@@ -33,17 +33,10 @@ export default async function Home() {
     }))
   );
 
-  collectionItems.forEach((item) => {
-    item.product.img =
-      "https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg";
-  });
 
   const latestProducts = await Product.find().sort({ createdAt: -1 }).limit(4);
-  latestProducts.forEach((product) => {
-    product.img =
-      "https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg";
-  });
-  //ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg
+  
+
 
   const swimwearProducts = (await getProductsByCategory(swimwearCategory.id, 4))
     .products;
