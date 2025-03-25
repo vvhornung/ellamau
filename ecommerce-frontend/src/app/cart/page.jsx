@@ -45,10 +45,10 @@ export default function CartPage() {
           <CartItemsSection>
             <CartTitle>
               Shopping Bag{" "}
-              <span>
+              <p>
                 {validCartItems.length}{" "}
                 {validCartItems.length > 1 ? "items" : "item"}{" "}
-              </span>
+              </p>
             </CartTitle>
 
       

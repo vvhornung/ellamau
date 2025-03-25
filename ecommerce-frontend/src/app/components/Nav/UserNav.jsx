@@ -12,7 +12,7 @@ import { CartIconWrapper, CartBadge } from "./styles/CartBadge.styled";
 function UserNav() {
   const { cart } = useContext(CartContext);
   const cartCount = cart?.length || 0;
-  console.log(cart)
+
 
   return (
     <StyledUserNav>

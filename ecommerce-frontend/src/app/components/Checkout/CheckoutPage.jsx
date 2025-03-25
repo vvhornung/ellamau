@@ -58,7 +58,7 @@ const CheckoutPage = ({ amount }) => {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [orderData, setOrderData] = useState(null);
 
-  console.log(cart);
+
 
   useEffect(() => {
     const fetchClientSecret = async () => {
@@ -235,7 +235,7 @@ const CheckoutPage = ({ amount }) => {
         width = "100%"
         disabled={!stripe || loading}
       >
-        {loading ? "Processing..." : `Checkout - $${amount}`}
+        {loading ? "Processing..." : `Checkout`}
       </ActionButton>
 
       {/* Checkout Modal */}

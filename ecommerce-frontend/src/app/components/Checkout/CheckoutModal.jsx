@@ -115,7 +115,6 @@ const CheckoutModal = ({ isOpen, onClose, onSubmit, amount }) => {
         },
       };
 
-      console.log("Address data being sent:", orderData.address);
       onSubmit(orderData);
     }
   };

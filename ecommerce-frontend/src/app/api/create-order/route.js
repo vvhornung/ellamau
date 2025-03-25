@@ -29,7 +29,6 @@ export async function POST(request) {
     // Ensure address data is properly formatted
     const address = body.address || {};
 
-    console.log("Address data received by API:", address);
 
     // Create order with the structured data
     const order = await Order.create({

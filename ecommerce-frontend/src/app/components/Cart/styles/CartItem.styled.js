@@ -1,15 +1,6 @@
 import { styled, css } from "styled-components";
 
-// Add OutOfStockBanner styled component
-export const OutOfStockBannerContainer = styled.div`
-  background-color: #ffebee;
-  border: 1px solid #ef5350;
-  border-radius: 4px;
-  padding: 12px 16px;
-  margin: 10px 0;
-  position: relative;
-  width: 100%;
-`;
+
 
 export const BannerTitle = styled.h4`
   margin: 0 0 8px 0;
@@ -52,8 +43,14 @@ export const CartItemContainer = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 1rem;
+
+    img{
+      width: 100% ;
+      height: auto;
+    }
+
   }
 `;
 
@@ -82,6 +79,18 @@ export const ProductDetails = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    align-items: center;
+    
+    h1{
+      font-size: 1rem;
+    }
+
+    h4{
+      font-size: 0.8rem;
+    }
+  }
 `;
 
 export const ProductName = styled.h4`
@@ -190,6 +199,10 @@ export const StockStatus = styled.div`
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 
   /* Use style fragments based on status prop */
   ${({ $status }) =>
