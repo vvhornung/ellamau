@@ -3,7 +3,11 @@ import styled from "styled-components";
 export const CartContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 2rem 0;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
 `;
 
 export const CartTitle = styled.h1`
@@ -17,10 +21,15 @@ export const CartTitle = styled.h1`
   gap: 1rem;
   margin-bottom: 0.5rem;
 
-  span {
+  p {
     font-size: 20px;
     font-weight: 400;
     color: rgba(0, 0, 0, 0.422);
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
   }
 `;
 

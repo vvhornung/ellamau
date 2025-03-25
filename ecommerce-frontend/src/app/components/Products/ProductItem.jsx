@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { skeletonKeyframes } from "../shared/styles/Skeleton.styled";
 
-function ProductItem({ product, $bg, $border }) {
+function ProductItem({ product, $bg, $border, isProductSection }) {
   // Ensure we're working with plain object properties
   const { name, images, price, _id, stock } =
     typeof product._doc === "object" ? product._doc : product;
@@ -18,9 +18,11 @@ function ProductItem({ product, $bg, $border }) {
       <StyledProductItem
         $variant={"hover"}
         $border={$border}
+        $productSection={isProductSection}
         style={{ width: "100%" }}
+        
       >
-        <StyledCarrouselItem $bg={$bg} style={{ width: "100%" }}>
+        <StyledCarrouselItem $product $bg={$bg} style={{ width: "100%" }}>
           <Image
             height={550}
             width={350}
@@ -53,7 +55,7 @@ function ProductItem({ product, $bg, $border }) {
                 maxWidth: "100%",
                 whiteSpace: "normal",
                 lineHeight: "1.4em",
-                maxHeight: "2.8em", 
+                maxHeight: "2.8em",
                 textAlign: "left",
               }}
             >

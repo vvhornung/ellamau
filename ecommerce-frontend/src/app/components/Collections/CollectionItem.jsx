@@ -1,35 +1,28 @@
 import { StyledCarrouselItem } from "../shared/styles/CarrouselItem.styled";
 import { Flex } from "../shared/styles/Flex.styled";
-import ActionButton from "../shared/styles/ActionButton.styled";
+import {UnderlineButton} from "../shared/styles/Button.styled";
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
 
 async function CollectionItem({ product, bg }) {
-  const { images, _id:id } = product || {
-    images: [
-      "https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg",
-    ],
-    id: 0,
-  };
+  const { images, _id: id, categoryName } = product
 
-  const image =
-    images[0] ||
-    "https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg";
+  const image =images[0]
 
   return (
-    <Link href={`/product/${id}`} style={{ width: "100%" }} passHref>
+    <Link href={`/category/${categoryName}`} style={{ width: "100%" }} passHref>
       <StyledCarrouselItem $bg={bg}>
         <Image
           height={550}
           width={700}
-          src={image}
-          alt={product.categoryName}
+          src={images[0] || 'http://localhost:3001/_next/image?url=https%3A%2F%2Fellamau-bucket.s3.us-east-2.amazonaws.com%2F1741938485530.jpg&w=640&q=75'}
+          alt={categoryName}
         />
         <Flex direction={"column"} $gap={"1rem"} $align={"center"}>
-          <ActionButton $primaryColor={"black"} $variant={"underline"}>
-            {product.categoryName}
-          </ActionButton>
+          <UnderlineButton >
+            {categoryName}
+          </UnderlineButton>
         </Flex>
       </StyledCarrouselItem>
     </Link>

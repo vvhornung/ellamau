@@ -6,6 +6,7 @@ import { StyledDescription } from "./styles/Description.styled";
 import { SoldOutBanner } from "./styles/SoldOutBanner.styled";
 import ProductVariantSelector from "./ProductVariantSelector";
 import AddToCartButton from "./AddToCartButton";
+import AddToCartModal from "./AddToCartModal";
 import QuantitySelector from "./QuantitySelector";
 import StyledProduct from "../shared/styles/Title.styled";
 
@@ -13,6 +14,7 @@ export default function ProductDetails({ product }) {
   const { addToCart } = useContext(CartContext);
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [showModal, setShowModal] = useState(false);
   const details = product?.details[0]?.split(";");
 
   // Check if product is sold out (all variants have 0 stock)
@@ -31,6 +33,11 @@ export default function ProductDetails({ product }) {
       return;
     }
     addToCart(product, selectedVariant, quantity);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -56,7 +63,6 @@ export default function ProductDetails({ product }) {
             product?.description?.split(";").map((paragraph, index) => (
               <p key={index}>{paragraph}</p>
             ))
-            
           }
         </StyledDescription>
 
@@ -98,6 +104,14 @@ export default function ProductDetails({ product }) {
           disabled={
             isSoldOut || (product.variants.length > 0 && !selectedVariant)
           }
+        />
+
+        <AddToCartModal
+          isOpen={showModal}
+          onClose={handleCloseModal}
+          product={product}
+          variant={selectedVariant}
+          quantity={quantity}
         />
       </Flex>
     </StyledProduct>

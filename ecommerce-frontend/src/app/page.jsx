@@ -1,10 +1,9 @@
 import { Container } from "./components/shared/styles/Container.styled";
 import { PromoCard } from "./components/shared/styles/PromoCard.styled";
 import ProductCarrousel from "./components/Products/ProductCarrousel";
-import ActionButton from "./components/shared/styles/ActionButton.styled";
+import ActionButton from "./components/shared/styles/Button.styled";
 import HeroSection from "./components/shared/HeroSection";
 import CollectionCarrousel from "./components/Collections/CollectionCarrousel";
-import HeroVideo from "./components/Videos/HeroVideo";
 import { Product } from "./models/Product";
 import { Category } from "./models/Category";
 import connectDB from "./lib/mongoose";
@@ -13,6 +12,10 @@ import Hero from "../../public/mobileHero.jpg";
 import heroOg from "../../public/heroOg.jpg";
 import Perfume from "../../public/perfumeHero.png";
 import PerfumeMobile from "../../public/perfumeHeroMobile.png";
+import sportHero from "../../public/sportwearHero.jpg";
+import SmallPerfume from "../../public/xsPerfume.jpg";
+import Swimwear from "../../public/swimwearHero.jpg";
+import xsSwimwear from "../../public/xsSwimHero.jpg";
 
 export default async function Home() {
   connectDB();
@@ -30,17 +33,9 @@ export default async function Home() {
     }))
   );
 
-  collectionItems.forEach((item) => {
-    item.product.img =
-      "https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg";
-  });
 
   const latestProducts = await Product.find().sort({ createdAt: -1 }).limit(4);
-  latestProducts.forEach((product) => {
-    product.img =
-      "https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg";
-  });
-  //ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg
+  
 
 
   const swimwearProducts = (await getProductsByCategory(swimwearCategory.id, 4))
@@ -50,13 +45,11 @@ export default async function Home() {
     <>
       <Container $bg={"black"}>
         <PromoCard>
-          <h2>new lingerie</h2>
+          <h2>NEW LINGERIE</h2>
           <p>
             Discover the Collection, featuring classic favorites and new styles.
           </p>
-          <ActionButton $primaryColor={"white"} $variant={"underline"}>
-            SHOP NOW
-          </ActionButton>
+          <ActionButton className="outline secondary">SHOP NOW</ActionButton>
         </PromoCard>
       </Container>
 
@@ -67,10 +60,11 @@ export default async function Home() {
         buttonText="Shop Now"
         imageSrc={heroOg}
         tabletImageSrc={Hero}
+        href="/category/lingerie"
       />
 
       <Container>
-        <ProductCarrousel $border={"card"} items={latestProducts} />
+        <ProductCarrousel title={'Beauty Collection'} $border={"card"} items={latestProducts} />
       </Container>
 
       <HeroSection
@@ -79,25 +73,30 @@ export default async function Home() {
         text="Discover the collection"
         buttonText="Shop Now"
         imageSrc={Perfume}
-        mobileImageSrc={PerfumeMobile}
+        tabletImageSrc={PerfumeMobile}
+        mobileImageSrc={SmallPerfume}
         image$positionX="35%"
         image$positionY="40%"
+        className="beauty-hero" // Agrega esta clase
+        href="/category/beauty"
       />
 
       <HeroSection
-        subHeading="DISCOVER SPORTSWEAR"
-        text="Leave an unforgettable impression with our exclusive fragrances"
+        heading="DISCOVER"
+        subHeading="SPORTSWEAR"
+        text="Enjoy the pleasure of confort anf style"
         buttonText="Shop Now"
-        imageSrc="https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg"
+        imageSrc={sportHero}
         brightness={0.7}
+        href="/category/sportswear"
       />
 
       <Container>
-        <CollectionCarrousel items={collectionItems} />
+        <CollectionCarrousel title=" Our Collections" items={collectionItems} />
       </Container>
 
       <Container $bg={"#f5e5c5"}>
-        <ProductCarrousel $bg="#f5e5c5" items={swimwearProducts} />
+        <ProductCarrousel title="Swimwear Collection" $bg="#f5e5c5" items={swimwearProducts} />
       </Container>
 
       <HeroSection
@@ -105,8 +104,10 @@ export default async function Home() {
         subHeading="swimwear"
         text="Discover the collection"
         buttonText="Shop Now"
-        image$positionX="30%"
-        imageSrc="https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg"
+        image$positionX="40%"
+        imageSrc={Swimwear}
+        mobileImageSrc={xsSwimwear}
+        href="/category/swimwear"
       />
     </>
   );

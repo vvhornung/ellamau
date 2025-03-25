@@ -6,15 +6,20 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(${(props) => props.$columns || 4}, 1fr);
   gap: ${(props) => props.$gap || "1rem"};
-  width: ${({width}) => width || "100%"};
+  width: ${({ width }) => width || "100%"};
 
-  @media (max-width: 768px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.desktop}) {
     grid-template-columns: repeat(2, 1fr);
+    gap: 0.4rem;
   }
 
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
+
+
 `;
 
 export default Grid

@@ -2,12 +2,12 @@ import { Container } from "../shared/styles/Container.styled";
 import ProductItem from "./ProductItem";
 import { Flex } from "../shared/styles/Flex.styled";
 
-function ProductCarrousel({ $bg, $border, items }) {
+function ProductCarrousel({ $bg, $border, items, title = "Product Carrousel" }) {
 
   return (
     <Container>
       <Flex direction={"column"}>
-        <h1 className="carrousel-title">Product Carrousel</h1>
+        <h1 className="carrousel-title">{title}</h1>
         <Container $scroll={"true"} $bg={$bg}>
           <Flex $justify={"start"}>
             {items?.map((item) => (

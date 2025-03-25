@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import ActionButton from "./styles/ActionButton.styled";
+import ActionButton from "./styles/Button.styled";
 import { useState, useEffect } from "react";
 import {
   SubHeading,
@@ -11,6 +11,7 @@ import {
   MainHeading,
   BackgroundImage,
 } from "./styles/HeroSection.styled";
+import Link from "next/link";
 
 const HeroSection = ({
   heading,
@@ -24,6 +25,7 @@ const HeroSection = ({
   image$positionX = "50%",
   image$positionY = "50%",
   brightness = 1,
+  href = "/",
 }) => {
   // Use the most specific image available, falling back to imageSrc
   const getResponsiveImage = () => {
@@ -57,10 +59,12 @@ const HeroSection = ({
   return (
     <Section>
       <ContentOverlay $positionX={image$positionX} $positionY={image$positionY}>
-        <SubHeading>{heading}</SubHeading>
+        <SubHeading>{heading.toUpperCase()}</SubHeading>
         <MainHeading>{subHeading}</MainHeading>
         <Description>{text}</Description>
-        <ActionButton>{buttonText}</ActionButton>
+        <Link href={href}>
+          <ActionButton className="outline secondary">{buttonText}</ActionButton>
+        </Link>
       </ContentOverlay>
       <BackgroundImage
         filterpercentagecentage={brightness}

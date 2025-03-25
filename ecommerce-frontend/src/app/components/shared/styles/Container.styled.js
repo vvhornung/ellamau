@@ -32,4 +32,6 @@ export const Container = styled.div`
   &::-webkit-scrollbar-track {
     background-color: ${({ $bg }) => $bg || "#f1f1f1"};
   }
+
+  
 `;

@@ -3,6 +3,9 @@
 import styled from "styled-components";
 
 export const StyledProductItem = styled.div`
+
+  min-width: ${({ $productSection }) => ($productSection ? "0" : "250px")};
+
   & > div {
     ${({ $variant }) =>
       $variant === "hover" &&

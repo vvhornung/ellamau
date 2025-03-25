@@ -1,4 +1,3 @@
-
 import React from "react";
 import Filters from "@/app/components/Categories/Filters";
 import SubCategoriesCarrousel from "@/app/components/Categories/SubCategoriesCarrousel";
@@ -7,18 +6,21 @@ import StyledTitle from "@/app/components/shared/styles/Title.styled";
 import connectDB from "@/app/lib/mongoose";
 import { Category } from "@/app/models/Category";
 
-// Make this page generate dynamically based on search params
-export const dynamic = "force-dynamic";
 
 export default async function CategoryPage({ params, searchParams }) {
   await connectDB();
-  const { categoryId } = await params;
-  const {page} = await searchParams
-  const category = await Category.findById(categoryId);
+  const { categoryName } = await params;
+  const { page } = await searchParams;
 
-  // Fix: Don't try to parse searchParams directly
-  // Instead, pass the entire searchParams object to the client component
-  // and let it handle the parsing
+  // Find category by name instead of ID
+  const decodedCategoryName = decodeURIComponent(categoryName);
+  const category = await Category.findOne({
+    name: decodedCategoryName,
+  });
+
+  if (!category) {
+    return <div>Category not found</div>;
+  }
 
   return (
     <>
@@ -27,13 +29,14 @@ export default async function CategoryPage({ params, searchParams }) {
         <h2>{category.name}</h2>
       </StyledTitle>
 
+      
       {category.name?.toLowerCase() === "lingerie" && (
-        <SubCategoriesCarrousel categoryId={categoryId} />
+        <SubCategoriesCarrousel categoryId={category.id} />
       )}
 
-      <Filters categoryId={categoryId} />
+      <Filters categoryId={category.id} />
       <ProductSection
-        categoryId={categoryId}
+        categoryId={category.id}
         initialPage={page ? parseInt(searchParams.page, 10) : 1}
       />
     </>
