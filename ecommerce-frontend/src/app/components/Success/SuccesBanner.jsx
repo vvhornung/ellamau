@@ -1,12 +1,11 @@
-import React from 'react'
-import Link from 'next/link';
-import ActionButton from '../shared/styles/ActionButton.styled';
-import { StyledSuccessBanner } from './styles/SuccessBanner.styled';
+import React from "react";
+import Link from "next/link";
+import ActionButton from "../shared/styles/Button.styled";
+import { StyledSuccessBanner } from "./styles/SuccessBanner.styled";
 
 function SuccesBanner() {
   return (
-    <StyledSuccessBanner
-    >
+    <StyledSuccessBanner>
       <div>
         <h1 className="text-2xl font-bold mt-4 mb-2">Payment Successful!</h1>
         <p className="text-gray-600 mb-6">
@@ -27,4 +26,4 @@ function SuccesBanner() {
   );
 }
 
-export default SuccesBanner
+export default SuccesBanner;

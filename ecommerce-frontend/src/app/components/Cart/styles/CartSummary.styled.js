@@ -20,26 +20,3 @@ export const SummaryRow = styled.div`
   border-bottom: ${(props) => (props.$withBorder ? "1px solid #ddd" : "none")};
 `;
 
-export const CheckoutButton = styled.button`
-  background: ${({ theme }) => theme.colors.logo};
-  font-family: "Public Sans", sans-serif;
-  color: #fff;
-  width: 100%;
-  padding: 1rem;
-  border: none;
-  border-radius: 4px;
-  font-weight: 400;
-  font-size: 1rem;
-  margin-top: 1rem;
-  cursor: pointer;
-  transition: background 0.2s ease;
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.primary};
-  }
-
-  &:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-  }
-`;

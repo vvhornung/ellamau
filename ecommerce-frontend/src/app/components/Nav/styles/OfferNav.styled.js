@@ -18,7 +18,5 @@ export const StyledOfferNav = styled.div`
     font-size: 10px;
   }
 
-  button {
-    border-radius: 5px;
-  }
+
 `;

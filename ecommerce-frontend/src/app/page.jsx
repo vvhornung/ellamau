@@ -1,7 +1,7 @@
 import { Container } from "./components/shared/styles/Container.styled";
 import { PromoCard } from "./components/shared/styles/PromoCard.styled";
 import ProductCarrousel from "./components/Products/ProductCarrousel";
-import ActionButton from "./components/shared/styles/ActionButton.styled";
+import ActionButton from "./components/shared/styles/Button.styled";
 import HeroSection from "./components/shared/HeroSection";
 import CollectionCarrousel from "./components/Collections/CollectionCarrousel";
 import { Product } from "./models/Product";
@@ -45,7 +45,6 @@ export default async function Home() {
   });
   //ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg
 
-
   const swimwearProducts = (await getProductsByCategory(swimwearCategory.id, 4))
     .products;
 
@@ -53,13 +52,11 @@ export default async function Home() {
     <>
       <Container $bg={"black"}>
         <PromoCard>
-          <h2>new lingerie</h2>
+          <h2>NEW LINGERIE</h2>
           <p>
             Discover the Collection, featuring classic favorites and new styles.
           </p>
-          <ActionButton $primaryColor={"white"} $variant={"underline"}>
-            SHOP NOW
-          </ActionButton>
+          <ActionButton className="outline secondary">SHOP NOW</ActionButton>
         </PromoCard>
       </Container>
 
@@ -73,7 +70,7 @@ export default async function Home() {
       />
 
       <Container>
-        <ProductCarrousel $border={"card"} items={latestProducts} />
+        <ProductCarrousel title={'Beauty Collection'} $border={"card"} items={latestProducts} />
       </Container>
 
       <HeroSection
@@ -99,11 +96,11 @@ export default async function Home() {
       />
 
       <Container>
-        <CollectionCarrousel items={collectionItems} />
+        <CollectionCarrousel title=" Our Collections" items={collectionItems} />
       </Container>
 
       <Container $bg={"#f5e5c5"}>
-        <ProductCarrousel $bg="#f5e5c5" items={swimwearProducts} />
+        <ProductCarrousel title="Swimwear Collection" $bg="#f5e5c5" items={swimwearProducts} />
       </Container>
 
       <HeroSection

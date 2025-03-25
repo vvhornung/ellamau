@@ -12,7 +12,7 @@ import {
   Form,
   FormGroup,
 } from "./styles/Modal.styled";
-import ActionButton from "../shared/styles/ActionButton.styled";
+import ActionButton from "../shared/styles/Button.styled";
 import { StyledInput } from "../shared/styles/Input.styled";
 
 const CheckoutModal = ({ isOpen, onClose, onSubmit, amount }) => {
@@ -193,26 +193,11 @@ const CheckoutModal = ({ isOpen, onClose, onSubmit, amount }) => {
         </ModalBody>
 
         <ModalFooter>
-          <ActionButton
-            style={{ padding: "1rem", fontWeight: "bold" }}
-            $primaryColor="black"
-            $secondarycolor="white"
-            type="button"
-            onClick={onClose}
-          >
+          <ActionButton type="button" onClick={onClose} className="outline">
             Cancel
           </ActionButton>
-          <ActionButton
-            style={{
-              backgroundColor: "black",
-              padding: "1rem",
-              fontWeight: "bold",
-            }}
-            $secondarycolor="white"
-            type="button"
-            onClick={handleSubmit}
-          >
-            Continue to Pay ${amount}
+          <ActionButton type="button" onClick={handleSubmit}>
+            <strong>Continue to Pay ${amount}</strong>
           </ActionButton>
         </ModalFooter>
       </ModalContainer>

@@ -1,9 +1,8 @@
-
 import { Container } from "./components/shared/styles/Container.styled";
 import { Flex } from "./components/shared/styles/Flex.styled";
 import SocialMedia from "./components/shared/SocialMedia";
 import { Footer as StyledFooter } from "./components/shared/styles/Footer.styled";
-import ActionButton from "./components/shared/styles/ActionButton.styled";
+import ActionButton from "./components/shared/styles/Button.styled";
 
 function Footer() {
   return (
@@ -11,7 +10,7 @@ function Footer() {
       <StyledFooter>
         <Container width={"fit-content"}>
           <Flex direction={"column"}>
-            <ActionButton $primaryColor={"black"} $secondarycolor={"white"}>
+            <ActionButton className="outline">
               FOLLOW US TO STAY INFORMED
             </ActionButton>
             <SocialMedia />
