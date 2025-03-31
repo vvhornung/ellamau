@@ -3,6 +3,8 @@ import { useSearchParams } from "next/navigation";
 import { Container } from "@/app/components/shared/styles/Container.styled";
 import CategoryProductsContainer from "@/app/components/Categories/ProductSection";
 
+//Deployment ready and cagetory corrected
+
 export default function CategoryPage() {
   const searchParams = useSearchParams();
   const categoryId = searchParams.get("id");
