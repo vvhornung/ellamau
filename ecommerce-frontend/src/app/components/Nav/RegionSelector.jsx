@@ -3,7 +3,6 @@ import { VerticalDivider } from "../shared/styles/VerticalDivider.styled";
 import Image from "next/image";
 import { cinzel_decrative } from "@/app/fonts";
 
-
 function RegionSelector() {
   return (
     <Flex width={"fit-content"}>
@@ -14,9 +13,9 @@ function RegionSelector() {
         alt="usa"
       />
       <VerticalDivider />
-      <p>English ( usa )</p>
+      <p>English (USA)</p>
       <VerticalDivider />
-      <p>usd</p>
+      <p>USD</p>
     </Flex>
   );
 }

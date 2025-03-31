@@ -54,7 +54,7 @@ function CategoryProductsContainer({
         isLoading={isLoading}
         isValidating={isValidating}
         currentPage={currentPage}
-        emptyMessage="No hay productos disponibles."
+        emptyMessage="No products available."
         paginationThreshold={0}
       >
         <h1 style={{ marginBottom: "2rem" }}>
