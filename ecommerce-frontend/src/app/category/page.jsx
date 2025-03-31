@@ -1,7 +1,7 @@
 "use client";
 import { useSearchParams } from "next/navigation";
 import { Container } from "@/app/components/shared/styles/Container.styled";
-import ProductSection from "@/app/components/Categories/ProductSection";
+import CategoryProductsContainer from "@/app/components/Categories/ProductSection";
 
 export default function CategoryPage() {
   const searchParams = useSearchParams();
@@ -16,5 +16,5 @@ export default function CategoryPage() {
     );
   }
 
-  return <ProductSection categoryId={categoryId} initialPage={1} />;
+  return <CategoryProductsContainer categoryId={categoryId} initialPage={1} />;
 }
