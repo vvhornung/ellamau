@@ -110,7 +110,7 @@ function SearchPage() {
   return (
     <Container>
       <h1 style={{ marginBottom: "2rem" }}>
-        Search Results for "{query}" {total > 0 && `(${total} results)`}
+        Search Results for {`"${query}"`} {total > 0 && `(${total} results)`}
       </h1>
 
       {/* Client-side filtering */}
