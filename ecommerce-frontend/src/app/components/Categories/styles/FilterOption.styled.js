@@ -1,26 +1,24 @@
-"use client";
-
 import styled from "styled-components";
 
 export const FilterOption = styled.div`
   position: relative;
+  display: inline-block;
   cursor: pointer;
   padding: 0.5rem 1rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  background: #ffffff;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
   font-weight: 500;
+  color: #333;
 
-  &:hover {
-    background: #f9f9f9;
+  &.destructive {
+    color: crimson;
   }
 
   &.active {
-    background: #f5f5f5;
-    border-color: #c0c0c0;
+    background-color: #f0f0f0;
+    border-color: #bbb;
   }
 `;
 
@@ -28,39 +26,59 @@ export const FilterDropdown = styled.div`
   position: absolute;
   top: 100%;
   left: 0;
-  width: max-content;
-  min-width: 150px;
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 2;
-  margin-top: 0.5rem;
+  z-index: 10;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: ${(props) => (props.$isOpen ? "block" : "none")};
+  min-width: 200px;
   max-height: 300px;
   overflow-y: auto;
-  display: ${(props) => (props.$isOpen ? "block" : "none")};
 `;
 
 export const FilterItem = styled.div`
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 1rem;
   cursor: pointer;
-  transition: background 0.2s;
+  font-size: 0.9rem;
+  color: #333;
 
   &:hover {
-    background: #f5f5f5;
+    background-color: #f0f0f0;
   }
 
   &.selected {
-    background: #f0f0f0;
-    font-weight: 500;
+    font-weight: bold;
+    background-color: #e0e0e0;
   }
 `;
 
 export const FilterBadge = styled.span`
-  background: #333;
-  color: white;
-  font-size: 0.7rem;
-  padding: 0.1rem 0.4rem;
-  border-radius: 12px;
-  margin-left: 0.3rem;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.5rem;
+  padding: 0 0.5rem;
+  background-color: #f0f0f0;
+  color: #333;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 400;
+  
+  .clear-badge {
+    margin-left: 0.25rem;
+    font-size: 0.7rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    color: crimson;
+    transition: background-color 0.3s ease-in-out;
+    
+    &:hover {
+      background-color: white;
+    }
+  }
 `;

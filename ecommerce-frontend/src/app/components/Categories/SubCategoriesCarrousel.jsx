@@ -15,7 +15,7 @@ async function SubCategoriesCarrousel({ categoryId }) {
       style={{ overflowX: "auto", whiteSpace: "nowrap", padding: "0 10px" }}
     >
       {" "}
-      <Flex $justify={"flex-start"} $gap={"0px"} $wrap={"nowrap"}>
+      <Flex $justify={"flex-start"} $gap={"0px"} >
         {categories.reverse().map((category) => (
           <Link
             key={category._id}

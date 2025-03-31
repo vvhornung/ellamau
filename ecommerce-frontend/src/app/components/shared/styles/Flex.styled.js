@@ -9,5 +9,5 @@ export const Flex = styled.div`
   justify-content: ${({ $justify }) => $justify || "center"};
   align-items: ${({ $align }) => $align || "center"};
   width: ${({ width }) => width || "100%"};
-  flex-wrap: ${({ $wrap }) => $wrap || "no-wrap"};
+  flex-wrap: ${({ $wrap }) => $wrap ? "wrap" : "nowrap"};
 `;

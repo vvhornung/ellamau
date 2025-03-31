@@ -17,8 +17,22 @@ export const StyledSearchBar = styled.div`
   }
 
   svg {
-    width: 1rem;
+    width: 1.2rem;
     height: auto;
-    opacity: 0.7;
+    opacity: 0.4;
+    color: black;
+    stroke-width: 1.2;
+    transition: all 0.3s ease-in-out;
+  }
+
+  svg:hover {
+    stroke-width: 2;
+    opacity: 0.8;
+  }
+
+  button{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
   }
 `;

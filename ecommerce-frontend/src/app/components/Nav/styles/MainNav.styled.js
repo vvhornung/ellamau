@@ -8,7 +8,9 @@ export const StyledMainNav = styled.nav`
   ul {
     list-style: none;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
+
   }
 
   li {
@@ -29,6 +31,6 @@ export const StyledMainNav = styled.nav`
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    display: none
+    display: none;
   }
 `;

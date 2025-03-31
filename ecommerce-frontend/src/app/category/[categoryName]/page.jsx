@@ -1,11 +1,10 @@
 import React from "react";
 import Filters from "@/app/components/Categories/Filters";
 import SubCategoriesCarrousel from "@/app/components/Categories/SubCategoriesCarrousel";
-import ProductSection from "@/app/components/Categories/ProductSection";
+import CategoryProductsContainer from "@/app/components/Categories/CategoryProductsContainer";
 import StyledTitle from "@/app/components/shared/styles/Title.styled";
 import connectDB from "@/app/lib/mongoose";
 import { Category } from "@/app/models/Category";
-
 
 export default async function CategoryPage({ params, searchParams }) {
   await connectDB();
@@ -28,15 +27,15 @@ export default async function CategoryPage({ params, searchParams }) {
         <h1>Ellämäu /</h1>
         <h2>{category.name}</h2>
       </StyledTitle>
-
       
       {category.name?.toLowerCase() === "lingerie" && (
         <SubCategoriesCarrousel categoryId={category.id} />
       )}
 
       <Filters categoryId={category.id} />
-      <ProductSection
+      <CategoryProductsContainer
         categoryId={category.id}
+        categoryName={category.name}
         initialPage={page ? parseInt(searchParams.page, 10) : 1}
       />
     </>
