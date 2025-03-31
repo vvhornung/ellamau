@@ -168,7 +168,7 @@ function Filters({
     <Container $overflow={"visible"}>
       <Flex $justify={"start"}>
         <h4>Filter By: </h4>
-        <Flex width={"fit-content"} $gap={"1rem"}>
+        <Flex $wrap width={"fit-content"} $justify={"start"} $gap={"1rem"}>
           {/* Color Filter */}
           <div ref={colorRef}>
             <FilterOption
