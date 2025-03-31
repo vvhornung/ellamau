@@ -2,15 +2,15 @@
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Container } from "../shared/styles/Container.styled";
-import Grid from "../shared/styles/Grid.styled";
-import ProductItem from "../Products/ProductItem";
-import Pagination from "../shared/Pagination";
-import Spinner from "../shared/Spinner";
+import ProductGrid from "../shared/ProductGrid";
 import { useProducts, prefetchCategoryPage } from "@/app/Hooks/useProducts";
 
-function ProductSection({ categoryId, initialPage = 1 }) {
+function CategoryProductsContainer({
+  categoryId,
+  initialPage = 1,
+  categoryName,
+}) {
   const searchParams = useSearchParams();
-  // Use the URL parameter if available, otherwise fall back to initialPage
   const currentPage = parseInt(
     searchParams.get("page") || initialPage.toString(),
     10
@@ -33,12 +33,11 @@ function ProductSection({ categoryId, initialPage = 1 }) {
     categoryId,
     currentPage,
     6, // limit
-    filters // Pass extracted filters
+    filters
   );
 
   // Prefetch adjacent pages for faster navigation
   useEffect(() => {
-    // Pass the same filters to prefetch
     if (currentPage < pages) {
       prefetchCategoryPage(categoryId, currentPage + 1, 6, filters);
     }
@@ -49,37 +48,21 @@ function ProductSection({ categoryId, initialPage = 1 }) {
 
   return (
     <Container>
-      <h1 style={{ marginBottom: "2rem" }}>Recommended</h1>
-
-      {isLoading ? (
-        <Spinner />
-      ) : products?.length === 0 ? (
-        <p>No hay productos disponibles.</p>
-      ) : (
-        <>
-          <Grid $columns={4} $gap="1rem">
-            <div style={{ gridColumn: "span 2" }}></div>
-            {products?.map((product) => (
-              <ProductItem
-                key={product._id}
-                product={product}
-                isProductSection
-                $border={"card"}
-              />
-            ))}
-          </Grid>
-
-          {isValidating && (
-            <div style={{ textAlign: "center", color: "#888" }}>
-              <Spinner />
-            </div>
-          )}
-
-          <Pagination currentPage={currentPage} totalPages={pages} />
-        </>
-      )}
+      <ProductGrid
+        products={products}
+        pages={pages}
+        isLoading={isLoading}
+        isValidating={isValidating}
+        currentPage={currentPage}
+        emptyMessage="No hay productos disponibles."
+        paginationThreshold={0}
+      >
+        <h1 style={{ marginBottom: "2rem" }}>
+          {categoryName ? `${categoryName} Products` : "Recommended"}
+        </h1>
+      </ProductGrid>
     </Container>
   );
 }
 
-export default ProductSection;
+export default CategoryProductsContainer;

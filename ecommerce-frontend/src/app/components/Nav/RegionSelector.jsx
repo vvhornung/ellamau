@@ -14,7 +14,7 @@ function RegionSelector() {
         alt="usa"
       />
       <VerticalDivider />
-      <p>english ( usa )</p>
+      <p>English ( usa )</p>
       <VerticalDivider />
       <p>usd</p>
     </Flex>

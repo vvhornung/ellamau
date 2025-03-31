@@ -97,3 +97,74 @@ export async function getProductsByCategory(
     return { products: [], total: 0, pages: 0, currentPage: page };
   }
 }
+
+export async function searchProducts(query, limit = 6, page = 1, filters = {}) {
+  await connectDB();
+
+  try {
+    // Calculate skip value for pagination
+    const skip = (page - 1) * limit;
+
+    // Select only necessary fields
+    const fieldsToSelect = {
+      variants: 1,
+      name: 1,
+      price: 1,
+      discountPrice: 1,
+      images: 1,
+      category: 1,
+      slug: 1,
+      _id: 1,
+      description: 1,
+    };
+
+    // Build search query
+    const searchFilter = {
+      $or: [
+        { name: { $regex: query, $options: "i" } },
+        { description: { $regex: query, $options: "i" } },
+      ],
+    };
+
+    // Apply variant filters if they exist
+    if (filters.color || filters.size) {
+      if (filters.color) {
+        searchFilter["variants.color"] = filters.color;
+      }
+
+      if (filters.size) {
+        searchFilter["variants.size"] = filters.size;
+      }
+    }
+
+    // Get total count for pagination
+    const total = await Product.countDocuments(searchFilter);
+
+    // Calculate total pages
+    const pages = Math.ceil(total / limit);
+
+    // Get products for current page
+    const products = await Product.find(searchFilter)
+      .select(fieldsToSelect)
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 }); // Sort by newest first
+
+    products.forEach((product) => {
+      product.img =
+        "https://ellamau-bucket.s3.us-east-2.amazonaws.com/1741938485530.jpg";
+    });
+
+    // Return pagination data along with products
+    return {
+      products: serialize(products),
+      total,
+      pages,
+      currentPage: page,
+      query,
+    };
+  } catch (error) {
+    console.error("🚨 Error searching products:", error);
+    return { products: [], total: 0, pages: 0, currentPage: page, query };
+  }
+}
