@@ -1,11 +1,12 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Container } from "../shared/styles/Container.styled";
 import ProductGrid from "../shared/ProductGrid";
 import { useProducts, prefetchCategoryPage } from "@/app/Hooks/useProducts";
 
-function CategoryProductsContainer({
+// This component uses useSearchParams and will be wrapped in Suspense
+function CategoryProductsContent({
   categoryId,
   initialPage = 1,
   categoryName,
@@ -47,20 +48,29 @@ function CategoryProductsContainer({
   }, [categoryId, currentPage, pages, filters]);
 
   return (
+    <ProductGrid
+      products={products}
+      pages={pages}
+      isLoading={isLoading}
+      isValidating={isValidating}
+      currentPage={currentPage}
+      emptyMessage="No products available."
+      paginationThreshold={0}
+    >
+      <h1 style={{ marginBottom: "2rem" }}>
+        {categoryName ? `${categoryName} Products` : "Recommended"}
+      </h1>
+    </ProductGrid>
+  );
+}
+
+// Main container component with Suspense boundary
+function CategoryProductsContainer(props) {
+  return (
     <Container>
-      <ProductGrid
-        products={products}
-        pages={pages}
-        isLoading={isLoading}
-        isValidating={isValidating}
-        currentPage={currentPage}
-        emptyMessage="No products available."
-        paginationThreshold={0}
-      >
-        <h1 style={{ marginBottom: "2rem" }}>
-          {categoryName ? `${categoryName} Products` : "Recommended"}
-        </h1>
-      </ProductGrid>
+      <Suspense fallback={<div>Loading products...</div>}>
+        <CategoryProductsContent {...props} />
+      </Suspense>
     </Container>
   );
 }
