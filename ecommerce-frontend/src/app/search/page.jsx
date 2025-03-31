@@ -1,4 +1,5 @@
 "use client";
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Container } from "@/app/components/shared/styles/Container.styled";
 import ProductGrid from "@/app/components/shared/ProductGrid";
@@ -7,7 +8,8 @@ import { useEffect, useState, useMemo } from "react";
 import Filters from "@/app/components/Categories/Filters";
 import { useRouter } from "next/navigation";
 
-function SearchPage() {
+// Create a content component that uses useSearchParams
+function SearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "";
@@ -138,4 +140,14 @@ function SearchPage() {
   );
 }
 
-export default SearchPage;
+// Main search page component with Suspense boundary
+export default function SearchPage() {
+  return (
+    <div>
+      <h1>Search Results</h1>
+      <Suspense fallback={<div>Loading search results...</div>}>
+        <SearchContent />
+      </Suspense>
+    </div>
+  );
+}
