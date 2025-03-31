@@ -1,21 +1,19 @@
 "use client";
-import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { Container } from "@/app/components/shared/styles/Container.styled";
-import CategoryProductsContainer from "@/app/components/Categories/CategoryProductsContainer";
-
+import Spinner from "@/app/components/shared/Spinner";
+import CategoryContent from "@/app/components/Categories/CategoryContent";
 
 export default function CategoryPage() {
-  const searchParams = useSearchParams();
-  const categoryId = searchParams.get("id");
-
-  if (!categoryId) {
-    return (
-      <Container>
-        <h1>Category</h1>
-        <p>Please select a category to view products</p>
-      </Container>
-    );
-  }
-
-  return <CategoryProductsContainer categoryId={categoryId} initialPage={1} />;
+  return (
+    <Suspense
+      fallback={
+        <Container>
+          <Spinner fullscreen />
+        </Container>
+      }
+    >
+      <CategoryContent />
+    </Suspense>
+  );
 }
