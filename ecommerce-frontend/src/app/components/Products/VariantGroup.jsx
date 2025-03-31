@@ -9,6 +9,7 @@ export default function VariantGroup({
   onSelect,
 }) {
   return (
+    //deploy
     <div >
       <h3>
         <strong>{type.charAt(0).toUpperCase() + type.slice(1)}</strong>
