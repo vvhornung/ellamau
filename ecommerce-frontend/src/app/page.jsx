@@ -33,10 +33,7 @@ export default async function Home() {
     }))
   );
 
-
   const latestProducts = await Product.find().sort({ createdAt: -1 }).limit(4);
-  
-
 
   const swimwearProducts = (await getProductsByCategory(swimwearCategory.id, 4))
     .products;
@@ -64,7 +61,11 @@ export default async function Home() {
       />
 
       <Container>
-        <ProductCarrousel title={'Beauty Collection'} $border={"card"} items={latestProducts} />
+        <ProductCarrousel
+          title={"Beauty Collection"}
+          $border={"card"}
+          items={latestProducts}
+        />
       </Container>
 
       <HeroSection
@@ -84,7 +85,7 @@ export default async function Home() {
       <HeroSection
         heading="DISCOVER"
         subHeading="SPORTSWEAR"
-        text="Enjoy the pleasure of confort anf style"
+        text="Enjoy the pleasure of comfort and style"
         buttonText="Shop Now"
         imageSrc={sportHero}
         brightness={0.7}
@@ -96,7 +97,11 @@ export default async function Home() {
       </Container>
 
       <Container $bg={"#f5e5c5"}>
-        <ProductCarrousel title="Swimwear Collection" $bg="#f5e5c5" items={swimwearProducts} />
+        <ProductCarrousel
+          title="Swimwear Collection"
+          $bg="#f5e5c5"
+          items={swimwearProducts}
+        />
       </Container>
 
       <HeroSection

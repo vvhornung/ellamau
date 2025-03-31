@@ -1,13 +1,18 @@
 "use client";
 
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Flex } from "../../shared/styles/Flex.styled";
-import { CiMenuFries, CiUser, CiShoppingCart, CiSearch } from "react-icons/ci";
+import { CiMenuFries, CiShoppingCart, CiSearch } from "react-icons/ci";
+
 import Link from "next/link";
 import {
   StyledMobileNav,
   OverlayScreen,
   CloseButton,
+  SearchOverlay,
+  SearchForm,
+  SearchInput,
 } from "./styles/MobileNav.styled";
 import Logo from "../../shared/Logo";
 import { CartContext } from "@/app/contexts/CartContext";
@@ -17,15 +22,36 @@ import { IoClose } from "react-icons/io5";
 function MobileNav({ categories = [] }) {
   const { cart } = useContext(CartContext);
   const cartCount = cart?.length || 0;
+  const router = useRouter();
+  const searchInputRef = useRef(null);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const toggleSearch = () => {
+    setIsSearchOpen(!isSearchOpen);
+    // Focus the search input when search overlay opens
+    if (!isSearchOpen) {
+      setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 100);
+    }
+  };
 
-  // Control body scroll when menu is open
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setIsSearchOpen(false);
+      setSearchQuery("");
+    }
+  };
+
+  // Control body scroll when menu or search is open
   useEffect(() => {
-    if (isMenuOpen) {
+    if (isMenuOpen || isSearchOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -33,7 +59,7 @@ function MobileNav({ categories = [] }) {
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [isMenuOpen]);
+  }, [isMenuOpen, isSearchOpen]);
 
   return (
     <StyledMobileNav>
@@ -46,10 +72,12 @@ function MobileNav({ categories = [] }) {
             alt="Menu Icon"
             onClick={toggleMenu}
           />
-          <CiSearch fill="black" name="Search" alt="Search Icon" />
-          <Link href="">
-            <CiUser fill="black" name="User" alt="User Icon" />
-          </Link>
+          <CiSearch
+            fill="black"
+            name="Search"
+            alt="Search Icon"
+            onClick={toggleSearch}
+          />
 
           <Link href="/cart">
             <CartIconWrapper>
@@ -67,8 +95,7 @@ function MobileNav({ categories = [] }) {
         </Flex>
       </Flex>
 
-      {/* Apply the "open" class conditionally to trigger the slide animation */}
-
+      {/* Menu Overlay */}
       <OverlayScreen className={isMenuOpen ? "open" : ""}>
         <CloseButton onClick={toggleMenu}>
           <IoClose size={24} />
@@ -85,6 +112,27 @@ function MobileNav({ categories = [] }) {
           </Link>
         ))}
       </OverlayScreen>
+
+      {/* Search Overlay */}
+      <SearchOverlay className={isSearchOpen ? "open" : ""}>
+        <CloseButton onClick={toggleSearch}>
+          <IoClose size={24} />
+        </CloseButton>
+
+        <SearchForm onSubmit={handleSearchSubmit}>
+          <SearchInput
+            ref={searchInputRef}
+            type="text"
+            placeholder="Search products..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button type="submit" aria-label="Search">
+            <CiSearch size={24} fill="black" />
+          </button>
+          
+        </SearchForm>
+      </SearchOverlay>
     </StyledMobileNav>
   );
 }
