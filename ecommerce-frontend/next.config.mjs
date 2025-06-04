@@ -31,7 +31,6 @@ const nextConfig = {
       // edit: updated to new key. Was previously `allowedForwardedHosts`
       allowedOrigins: ["localhost:3000", "localhost:3001"],
     },
-    esmExternals: "loose", // <-- add this
     serverComponentsExternalPackages: ["mongoose"],
   },
 
