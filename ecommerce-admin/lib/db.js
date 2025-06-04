@@ -12,10 +12,6 @@ const options = {
     strict: true,
     deprecationErrors: true,
   },
-  // Explicitly disable client-side encryption
-  autoEncryption: {
-    bypassAutoEncryption: true,
-  },
 };
 
 let client;

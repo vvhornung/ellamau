@@ -11,6 +11,11 @@ const nextConfig = {
         tls: false,
         child_process: false,
         "fs/promises": false,
+        dns: false,
+        "timers/promises": false,
+        os: false,
+        path: false,
+        crypto: false,
       };
     }
     return config;

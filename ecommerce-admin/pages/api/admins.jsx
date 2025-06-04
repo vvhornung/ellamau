@@ -1,6 +1,6 @@
 import { Admin } from "@/models/Admin";
 import connectDB from "@/lib/mongoose";
-import { isAdminRequest } from "@/pages/middleware/isAdmin";
+import { isAdminRequest } from "../../middleware/isAdmin";
 
 export default async function handler(req, res) {
   await connectDB(); // Ensure the database is connected
