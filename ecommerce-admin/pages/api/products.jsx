@@ -1,4 +1,4 @@
-import { isAdminRequest } from "@/pages/middleware/isAdmin";
+import { isAdminRequest } from "../../middleware/isAdmin";
 import { Product } from "@/models/Product";
 import connectDB from "@/lib/mongoose";
 import mongoose from "mongoose";
