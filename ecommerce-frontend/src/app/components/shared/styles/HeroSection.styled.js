@@ -84,7 +84,7 @@ export const MainHeading = styled.h3`
   font-size: 5rem;
   font-weight: 400;
   margin-bottom: 28px;
-  text-transform: lowercase;
+  text-transform: uppercase;
   white-space: nowrap;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
