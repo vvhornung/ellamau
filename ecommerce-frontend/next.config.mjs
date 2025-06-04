@@ -31,7 +31,7 @@ const nextConfig = {
       // edit: updated to new key. Was previously `allowedForwardedHosts`
       allowedOrigins: ["localhost:3000", "localhost:3001"],
     },
-    serverComponentsExternalPackages: ["mongoose"],
+
   },
 
   webpack(config) {
