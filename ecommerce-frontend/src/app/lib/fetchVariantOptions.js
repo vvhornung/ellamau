@@ -32,15 +32,28 @@ export async function getVariantOptions(categoryId) {
     products.forEach((product) => {
       if (product.variants && Array.isArray(product.variants)) {
         product.variants.forEach((variant) => {
-          if (variant.color) colors.add(variant.color);
-          if (variant.size) sizes.add(variant.size);
+          // Handle both string and object variants
+          const color = typeof variant === "object" ? variant.color : variant;
+          const size = typeof variant === "object" ? variant.size : null;
+
+          if (color) colors.add(color);
+          if (size) sizes.add(size);
         });
       }
     });
 
+    // Log the extracted options for debugging
+    console.log("📊 Extracted variant options:", {
+      categoryId,
+      colorsCount: colors.size,
+      sizesCount: sizes.size,
+      colors: Array.from(colors),
+      sizes: Array.from(sizes),
+    });
+
     return {
-      colors: [...colors].sort(),
-      sizes: [...sizes].sort(),
+      colors: Array.from(colors).sort(),
+      sizes: Array.from(sizes).sort(),
     };
   } catch (error) {
     console.error("🚨 Error fetching variant options:", error);

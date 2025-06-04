@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, Suspense } from "react";
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Container } from "../shared/styles/Container.styled";
 import ProductGrid from "../shared/ProductGrid";
-import { useProducts, prefetchCategoryPage } from "@/app/Hooks/useProducts";
+import { useProducts } from "@/app/Hooks/useProducts";
 
 // This component uses useSearchParams and will be wrapped in Suspense
 function CategoryProductsContent({
@@ -30,29 +30,19 @@ function CategoryProductsContent({
   );
 
   // Use our custom hook with filters from URL
-  const { products, total, pages, isLoading, isValidating } = useProducts(
+  const { data, isLoading, isFetching } = useProducts(
     categoryId,
     currentPage,
     6, // limit
     filters
   );
 
-  // Prefetch adjacent pages for faster navigation
-  useEffect(() => {
-    if (currentPage < pages) {
-      prefetchCategoryPage(categoryId, currentPage + 1, 6, filters);
-    }
-    if (currentPage > 1) {
-      prefetchCategoryPage(categoryId, currentPage - 1, 6, filters);
-    }
-  }, [categoryId, currentPage, pages, filters]);
-
   return (
     <ProductGrid
-      products={products}
-      pages={pages}
+      products={data?.products || []}
+      pages={data?.pages || 0}
       isLoading={isLoading}
-      isValidating={isValidating}
+      isValidating={isFetching}
       currentPage={currentPage}
       emptyMessage="No products available."
       paginationThreshold={0}

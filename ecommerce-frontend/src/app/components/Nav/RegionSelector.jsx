@@ -7,7 +7,7 @@ function RegionSelector() {
   return (
     <Flex width={"fit-content"}>
       <Image
-        src="http://127.0.0.1:5500/landing/icons/usa.svg"
+        src="/usa.svg"
         width={25}
         height={25}
         alt="usa"

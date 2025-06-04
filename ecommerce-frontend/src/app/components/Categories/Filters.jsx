@@ -23,15 +23,15 @@ function Filters({
   const isClientSideFiltering = !!products && !!onFilterChange;
 
   // Always call hooks unconditionally, regardless of whether we use the result
-  const {
-    colors: hookColors,
-    sizes: hookSizes,
-    isLoading: hookIsLoading,
-  } = useVariantOptions(categoryId || "");
+  const { data: variantOptions, isLoading: hookIsLoading } = useVariantOptions(
+    categoryId || ""
+  );
 
   // Then use the results conditionally
-  const serverColors = !isClientSideFiltering ? hookColors : [];
-  const serverSizes = !isClientSideFiltering ? hookSizes : [];
+  const serverColors = !isClientSideFiltering
+    ? variantOptions?.colors || []
+    : [];
+  const serverSizes = !isClientSideFiltering ? variantOptions?.sizes || [] : [];
   const serverIsLoading = !isClientSideFiltering ? hookIsLoading : false;
 
   // Extract unique colors and sizes from products for client-side filtering
@@ -43,10 +43,14 @@ function Filters({
 
     products.forEach((product) => {
       // Extract colors and sizes from variants
-      if (product.variants && product.variants.length > 0) {
+      if (product.variants && Array.isArray(product.variants)) {
         product.variants.forEach((variant) => {
-          if (variant.color) allColors.add(variant.color);
-          if (variant.size) allSizes.add(variant.size);
+          // Handle both string and object variants
+          const color = typeof variant === "object" ? variant.color : variant;
+          const size = typeof variant === "object" ? variant.size : null;
+
+          if (color) allColors.add(color);
+          if (size) allSizes.add(size);
         });
       }
     });
@@ -199,7 +203,7 @@ function Filters({
                   <FilterItem>
                     <Spinner />
                   </FilterItem>
-                ) : (
+                ) : colors && colors.length > 0 ? (
                   colors.map((color) => (
                     <FilterItem
                       key={color}
@@ -209,6 +213,8 @@ function Filters({
                       {color}
                     </FilterItem>
                   ))
+                ) : (
+                  <FilterItem>No colors available</FilterItem>
                 )}
               </FilterDropdown>
             </FilterOption>
@@ -244,7 +250,7 @@ function Filters({
                   <FilterItem>
                     <Spinner />
                   </FilterItem>
-                ) : (
+                ) : sizes && sizes.length > 0 ? (
                   sizes.map((size) => (
                     <FilterItem
                       key={size}
@@ -254,6 +260,8 @@ function Filters({
                       {size}
                     </FilterItem>
                   ))
+                ) : (
+                  <FilterItem>No sizes available</FilterItem>
                 )}
               </FilterDropdown>
             </FilterOption>

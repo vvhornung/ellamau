@@ -6,6 +6,7 @@ import ThemeClient from "./ThemeClient";
 import StyledComponentsRegistry from "@/app/lib/StyledComponentsRegistry"; // Import registry
 import { CartProvider } from "./contexts/CartContext";
 import { Public_Sans } from "next/font/google";
+import QueryProvider from "./providers/QueryProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,23 +25,26 @@ const denike = localFont({
   variable: "--font-denike",
 });
 
-const publicSans = Public_Sans({subsets: ['latin']})
+const publicSans = Public_Sans({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
         <StyledComponentsRegistry>
-          <CartProvider>
-            <ThemeClient>
-              <div className={`${geistSans.variable} ${geistMono.variable} ${publicSans.className} ${denike.variable}`}>
-
-                <Nav />
-                <main>{children}</main>
-                <Footer />
-              </div>
-            </ThemeClient>
-          </CartProvider>
+          <QueryProvider>
+            <CartProvider>
+              <ThemeClient>
+                <div
+                  className={`${geistSans.variable} ${geistMono.variable} ${publicSans.className} ${denike.variable}`}
+                >
+                  <Nav />
+                  <main>{children}</main>
+                  <Footer />
+                </div>
+              </ThemeClient>
+            </CartProvider>
+          </QueryProvider>
         </StyledComponentsRegistry>
       </body>
     </html>

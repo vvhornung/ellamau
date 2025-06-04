@@ -40,15 +40,7 @@ export default async function Home() {
 
   return (
     <>
-      <Container $bg={"black"}>
-        <PromoCard>
-          <h2>NEW LINGERIE</h2>
-          <p>
-            Discover the Collection, featuring classic favorites and new styles.
-          </p>
-          <ActionButton className="outline secondary">SHOP NOW</ActionButton>
-        </PromoCard>
-      </Container>
+
 
       <HeroSection
         heading="NEW SEASON"
