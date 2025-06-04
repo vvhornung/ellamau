@@ -58,7 +58,9 @@ function CategoryProductsContent({
       paginationThreshold={0}
     >
       <h1 style={{ marginBottom: "2rem" }}>
-        {categoryName ? `${categoryName} Products` : "Recommended"}
+        {categoryName
+          ? `${categoryName.toUpperCase()} PRODUCTS`
+          : "RECOMMENDED"}
       </h1>
     </ProductGrid>
   );
