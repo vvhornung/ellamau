@@ -60,7 +60,7 @@ const HeroSection = ({
     <Section>
       <ContentOverlay $positionX={image$positionX} $positionY={image$positionY}>
         <SubHeading>{heading.toUpperCase()}</SubHeading>
-        <MainHeading>{subHeading}</MainHeading>
+        <MainHeading>{subHeading.toUpperCase()}</MainHeading>
         <Description>{text}</Description>
         <Link href={href}>
           <ActionButton className="outline secondary">{buttonText}</ActionButton>
