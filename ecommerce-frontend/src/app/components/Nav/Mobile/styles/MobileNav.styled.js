@@ -27,12 +27,12 @@ export const OverlayScreen = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.9);
+  background: white;
   z-index: 1000;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   transform: translateY(-100%);
   transition: transform 0.3s ease-in-out;
 
@@ -71,7 +71,7 @@ export const SearchOverlay = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 80px;
+  padding-top: 100px;
   transform: translateY(-100%);
   transition: transform 0.3s ease-in-out;
 
